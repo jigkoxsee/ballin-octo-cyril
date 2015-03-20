@@ -50,15 +50,15 @@ $[a-zA-Z] {
 ")" return RIGHT;
 
 "if" return IF;
-"=" return ASSIGN;
 "==" return EQ;
+"=" return ASSIGN;
 "endif" return ENDIF;
 "loop" return LOOP;
 "end" return END;
 
 "show" return SHOW;
 "showx" return SHOWX;
-":" return SEMICOLON;
+":" return COLON;
 
 
 "\n" return ENDLN;

@@ -372,8 +372,8 @@ struct yy_trans_info
 static yyconst flex_int16_t yy_accept[42] =
     {   0,
         0,    0,   23,   22,    1,   21,   22,    9,   10,   11,
-        7,    5,    6,    8,    3,   20,   13,   22,   22,   22,
-       22,   22,    1,    4,    3,    0,    2,   14,    0,   12,
+        7,    5,    6,    8,    3,   20,   14,   22,   22,   22,
+       22,   22,    1,    4,    3,    0,    2,   13,    0,   12,
         0,    0,   17,    0,    0,    0,   16,   18,   15,   19,
         0
     } ;
@@ -833,12 +833,12 @@ return IF;
 case 13:
 YY_RULE_SETUP
 #line 53 "asm.lex"
-return ASSIGN;
+return EQ;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 54 "asm.lex"
-return EQ;
+return ASSIGN;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
@@ -868,7 +868,7 @@ return SHOWX;
 case 20:
 YY_RULE_SETUP
 #line 61 "asm.lex"
-return SEMICOLON;
+return COLON;
 	YY_BREAK
 case 21:
 /* rule 21 can match eol */

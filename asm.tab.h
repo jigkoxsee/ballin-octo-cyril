@@ -62,7 +62,7 @@ extern int yydebug;
     END = 272,
     SHOW = 273,
     SHOWX = 274,
-    SEMICOLON = 275,
+    COLON = 275,
     VAR = 276,
     AND = 277,
     OR = 278,
