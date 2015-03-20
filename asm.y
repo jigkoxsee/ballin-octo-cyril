@@ -50,7 +50,14 @@ Oprn:
 
 Condition:
   Oprn EQ Oprn { printf("CONDITION\n");}
+;
 
+Block:
+  Stms
+  | Ifstm
+  | Stms Ifstm
+  | Ifstm Stms
+  | Stms Ifstm Stms
 ;
 
 Ifstm:
@@ -80,7 +87,7 @@ Exp:
 ;
 
 Loopstm:
-  LOOP CONST COLON CONST ENDLN Stms END ENDLN { printf("LOOP\n");}
+  LOOP CONST COLON CONST ENDLN Block END ENDLN { printf("LOOP\n");}
 ;
 
 Display:
