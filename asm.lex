@@ -1,5 +1,5 @@
 %{
-#define YYSTYPE long long int
+#define YYSTYPE int
 #include "asm.tab.h"
 #include <stdlib.h>
 #include <string.h>
@@ -8,13 +8,14 @@
 white [ \t]+
 digit [0-9]
 integer {digit}+
-
+hex [0-9a-fA-F] 
 %%
 
 {white} { }
 
-[0-9a-fA-F]+h {
-
+0x{hex}+ {
+  sscanf(yytext,"%x",&yylval);
+/*
   int dec=0,i=0,val=0;
   for(i=0;i<strlen(yytext)-1;i++){
     if(yytext[i]<='9')
@@ -26,6 +27,7 @@ integer {digit}+
     dec=dec*16+val;
   }
   yylval=dec;
+*/
   return CONST;
 }
 
