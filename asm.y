@@ -66,7 +66,7 @@ Ifstm:
 
 Stm:
   VAR ASSIGN Exp { printf("STM\n"); }
-  | Exp { printf("STM\n"); }
+  | Exp { printf("STM"); }
 ;
 
 Stms:
@@ -74,11 +74,12 @@ Stms:
   | Stm ENDLN Stms { printf("STMS STM STMS\n"); }
 ;
 
+
 Exp:
-  CONST { printf("EXP c\n"); }
-  | VAR { printf("EXP v\n"); }
-  | Exp PLUS Exp { printf("EXP+\n"); }
-  | Exp MINUS Exp { printf("EXP-\n"); }
+  CONST { }
+  | VAR { }
+  | Exp PLUS Exp { printf("ADD regis %d, %d\n", $1, $3); }
+  | Exp MINUS Exp { printf("SUB regis %d, %d\n",$1,$3); }
   | Exp TIMES Exp { printf("EXP*\n"); }
   | Exp DIVIDE Exp { printf("EXP/\n"); }
   | Exp MOD Exp { printf("EXP%\n"); }
