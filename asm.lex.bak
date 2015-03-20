@@ -8,22 +8,10 @@
 white [ \t]+
 digit [0-9]
 integer {digit}+
-exponent [eE][+-]?{integer}
-real {integer}("."{integer})?{exponent}?
 
 %%
 
 {white} { }
-
-[01]+b {
-
-  int dec=0,i=0;
-  for(i=0;i<strlen(yytext)-1;i++){
-    dec=dec*2+(yytext[i]-'0');
-  }
-  yylval=dec;
-  return NUMBER;
-}
 
 [0-9a-fA-F]+h {
 
@@ -38,45 +26,39 @@ real {integer}("."{integer})?{exponent}?
     dec=dec*16+val;
   }
   yylval=dec;
-  return NUMBER;
+  return CONST;
 }
 
-{real} {
-  sscanf(yytext,"%llu",&yylval);
-  return NUMBER;
+{integer} {
+  sscanf(yytext,"%d",&yylval);
+  return CONST;
 }
 
-"SHOW" return SHOW;
-"COPY" return COPY;
-"TO" return TO;
-
-"PUSH" return PUSH;
-"POP" return POP;
-
-"$acc" return ACC;
-"$top" return TOP;
-"$size" return SIZE;
-$r{digit} {
+$[a-zA-Z] {
   yylval=yytext[2]-'0';
-  return REGISTER;
+  return VAR;
 }
 
-"AND" return AND;
-"OR" return OR;
-"NOT" return NOT;
 
 "+" return PLUS;
 "-" return MINUS;
 "*" return TIMES;
 "/" return DIVIDE;
-"\\" return MOD;
-"^" return POWER;
+"%" return MOD;
 
 "(" return LEFT;
 ")" return RIGHT;
-"[" return ALEFT;
-"]" return ARIGHT;
-"{" return BLEFT;
-"}" return BRIGHT;
 
-"\n" return END;
+"if" return IF;
+"=" return ASSIGN;
+"==" return EQ;
+"endif" return ENDIF;
+"loop" return LOOP;
+"end" return END;
+
+"show" return SHOW;
+"showx" return SHOWX;
+":" return SEMICOLON;
+
+
+"\n" return ENDLN;
