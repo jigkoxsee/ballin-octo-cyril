@@ -1,4 +1,6 @@
 # ballin-octo-cyril
+
+[![Join the chat at https://gitter.im/jigkoxsee/ballin-octo-cyril](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jigkoxsee/ballin-octo-cyril?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Compiler construct - assignment 4
 
 # ตัวอย่างไวยากรณ์ภาษา 
