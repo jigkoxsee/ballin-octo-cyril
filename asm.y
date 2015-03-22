@@ -17,14 +17,11 @@ int flag = 0;
 %token ASSIGN EQ IF ENDIF LOOP END SHOW SHOWX COLON
 %token VAR
 
-%left AND OR NOT
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left NEG
 
-
 %start Input
-
 
 %%
 
@@ -55,8 +52,8 @@ Condition:
 Block:
   Stms
   | Ifstm
-  | Stms Ifstm
   | Ifstm Stms
+  | Stms Ifstm
   | Stms Ifstm Stms
 ;
 
@@ -66,7 +63,6 @@ Ifstm:
 
 Stm:
   VAR ASSIGN Exp { printf("STM\n"); }
-  | Exp { printf("STM\n"); }
 ;
 
 Stms:

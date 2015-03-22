@@ -8,26 +8,13 @@
 white [ \t]+
 digit [0-9]
 integer {digit}+
-hex [0-9a-fA-F] 
+hex [0-9a-fA-F]
 %%
 
 {white} { }
 
 0x{hex}+ {
   sscanf(yytext,"%x",&yylval);
-/*
-  int dec=0,i=0,val=0;
-  for(i=0;i<strlen(yytext)-1;i++){
-    if(yytext[i]<='9')
-      val=yytext[i]-'0';
-    else if(yytext[i]<='Z')
-      val=yytext[i]-'A'+10;
-    else
-      val=yytext[i]-'a'+10;
-    dec=dec*16+val;
-  }
-  yylval=dec;
-*/
   return CONST;
 }
 
@@ -40,7 +27,6 @@ $[a-zA-Z] {
   yylval=yytext[2]-'0';
   return VAR;
 }
-
 
 "+" return PLUS;
 "-" return MINUS;
@@ -61,6 +47,5 @@ $[a-zA-Z] {
 "show" return SHOW;
 "showx" return SHOWX;
 ":" return COLON;
-
 
 "\n" return ENDLN;
