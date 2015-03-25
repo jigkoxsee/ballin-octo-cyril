@@ -77,12 +77,11 @@ Stms:
 
 Exp:
   CONST { }
-  | VAR { }
+  | VAR { printf("Hello world");}
   | Exp PLUS Exp { printf("ADD regis %d, %d\n", $1, $3); }
   | Exp MINUS Exp { printf("SUB regis %d, %d\n",$1,$3); }
   | Exp TIMES Exp { printf("EXP*\n"); }
   | Exp DIVIDE Exp { printf("EXP/\n"); }
-  | Exp MOD Exp { printf("EXP%\n"); }
   | MINUS Exp %prec NEG { printf("EXP neg\n"); }
   | LEFT Exp RIGHT { printf("EXP ()\n"); }
 ;

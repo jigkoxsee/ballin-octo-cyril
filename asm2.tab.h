@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_ASM_TAB_H_INCLUDED
-# define YY_YY_ASM_TAB_H_INCLUDED
+#ifndef YY_YY_ASM2_TAB_H_INCLUDED
+# define YY_YY_ASM2_TAB_H_INCLUDED
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -47,27 +47,27 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      CONST = 258,
-     LEFT = 259,
-     RIGHT = 260,
-     ENDLN = 261,
-     ASSIGN = 262,
-     EQ = 263,
-     IF = 264,
-     ENDIF = 265,
-     LOOP = 266,
-     END = 267,
-     SHOW = 268,
-     SHOWX = 269,
-     COLON = 270,
-     VAR = 271,
-     MOD = 272,
-     MINUS = 273,
-     PLUS = 274,
-     NOT = 275,
-     OR = 276,
-     AND = 277,
-     DIVIDE = 278,
-     TIMES = 279,
+     PLUS = 259,
+     MINUS = 260,
+     TIMES = 261,
+     DIVIDE = 262,
+     MOD = 263,
+     LEFT = 264,
+     RIGHT = 265,
+     ENDLN = 266,
+     ASSIGN = 267,
+     EQ = 268,
+     IF = 269,
+     ENDIF = 270,
+     LOOP = 271,
+     END = 272,
+     SHOW = 273,
+     SHOWX = 274,
+     COLON = 275,
+     VAR = 276,
+     NOT = 277,
+     OR = 278,
+     AND = 279,
      NEG = 280
    };
 #endif
@@ -96,4 +96,4 @@ int yyparse ();
 #endif
 #endif /* ! YYPARSE_PARAM */
 
-#endif /* !YY_YY_ASM_TAB_H_INCLUDED  */
+#endif /* !YY_YY_ASM2_TAB_H_INCLUDED  */
