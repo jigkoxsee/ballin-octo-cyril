@@ -1,14 +1,15 @@
 %{
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#define YYSTYPE int
+#include <cstdio>
+#include <iostream>
+using namespace std;
 
-extern char* yytext;
-int flag = 0;
-
+// stuff from flex that bison needs to know about:
+extern "C" int yylex();
+extern "C" int yyparse();
+extern "C" FILE *yyin;
+ 
+void yyerror(const char *s);
 %}
-
 
 %token CONST
 %token PLUS MINUS TIMES DIVIDE MOD
@@ -36,7 +37,7 @@ Line:
   | Stms
   | Display
   | Condition
-  | error { yyerror(); flag = 0; }
+  | error { yyerror("oops\n"); }
 ;
 
 
@@ -63,7 +64,6 @@ Ifstm:
 
 Stm:
   VAR ASSIGN Exp { printf("STM\n"); }
-  | Exp { printf("STM"); }
 ;
 
 Stms:
@@ -71,14 +71,14 @@ Stms:
   | Stm ENDLN Stms { printf("STMS STM STMS\n"); }
 ;
 
-
 Exp:
-  CONST { }
-  | VAR { printf("Hello world");}
-  | Exp PLUS Exp { printf("ADD regis %d, %d\n", $1, $3); }
-  | Exp MINUS Exp { printf("SUB regis %d, %d\n",$1,$3); }
+  CONST { printf("EXP c\n"); }
+  | VAR { printf("EXP v\n"); }
+  | Exp PLUS Exp { printf("EXP+\n"); }
+  | Exp MINUS Exp { printf("EXP-\n"); }
   | Exp TIMES Exp { printf("EXP*\n"); }
   | Exp DIVIDE Exp { printf("EXP/\n"); }
+  | Exp MOD Exp { printf("EXP%\n"); }
   | MINUS Exp %prec NEG { printf("EXP neg\n"); }
   | LEFT Exp RIGHT { printf("EXP ()\n"); }
 ;
@@ -93,13 +93,28 @@ Display:
 ;
 %%
 
-int yyerror() {
-  if (flag == 0){
-   printf("ERROR! \n");
-   flag = 1;
-  }
+void yyerror(const char *s) {
+  cout << "EEK, parse error!  Message: " << s << endl;
+  // might as well halt now:
+  exit(-1);
 }
 
 int main() {
   yyparse();
+/*
+  // open a file handle to a particular file:
+  FILE *myfile = fopen("a.snazzle.file", "r");
+  // make sure it is valid:
+  if (!myfile) {
+    cout << "I can't open a.snazzle.file!" << endl;
+    return -1;
+  }
+  // set flex to read from it instead of defaulting to STDIN:
+  yyin = myfile;
+  
+  // parse through the input until there is no more:
+  do {
+    yyparse();
+  } while (!feof(yyin));
+*/
 }

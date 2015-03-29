@@ -1,4 +1,5 @@
 %{
+#define YYSTYPE int
 #include "asm.tab.h"
 #include <stdlib.h>
 #include <string.h>
@@ -11,9 +12,10 @@ integer {digit}+
 hex [0-9a-fA-F]
 %%
 {white} { }
+
 0x{hex}+ {
-    sscanf(yytext,"%x",&yylval);
-    return CONST;
+  sscanf(yytext,"%x",&yylval);
+  return CONST;
 }
 {integer} {
     sscanf(yytext,"%d",&yylval);
