@@ -12,14 +12,12 @@ void yyerror(const char *s);
 %}
 
 %token CONST
-%token PLUS MINUS TIMES DIVIDE MOD
 %token LEFT RIGHT
 %token ENDLN
 %token ASSIGN EQ IF ENDIF LOOP END SHOW SHOWX COLON
 %token VAR
 
-%left PLUS MINUS
-%left TIMES DIVIDE
+%left PLUS MINUS TIMES DIVIDE MOD
 %left NEG
 
 %start Input
