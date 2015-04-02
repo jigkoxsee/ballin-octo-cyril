@@ -60,11 +60,11 @@ extern int yydebug;
      SHOWX = 269,
      COLON = 270,
      VAR = 271,
-     MOD = 272,
-     DIVIDE = 273,
-     TIMES = 274,
-     MINUS = 275,
-     PLUS = 276,
+     MINUS = 272,
+     PLUS = 273,
+     MOD = 274,
+     DIVIDE = 275,
+     TIMES = 276,
      NEG = 277
    };
 #endif
