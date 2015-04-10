@@ -69,15 +69,16 @@ Stms:
 ;
 
 Exp:
-  CONST {cout << "T" << count << "=" << $1 <<endl; temp.push(count); $$ = count; count++;} 
+   
+   CONST {cout << "T" << count << " = " << $1 <<endl; temp.push(count); $$ = count; count++;} 
   | VAR 
-  | Exp PLUS Exp {cout<<"T"<< count << " = " << "T" << count-1 << " + T" << count-2 << endl;count++;}
-  | Exp MINUS Exp { cout<<"SUB "<<$1<<", "<<$3<<endl; }
-  | Exp TIMES Exp {cout << "T" << count << " = " << "T" <<count-1<< " * T" << count-2 <<endl;count++;}         
-  | Exp DIVIDE Exp { if($3== 0){yyerror("can't div by 0");} cout<<"DIV"<<$1<<", "<<$3<<endl; }
-  | Exp MOD Exp { if($3== 0){yyerror("can't div by 0");}cout<<"MOD"<<$1<<", "<<$3<<endl; }
-  | MINUS Exp %prec NEG { printf("EXP neg\n"); }
+  | Exp PLUS Exp {cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " + T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
+  | Exp MINUS Exp { cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " - T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
+  | Exp TIMES Exp {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " * T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}         
+  | Exp DIVIDE Exp {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " / T" << temp.top() <<endl;temp.pop();temp.push(count);count++;} 
+  | Exp MOD Exp { cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " % T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}
   | LEFT Exp RIGHT { }
+  | MINUS Exp %prec NEG {  cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;}
 ;
 
 Loopstm:
