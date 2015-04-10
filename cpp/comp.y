@@ -69,11 +69,11 @@ Stms:
 ;
 
 Exp:
-  CONST
+  CONST {cout << "T" << count << "=" << $1 <<endl; temp.push(count); $$ = count; count++;} 
   | VAR 
-  | Exp PLUS Exp {cout<<"T"<< count << "="; if(count>0){cout<<"T"<<count-1;}else{cout<<$1;} cout<< "+ "<< $3 << endl;count++;}
+  | Exp PLUS Exp {cout<<"T"<< count << " = " << "T" << count-1 << " + T" << count-2 << endl;count++;}
   | Exp MINUS Exp { cout<<"SUB "<<$1<<", "<<$3<<endl; }
-  | Exp TIMES Exp {cout << "T" << count << " = "; if(count>0){cout<<"T"<<count-1;}else{cout<<$1;} cout <<  " * "<<$3<< endl;count++; }         
+  | Exp TIMES Exp {cout << "T" << count << " = " << "T" <<count-1<< " * T" << count-2 <<endl;count++;}         
   | Exp DIVIDE Exp { if($3== 0){yyerror("can't div by 0");} cout<<"DIV"<<$1<<", "<<$3<<endl; }
   | Exp MOD Exp { if($3== 0){yyerror("can't div by 0");}cout<<"MOD"<<$1<<", "<<$3<<endl; }
   | MINUS Exp %prec NEG { printf("EXP neg\n"); }

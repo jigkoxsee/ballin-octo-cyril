@@ -1430,10 +1430,16 @@ yyreduce:
     { }
     break;
 
+  case 18:
+/* Line 1792 of yacc.c  */
+#line 72 "comp.y"
+    {cout << "T" << count << "=" << (yyvsp[(1) - (1)]) <<endl; temp.push(count); (yyval) = count; count++;}
+    break;
+
   case 20:
 /* Line 1792 of yacc.c  */
 #line 74 "comp.y"
-    {cout<<"T"<< count << "="; if(count>0){cout<<"T"<<count-1;}else{cout<<(yyvsp[(1) - (3)]);} cout<< "+ "<< (yyvsp[(3) - (3)]) << endl;count++;}
+    {cout<<"T"<< count << " = " << "T" << count-1 << " + T" << count-2 << endl;count++;}
     break;
 
   case 21:
@@ -1445,7 +1451,7 @@ yyreduce:
   case 22:
 /* Line 1792 of yacc.c  */
 #line 76 "comp.y"
-    {cout << "T" << count << " = "; if(count>0){cout<<"T"<<count-1;}else{cout<<(yyvsp[(1) - (3)]);} cout <<  " * "<<(yyvsp[(3) - (3)])<< endl;count++; }
+    {cout << "T" << count << " = " << "T" <<count-1<< " * T" << count-2 <<endl;count++;}
     break;
 
   case 23:
@@ -1492,7 +1498,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 1496 "comp.tab.c"
+#line 1502 "comp.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
