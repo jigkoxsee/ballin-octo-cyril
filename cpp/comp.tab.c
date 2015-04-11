@@ -71,6 +71,7 @@
 using namespace std;
 int count =0;
 stack<int> temp;
+int swap_temp;
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -80,7 +81,7 @@ extern "C" FILE *yyin;
 void convert_to_asm(int opr1,int opr2);
 void yyerror(const char *s);
 
-#line 84 "comp.tab.c" /* yacc.c:339  */
+#line 85 "comp.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -154,7 +155,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 158 "comp.tab.c" /* yacc.c:358  */
+#line 159 "comp.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -453,9 +454,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    33,    33,    34,    38,    39,    40,    41,    42,    43,
-      44,    49,    50,    54,    59,    63,    67,    68,    73,    74,
-      75,    76,    77,    78,    79,    80,    81,    85,    89,    90
+       0,    34,    34,    35,    39,    40,    41,    42,    43,    44,
+      45,    50,    51,    55,    60,    64,    68,    69,    74,    75,
+      76,    86,    95,   103,   111,   119,   120,   126,   130,   131
 };
 #endif
 
@@ -1257,109 +1258,149 @@ yyreduce:
   switch (yyn)
     {
         case 10:
-#line 44 "comp.y" /* yacc.c:1646  */
+#line 45 "comp.y" /* yacc.c:1646  */
     { yyerror("oops\n"); }
-#line 1263 "comp.tab.c" /* yacc.c:1646  */
+#line 1264 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 54 "comp.y" /* yacc.c:1646  */
+#line 55 "comp.y" /* yacc.c:1646  */
     { printf("CONDITION\n");}
-#line 1269 "comp.tab.c" /* yacc.c:1646  */
+#line 1270 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 59 "comp.y" /* yacc.c:1646  */
+#line 60 "comp.y" /* yacc.c:1646  */
     { printf("IF\n");}
-#line 1275 "comp.tab.c" /* yacc.c:1646  */
+#line 1276 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 63 "comp.y" /* yacc.c:1646  */
+#line 64 "comp.y" /* yacc.c:1646  */
     {count =0;}
-#line 1281 "comp.tab.c" /* yacc.c:1646  */
+#line 1282 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 67 "comp.y" /* yacc.c:1646  */
+#line 68 "comp.y" /* yacc.c:1646  */
     {  }
-#line 1287 "comp.tab.c" /* yacc.c:1646  */
+#line 1288 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 68 "comp.y" /* yacc.c:1646  */
+#line 69 "comp.y" /* yacc.c:1646  */
     { }
-#line 1293 "comp.tab.c" /* yacc.c:1646  */
+#line 1294 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 73 "comp.y" /* yacc.c:1646  */
+#line 74 "comp.y" /* yacc.c:1646  */
     {cout << "T" << count << " = " << (yyvsp[0]) <<endl; temp.push(count); (yyval) = count; count++;}
-#line 1299 "comp.tab.c" /* yacc.c:1646  */
+#line 1300 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 75 "comp.y" /* yacc.c:1646  */
-    {cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " + T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
-#line 1305 "comp.tab.c" /* yacc.c:1646  */
+#line 76 "comp.y" /* yacc.c:1646  */
+    {
+
+      swap_temp = temp.top();
+      temp.pop();
+      cout<<"T"<< count << " = " << "T" << temp.top();
+      temp.pop();   
+      cout << " + T" << swap_temp << endl; 
+      temp.push(count);count++;
+
+    }
+#line 1315 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 76 "comp.y" /* yacc.c:1646  */
-    { cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " - T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
-#line 1311 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 22:
-#line 77 "comp.y" /* yacc.c:1646  */
-    {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " * T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}
-#line 1317 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 23:
-#line 78 "comp.y" /* yacc.c:1646  */
-    {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " / T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}
-#line 1323 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 79 "comp.y" /* yacc.c:1646  */
-    { cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " % T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}
+#line 86 "comp.y" /* yacc.c:1646  */
+    {
+      swap_temp = temp.top();
+      temp.pop();
+      cout<<"T"<< count << " = " << "T" << temp.top();  
+      temp.pop(); 
+      cout << " - T" << swap_temp <<  endl;  
+      temp.push(count);count++;
+      
+    }
 #line 1329 "comp.tab.c" /* yacc.c:1646  */
     break;
 
+  case 22:
+#line 95 "comp.y" /* yacc.c:1646  */
+    {
+      swap_temp = temp.top();
+      temp.pop();
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " * T" << swap_temp << endl;
+      temp.push(count);count++;
+    }
+#line 1342 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 23:
+#line 103 "comp.y" /* yacc.c:1646  */
+    {
+      swap_temp = temp.top();
+      temp.pop();
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " / T" << swap_temp << endl;
+      temp.push(count);count++;
+    }
+#line 1355 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 24:
+#line 111 "comp.y" /* yacc.c:1646  */
+    {
+      swap_temp = temp.top();
+      temp.pop(); 
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " % T" << swap_temp << endl;
+      temp.push(count);count++;
+    }
+#line 1368 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
   case 25:
-#line 80 "comp.y" /* yacc.c:1646  */
+#line 119 "comp.y" /* yacc.c:1646  */
     { }
-#line 1335 "comp.tab.c" /* yacc.c:1646  */
+#line 1374 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 81 "comp.y" /* yacc.c:1646  */
-    {  cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;}
-#line 1341 "comp.tab.c" /* yacc.c:1646  */
+#line 120 "comp.y" /* yacc.c:1646  */
+    {
+      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+    }
+#line 1382 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 85 "comp.y" /* yacc.c:1646  */
+#line 126 "comp.y" /* yacc.c:1646  */
     { printf("LOOP\n");}
-#line 1347 "comp.tab.c" /* yacc.c:1646  */
+#line 1388 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 89 "comp.y" /* yacc.c:1646  */
+#line 130 "comp.y" /* yacc.c:1646  */
     { printf("SHOW\n");}
-#line 1353 "comp.tab.c" /* yacc.c:1646  */
+#line 1394 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 90 "comp.y" /* yacc.c:1646  */
+#line 131 "comp.y" /* yacc.c:1646  */
     { printf("SHOWX\n");}
-#line 1359 "comp.tab.c" /* yacc.c:1646  */
+#line 1400 "comp.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1363 "comp.tab.c" /* yacc.c:1646  */
+#line 1404 "comp.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1587,7 +1628,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 92 "comp.y" /* yacc.c:1906  */
+#line 133 "comp.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *s) {
@@ -1600,6 +1641,9 @@ void convert_to_asm(int opr1, int opr2)
 {
 
 }
+
+
+
 
 int main() {
   while(yyparse());

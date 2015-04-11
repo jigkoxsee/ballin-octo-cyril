@@ -6,6 +6,7 @@
 using namespace std;
 int count =0;
 stack<int> temp;
+int swap_temp;
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -72,13 +73,53 @@ Exp:
    
    CONST {cout << "T" << count << " = " << $1 <<endl; temp.push(count); $$ = count; count++;} 
   | VAR 
-  | Exp PLUS Exp {cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " + T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
-  | Exp MINUS Exp { cout<<"T"<< count << " = " << "T" << temp.top(); temp.pop(); cout << " - T" << temp.top() << endl; temp.pop(); temp.push(count);count++;}
-  | Exp TIMES Exp {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " * T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}         
-  | Exp DIVIDE Exp {cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " / T" << temp.top() <<endl;temp.pop();temp.push(count);count++;} 
-  | Exp MOD Exp { cout << "T" << count << " = " << "T" << temp.top(); temp.pop(); cout << " % T" << temp.top() <<endl;temp.pop();temp.push(count);count++;}
+  | Exp PLUS Exp {
+
+      swap_temp = temp.top();
+      temp.pop();
+      cout<<"T"<< count << " = " << "T" << temp.top();
+      temp.pop();   
+      cout << " + T" << swap_temp << endl; 
+      temp.push(count);count++;
+
+    }
+  | Exp MINUS Exp {
+      swap_temp = temp.top();
+      temp.pop();
+      cout<<"T"<< count << " = " << "T" << temp.top();  
+      temp.pop(); 
+      cout << " - T" << swap_temp <<  endl;  
+      temp.push(count);count++;
+      
+    }
+  | Exp TIMES Exp {
+      swap_temp = temp.top();
+      temp.pop();
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " * T" << swap_temp << endl;
+      temp.push(count);count++;
+    }         
+  | Exp DIVIDE Exp {
+      swap_temp = temp.top();
+      temp.pop();
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " / T" << swap_temp << endl;
+      temp.push(count);count++;
+    } 
+  | Exp MOD Exp {
+      swap_temp = temp.top();
+      temp.pop(); 
+      cout << "T" << count << " = " << "T" << temp.top();
+      temp.pop();
+      cout << " % T" << swap_temp << endl;
+      temp.push(count);count++;
+    }
   | LEFT Exp RIGHT { }
-  | MINUS Exp %prec NEG {  cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;}
+  | MINUS Exp %prec NEG {
+      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+    }
 ;
 
 Loopstm:
@@ -101,6 +142,9 @@ void convert_to_asm(int opr1, int opr2)
 {
 
 }
+
+
+
 
 int main() {
   while(yyparse());
