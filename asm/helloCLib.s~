@@ -1,0 +1,10 @@
+	.global	main
+
+	.text
+main:
+	mov	$message, %rdi
+	call puts
+	ret
+mesage:
+	.asciz "Hello,world"
+	
