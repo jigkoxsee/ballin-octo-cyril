@@ -68,10 +68,77 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <stdio.h>
+#include <stdlib.h>
+#include "nodeblock.h"
 using namespace std;
+//TAC initial implementation.
 int count =0;
 stack<int> temp;
 int swap_temp;
+NodeBlock<int> nodeblock; //create nodeblock << need to fixed !!
+
+//Binary Tree initial implmentation
+struct node{
+   int data;
+   struct node *right, *left;
+};
+
+typedef struct node node;
+node *subtree;
+
+//stack for tree
+stack<node> stack_node;
+
+//Insert Tree Function
+void insert(node **tree, int val)
+{
+      node *temp = NULL;
+       temp = (node *)malloc(sizeof(node));
+       temp->left = temp->right = NULL;
+       temp->data = val;
+       *tree = temp;
+
+}
+
+void insert_opnode(node **tree, int op, node *val)
+{
+  // if(!(*tree))
+  // {
+      printf("opp = %d\n", op);
+      insert(tree,op);
+      printf("TREE->data : %d\n", (*tree)->data);
+  // }
+    if(!((*tree)->left))
+    {
+       (*tree)->left = val;
+    }
+    else
+    {
+       (*tree)->right =val;
+    }
+}
+
+void print_inorder(node *tree)
+{
+    if (tree)
+    {
+      //print_inorder(tree->left);
+      printf("%d\n",tree->data);
+      //print_inorder(tree->right);
+    }
+}
+
+void deltree(node * tree)
+{
+    if (tree)
+    {
+      deltree(tree->left);
+      deltree(tree->right);
+      free(tree);
+    }
+}
+
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -81,7 +148,7 @@ extern "C" FILE *yyin;
 void convert_to_asm(int opr1,int opr2);
 void yyerror(const char *s);
 
-#line 85 "comp.tab.c" /* yacc.c:339  */
+#line 152 "comp.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -155,7 +222,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 159 "comp.tab.c" /* yacc.c:358  */
+#line 226 "comp.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -454,9 +521,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    34,    34,    35,    39,    40,    41,    42,    43,    44,
-      45,    50,    51,    55,    60,    64,    68,    69,    74,    75,
-      76,    86,    95,   103,   111,   119,   120,   126,   130,   131
+       0,   101,   101,   102,   106,   107,   108,   109,   110,   111,
+     112,   117,   118,   122,   127,   131,   135,   136,   141,   152,
+     153,   175,   184,   192,   200,   208,   209,   215,   219,   220
 };
 #endif
 
@@ -1258,64 +1325,86 @@ yyreduce:
   switch (yyn)
     {
         case 10:
-#line 45 "comp.y" /* yacc.c:1646  */
+#line 112 "comp.y" /* yacc.c:1646  */
     { yyerror("oops\n"); }
-#line 1264 "comp.tab.c" /* yacc.c:1646  */
+#line 1331 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 55 "comp.y" /* yacc.c:1646  */
+#line 122 "comp.y" /* yacc.c:1646  */
     { printf("CONDITION\n");}
-#line 1270 "comp.tab.c" /* yacc.c:1646  */
+#line 1337 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 60 "comp.y" /* yacc.c:1646  */
+#line 127 "comp.y" /* yacc.c:1646  */
     { printf("IF\n");}
-#line 1276 "comp.tab.c" /* yacc.c:1646  */
+#line 1343 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 64 "comp.y" /* yacc.c:1646  */
+#line 131 "comp.y" /* yacc.c:1646  */
     {count =0;}
-#line 1282 "comp.tab.c" /* yacc.c:1646  */
+#line 1349 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 68 "comp.y" /* yacc.c:1646  */
+#line 135 "comp.y" /* yacc.c:1646  */
     {  }
-#line 1288 "comp.tab.c" /* yacc.c:1646  */
+#line 1355 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 69 "comp.y" /* yacc.c:1646  */
+#line 136 "comp.y" /* yacc.c:1646  */
     { }
-#line 1294 "comp.tab.c" /* yacc.c:1646  */
+#line 1361 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 74 "comp.y" /* yacc.c:1646  */
-    {cout << "T" << count << " = " << (yyvsp[0]) <<endl; temp.push(count); (yyval) = count; count++;}
-#line 1300 "comp.tab.c" /* yacc.c:1646  */
+#line 141 "comp.y" /* yacc.c:1646  */
+    {
+   //TAC Syntax
+   cout << "T" << count << " = " << (yyvsp[0]) <<endl; 
+   temp.push(count); 
+   (yyval) = count; count++;
+
+   //TREE Syntax --Keep in stack
+   node *constant_node;
+   //insert(&constant_node, $1);
+   stack_node.push(*constant_node); 
+   }
+#line 1377 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 76 "comp.y" /* yacc.c:1646  */
+#line 153 "comp.y" /* yacc.c:1646  */
     {
-
+      //TAC Syntax
       swap_temp = temp.top();
-      temp.pop();
+      temp.pop(); 
       cout<<"T"<< count << " = " << "T" << temp.top();
       temp.pop();   
       cout << " + T" << swap_temp << endl; 
       temp.push(count);count++;
 
+      //TREE Syntax
+      node *swap_node; 
+      node *opnode;
+      node *it_node;
+      *swap_node = stack_node.top(); 
+      stack_node.pop();
+      insert_opnode(&opnode, '+', &stack_node.top());
+      stack_node.pop();
+      insert_opnode(&opnode, '+',swap_node);
+      stack_node.push(*opnode);
+      cout<< "PRINT NODE" << endl;
+      print_inorder(opnode);
     }
-#line 1315 "comp.tab.c" /* yacc.c:1646  */
+#line 1404 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 86 "comp.y" /* yacc.c:1646  */
+#line 175 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop();
@@ -1325,11 +1414,11 @@ yyreduce:
       temp.push(count);count++;
       
     }
-#line 1329 "comp.tab.c" /* yacc.c:1646  */
+#line 1418 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 95 "comp.y" /* yacc.c:1646  */
+#line 184 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop();
@@ -1338,11 +1427,11 @@ yyreduce:
       cout << " * T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1342 "comp.tab.c" /* yacc.c:1646  */
+#line 1431 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 103 "comp.y" /* yacc.c:1646  */
+#line 192 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop();
@@ -1351,11 +1440,11 @@ yyreduce:
       cout << " / T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1355 "comp.tab.c" /* yacc.c:1646  */
+#line 1444 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 111 "comp.y" /* yacc.c:1646  */
+#line 200 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop(); 
@@ -1364,43 +1453,43 @@ yyreduce:
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1368 "comp.tab.c" /* yacc.c:1646  */
+#line 1457 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 119 "comp.y" /* yacc.c:1646  */
+#line 208 "comp.y" /* yacc.c:1646  */
     { }
-#line 1374 "comp.tab.c" /* yacc.c:1646  */
+#line 1463 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 120 "comp.y" /* yacc.c:1646  */
+#line 209 "comp.y" /* yacc.c:1646  */
     {
       cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
     }
-#line 1382 "comp.tab.c" /* yacc.c:1646  */
+#line 1471 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 126 "comp.y" /* yacc.c:1646  */
+#line 215 "comp.y" /* yacc.c:1646  */
     { printf("LOOP\n");}
-#line 1388 "comp.tab.c" /* yacc.c:1646  */
+#line 1477 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 130 "comp.y" /* yacc.c:1646  */
+#line 219 "comp.y" /* yacc.c:1646  */
     { printf("SHOW\n");}
-#line 1394 "comp.tab.c" /* yacc.c:1646  */
+#line 1483 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 131 "comp.y" /* yacc.c:1646  */
+#line 220 "comp.y" /* yacc.c:1646  */
     { printf("SHOWX\n");}
-#line 1400 "comp.tab.c" /* yacc.c:1646  */
+#line 1489 "comp.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1404 "comp.tab.c" /* yacc.c:1646  */
+#line 1493 "comp.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1628,7 +1717,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 133 "comp.y" /* yacc.c:1906  */
+#line 222 "comp.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *s) {
