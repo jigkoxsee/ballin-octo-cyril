@@ -3,10 +3,77 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <stdio.h>
+#include <stdlib.h>
+#include "nodeblock.h"
 using namespace std;
+//TAC initial implementation.
 int count =0;
 stack<int> temp;
 int swap_temp;
+NodeBlock<int> nodeblock; //create nodeblock << need to fixed !!
+
+//Binary Tree initial implmentation
+struct node{
+   int data;
+   struct node *right, *left;
+};
+
+typedef struct node node;
+node *subtree;
+
+//stack for tree
+stack<node> stack_node;
+
+//Insert Tree Function
+void insert(node **tree, int val)
+{
+      node *temp = NULL;
+       temp = (node *)malloc(sizeof(node));
+       temp->left = temp->right = NULL;
+       temp->data = val;
+       *tree = temp;
+
+}
+
+void insert_opnode(node **tree, int op, node *val)
+{
+  // if(!(*tree))
+  // {
+      printf("opp = %d\n", op);
+      insert(tree,op);
+      printf("TREE->data : %d\n", (*tree)->data);
+  // }
+    if(!((*tree)->left))
+    {
+       (*tree)->left = val;
+    }
+    else
+    {
+       (*tree)->right =val;
+    }
+}
+
+void print_inorder(node *tree)
+{
+    if (tree)
+    {
+      //print_inorder(tree->left);
+      printf("%d\n",tree->data);
+      //print_inorder(tree->right);
+    }
+}
+
+void deltree(node * tree)
+{
+    if (tree)
+    {
+      deltree(tree->left);
+      deltree(tree->right);
+      free(tree);
+    }
+}
+
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -69,19 +136,41 @@ Stms:
   | Stm ENDLN Stms { }
 ;
 
-Exp:
+Exp: 
    
-   CONST {cout << "T" << count << " = " << $1 <<endl; temp.push(count); $$ = count; count++;} 
+   CONST {
+   //TAC Syntax
+   cout << "T" << count << " = " << $1 <<endl; 
+   temp.push(count); 
+   $$ = count; count++;
+
+   //TREE Syntax --Keep in stack
+   node *constant_node;
+   //insert(&constant_node, $1);
+   stack_node.push(*constant_node); 
+   } 
   | VAR 
   | Exp PLUS Exp {
-
+      //TAC Syntax
       swap_temp = temp.top();
-      temp.pop();
+      temp.pop(); 
       cout<<"T"<< count << " = " << "T" << temp.top();
       temp.pop();   
       cout << " + T" << swap_temp << endl; 
       temp.push(count);count++;
 
+      //TREE Syntax
+      node *swap_node; 
+      node *opnode;
+      node *it_node;
+      *swap_node = stack_node.top(); 
+      stack_node.pop();
+      insert_opnode(&opnode, '+', &stack_node.top());
+      stack_node.pop();
+      insert_opnode(&opnode, '+',swap_node);
+      stack_node.push(*opnode);
+      cout<< "PRINT NODE" << endl;
+      print_inorder(opnode);
     }
   | Exp MINUS Exp {
       swap_temp = temp.top();
