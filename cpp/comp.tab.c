@@ -89,7 +89,7 @@ typedef struct node node;
 node *subtree;
 
 //stack for tree
-stack<NodeBlock> stack_node;
+stack<NodeBlock*> stack_node;
 
 //Insert Tree Function
 //void insert(node **tree, int val)
@@ -1371,12 +1371,12 @@ yyreduce:
    //TREE Syntax --Keep in stack
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue((yyvsp[0]));  //add value to constant node
+   //test aassign
    cout << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
-   
-
-   stack_node.push(*node_const); 
+   stack_node.push(node_const);
+   cout << stack_node.top()->getValue() << endl;
    }
 #line 1382 "comp.tab.c" /* yacc.c:1646  */
     break;
@@ -1395,17 +1395,17 @@ yyreduce:
       //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right; 
-      node_right = &stack_node.top();
+      node_right = stack_node.top();
       cout << node_right->getValue() << endl;
       stack_node.pop();
-      node_left = &stack_node.top();
+      node_left = stack_node.top();
       stack_node.pop();
 
       AddSyntax* addsyn = new AddSyntax(node_left,node_right);
-      stack_node.push(*addsyn);
+      stack_node.push(addsyn);
 
       addsyn->print();
-      NodeBlock* node_test = &stack_node.top();
+      NodeBlock* node_test = stack_node.top();
       node_test->print();
 
       /*node *opnode; 
