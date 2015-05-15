@@ -5,25 +5,36 @@ using namespace std;
 
 class NodeBlock
 {
-   private:
-      char type;
+   protected   : 
+      char type; //tell about type of nodeBlock
    public:
-      NodeBlock *left;
+      NodeBlock *left; 
       NodeBlock *right;
       //int value;
       NodeBlock() {}
       ~NodeBlock() {}
-      //virtual ~NodeBlock() {}
       virtual void setValue() {};
       virtual int  getValue() {};
       virtual void print() { cout << "NodeBlock" << endl; };
+      void cgen(); // generate code assembly
 };
+
 
 class Variable : public NodeBlock 
 {
+   //In X86 have frame pointer name ebp
    private:
-      string var_name;
-      NodeBlock  nodeblock;
+      char var_name;
+      int address;
+   public:
+      Variable(int var_name) {
+         address = var_name * 4; //each frame has 4 bytes
+      }
+      ~Variable() {}
+      int getValue() {
+         return address;
+      }
+
 };
 
 class Constant : public NodeBlock  
@@ -40,6 +51,7 @@ class Constant : public NodeBlock
          return value;
       }
 };
+
 class IfStatement
 {
    NodeBlock  *condition;
@@ -52,10 +64,11 @@ class AddSyntax : public NodeBlock
       AddSyntax(NodeBlock *left,NodeBlock *right){
          this->left = left;
          this->right = right;
+         this->type = 'a'; 
       }
       ~AddSyntax(){}
      virtual void print(){
-      cout << " left = " << this->left->getValue() << endl;
+      cout << " left = " << this->left->getValue();
       cout << " right = " << this->right->getValue() << endl;
      }
 };
@@ -63,9 +76,14 @@ class AddSyntax : public NodeBlock
 class MinusSyntax : public NodeBlock 
 {
    public:
-      MinusSyntax(){}
-      ~MinusSyntax(){}
-      void createnode(){
-         
+      MinusSyntax(NodeBlock *left,NodeBlock *right){
+         this->left = left;
+         this->right = right;
+         this->type = 'm';
       }
+      ~MinusSyntax(){}
+     virtual void print(){
+      cout << " left = " << this->left->getValue();
+      cout << " right = " << this->right->getValue() << endl;
+     }
 };

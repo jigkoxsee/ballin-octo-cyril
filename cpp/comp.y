@@ -140,29 +140,38 @@ Exp:
    
    CONST {
    //TAC Syntax
-   cout << "T" << count << " = " << $1 <<endl; 
+   /*cout << "T" << count << " = " << $1 <<endl; 
    temp.push(count); 
    $$ = count; count++;
-
+	*/
    //TREE Syntax --Keep in stack
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
    //test aassign
-   cout << node_const->getValue() << endl;
+   cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-   cout << stack_node.top()->getValue() << endl;
    } 
-  | VAR 
+  | VAR {
+  	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
+ 	Variable *node_var = new Variable($1);
+ 	cout << " var = " << $1 << endl;
+ 	stack_node.push(node_var);
+	cout << "var assign @ = " << node_var->getValue() << endl;
+
+  }
   | Exp PLUS Exp {
       //TAC Syntax
-      swap_temp = temp.top();
+      /*swap_temp = temp.top();
       temp.pop(); 
       cout<<"T"<< count << " = " << "T" << temp.top();
       temp.pop();   
       cout << " + T" << swap_temp << endl; 
       temp.push(count);count++;
+	  */
+
+	  cout << " PLUS " << endl;
 
       //TREE Syntax
       NodeBlock *node_left;
@@ -176,29 +185,42 @@ Exp:
       AddSyntax* addsyn = new AddSyntax(node_left,node_right);
       stack_node.push(addsyn);
 
-      addsyn->print();
+      // FOR TESTING VALUE 
+      
       NodeBlock* node_test = stack_node.top();
+      cout << "test print from stack" << endl;  
       node_test->print();
-
-      /*node *opnode; 
-      node *it_node;  
-      swap_node = stack_node.top(); 
-      stack_node.pop();
-      insert_opnode(&opnode, '+', &stack_node.top());
-      stack_node.pop();
-      insert_opnode(&opnode, '+',swap_node);
-      stack_node.push(*opnode);
-      cout<< "PRINT NODE" << endl;
-      print_inorder(opnode);*/
+	  
 
     }
   | Exp MINUS Exp {
+
+      //TAC Syntax
       swap_temp = temp.top();
-      temp.pop();
-      cout<<"T"<< count << " = " << "T" << temp.top();  
       temp.pop(); 
-      cout << " - T" << swap_temp <<  endl;  
+      cout<<"T"<< count << " = " << "T" << temp.top();
+      temp.pop();   
+      cout << " - T" << swap_temp << endl; 
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right; 
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      MinusSyntax* addsyn = new MinusSyntax(node_left,node_right);
+      stack_node.push(addsyn);
+
+      // FOR TESTING VALUE 
+      /*
+      NodeBlock* node_test = stack_node.top();
+      cout << "test print from stack" << endl;  
+      node_test->print();
+	  */
       
     }
   | Exp TIMES Exp {
