@@ -11,7 +11,7 @@ using namespace std;
 int count =0;
 stack<int> temp;
 int swap_temp;
-NodeBlock<int> nodeblock; //create nodeblock << need to fixed !!
+NodeBlock nodeblock; //create nodeblock << need to fixed !!
 
 //Binary Tree initial implmentation
 struct node{
@@ -19,40 +19,40 @@ struct node{
    struct node *right, *left;
 };
 
+
 typedef struct node node;
 node *subtree;
 
 //stack for tree
-stack<node> stack_node;
+stack<NodeBlock> stack_node;
 
 //Insert Tree Function
-void insert(node **tree, int val)
-{
-      node *temp = NULL;
-       temp = (node *)malloc(sizeof(node));
-       temp->left = temp->right = NULL;
-       temp->data = val;
-       *tree = temp;
-
-}
-
-void insert_opnode(node **tree, int op, node *val)
-{
-  // if(!(*tree))
-  // {
-      printf("opp = %d\n", op);
-      insert(tree,op);
-      printf("TREE->data : %d\n", (*tree)->data);
-  // }
-    if(!((*tree)->left))
-    {
-       (*tree)->left = val;
-    }
-    else
-    {
-       (*tree)->right =val;
-    }
-}
+//void insert(node **tree, int val)
+//{
+//      node *temp = NULL;
+//       temp = (node *)malloc(sizeof(node));
+//       temp->left = temp->right = NULL;
+//       temp->data = val;
+//       *tree = temp;
+//}
+//
+//void insert_opnode(node **tree, int op, node *val)
+//{
+//  // if(!(*tree))
+//  // {
+//      printf("opp = %d\n", op);
+//      insert(tree,op);
+//      printf("TREE->data : %d\n", (*tree)->data);
+//  // }
+//    if(!((*tree)->left))
+//    {
+//       (*tree)->left = val;
+//    }
+//    else
+//    {
+//       (*tree)->right =val;
+//    }
+//}
 
 void print_inorder(node *tree)
 {
@@ -145,9 +145,14 @@ Exp:
    $$ = count; count++;
 
    //TREE Syntax --Keep in stack
-   node *constant_node;
+   Constant *node_const = new Constant(); //create constant object 
+   node_const->setValue($1);  //add value to constant node
+   //test aassign
+   cout << node_const->getValue() << endl;
+
    //insert(&constant_node, $1);
-   stack_node.push(*constant_node); 
+   stack_node.push(*node_const);
+   
    } 
   | VAR 
   | Exp PLUS Exp {
@@ -160,17 +165,32 @@ Exp:
       temp.push(count);count++;
 
       //TREE Syntax
-      node *swap_node; 
-      node *opnode;
-      node *it_node;
-      *swap_node = stack_node.top(); 
+      NodeBlock *node_left;
+      NodeBlock *node_right; 
+      node_right = &stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = &stack_node.top();
+      stack_node.pop();
+
+      AddSyntax* addsyn = new AddSyntax(node_left,node_right);
+      stack_node.push(*addsyn);
+
+      addsyn->print();
+      NodeBlock* node_test = &stack_node.top();
+      node_test->print();
+
+      /*node *opnode; 
+      node *it_node;  
+      swap_node = stack_node.top(); 
       stack_node.pop();
       insert_opnode(&opnode, '+', &stack_node.top());
       stack_node.pop();
       insert_opnode(&opnode, '+',swap_node);
       stack_node.push(*opnode);
       cout<< "PRINT NODE" << endl;
-      print_inorder(opnode);
+      print_inorder(opnode);*/
+
     }
   | Exp MINUS Exp {
       swap_temp = temp.top();

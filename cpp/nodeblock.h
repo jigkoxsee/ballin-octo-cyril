@@ -3,9 +3,10 @@
 using namespace std;
 
 
-template <typename T>
 class NodeBlock
 {
+   private:
+      char type;
    public:
       NodeBlock *left;
       NodeBlock *right;
@@ -14,44 +15,57 @@ class NodeBlock
       ~NodeBlock() {}
       //virtual ~NodeBlock() {}
       virtual void setValue() {};
-      virtual void getValue() {};
+      virtual int  getValue() {};
+      virtual void print() { cout << "NodeBlock" << endl; };
 };
 
-template <typename T> 
-class Variable : public NodeBlock<T>
+class Variable : public NodeBlock 
 {
    private:
       string var_name;
-      NodeBlock<T> nodeblock;
-};
-template <typename T> 
-class Assignment
-{
-   string var_name;
-};
-template <typename T> 
-class IfStatement
-{
-   NodeBlock<T> *condition;
-   NodeBlock<T> *then;
+      NodeBlock  nodeblock;
 };
 
-template <typename T> 
-class AddSyntax : public NodeBlock<T>
+class Constant : public NodeBlock  
 {
+   private: 
+      int value;
    public:
-      AddSyntax(){}
-      ~AddSyntax(){}
-      void createnode(){
+      Constant() {};
+      virtual void setValue(int value){
+         this->value = value;
+      }
+
+      virtual int getValue(){
+         return value;
       }
 };
+class IfStatement
+{
+   NodeBlock  *condition;
+   NodeBlock  *then;
+};
 
-template <typename T> 
-class MinusSyntax : public NodeBlock<T>
+class AddSyntax : public NodeBlock 
+{
+   public:
+      AddSyntax(NodeBlock *left,NodeBlock *right){
+         this->left = left;
+         this->right = right;
+      }
+      ~AddSyntax(){}
+     virtual void print(){
+      cout << " left = " << this->left->getValue() << endl;
+      cout << " right = " << this->right->getValue() << endl;
+     }
+};
+
+class MinusSyntax : public NodeBlock 
 {
    public:
       MinusSyntax(){}
       ~MinusSyntax(){}
       void createnode(){
+         
       }
 };
