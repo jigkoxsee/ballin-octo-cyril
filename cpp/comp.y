@@ -210,6 +210,7 @@ Exp:
       temp.push(count);count++;
     }         
   | Exp DIVIDE Exp {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();

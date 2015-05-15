@@ -1,19 +1,19 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 2.7.  */
 
 /* Bison interface for Yacc-like parsers in C
-
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
-
+   
+      Copyright (C) 1984, 1989-1990, 2000-2012 Free Software Foundation, Inc.
+   
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation, either version 3 of the License, or
    (at your option) any later version.
-
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
@@ -26,13 +26,13 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
 #ifndef YY_YY_COMP_TAB_H_INCLUDED
 # define YY_YY_COMP_TAB_H_INCLUDED
-/* Debug traces.  */
+/* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
 #endif
@@ -40,44 +40,57 @@
 extern int yydebug;
 #endif
 
-/* Token type.  */
+/* Tokens.  */
 #ifndef YYTOKENTYPE
 # define YYTOKENTYPE
-  enum yytokentype
-  {
-    CONST = 258,
-    LEFT = 259,
-    RIGHT = 260,
-    ENDLN = 261,
-    ASSIGN = 262,
-    EQ = 263,
-    IF = 264,
-    ENDIF = 265,
-    LOOP = 266,
-    END = 267,
-    SHOW = 268,
-    SHOWX = 269,
-    COLON = 270,
-    VAR = 271,
-    PLUS = 272,
-    MINUS = 273,
-    TIMES = 274,
-    DIVIDE = 275,
-    MOD = 276,
-    NEG = 277
-  };
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     CONST = 258,
+     LEFT = 259,
+     RIGHT = 260,
+     ENDLN = 261,
+     ASSIGN = 262,
+     EQ = 263,
+     IF = 264,
+     ENDIF = 265,
+     LOOP = 266,
+     END = 267,
+     SHOW = 268,
+     SHOWX = 269,
+     COLON = 270,
+     VAR = 271,
+     MINUS = 272,
+     PLUS = 273,
+     MOD = 274,
+     DIVIDE = 275,
+     TIMES = 276,
+     NEG = 277
+   };
 #endif
 
-/* Value type.  */
+
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef int YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
+# define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
-
 extern YYSTYPE yylval;
 
+#ifdef YYPARSE_PARAM
+#if defined __STDC__ || defined __cplusplus
+int yyparse (void *YYPARSE_PARAM);
+#else
+int yyparse ();
+#endif
+#else /* ! YYPARSE_PARAM */
+#if defined __STDC__ || defined __cplusplus
 int yyparse (void);
+#else
+int yyparse ();
+#endif
+#endif /* ! YYPARSE_PARAM */
 
 #endif /* !YY_YY_COMP_TAB_H_INCLUDED  */
