@@ -535,11 +535,11 @@ static const yytype_int8 yyrhs[] =
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
-static const yytype_uint8 yyrline[] =
+static const yytype_uint16 yyrline[] =
 {
        0,   101,   101,   102,   106,   107,   108,   109,   110,   111,
      112,   117,   118,   122,   127,   131,   135,   136,   141,   157,
-     158,   195,   204,   212,   220,   228,   229,   235,   239,   240
+     158,   195,   204,   230,   256,   282,   283,   300,   304,   305
 };
 #endif
 
@@ -1579,76 +1579,141 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 204 "comp.y"
     {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " * T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
+      stack_node.push(timessyn);
+
+      timessyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 212 "comp.y"
+#line 230 "comp.y"
     {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " / T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
+      stack_node.push(dividesyn);
+
+      dividesyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 220 "comp.y"
+#line 256 "comp.y"
     {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop(); 
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      ModSyntax* modsyn = new ModSyntax(node_left,node_right);
+      stack_node.push(modsyn);
+
+      modsyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 228 "comp.y"
+#line 282 "comp.y"
     { }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 229 "comp.y"
+#line 283 "comp.y"
     {
+      //TAC Syntax
       cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+
+      //TREE Syntax
+      NodeBlock *node;
+      node = stack_node.top();
+      cout << "OLD: " << node->getValue() << endl;
+      stack_node.pop();
+      int temp_neg = 0-(node->getValue());
+      node->setValue(temp_neg);
+      cout << "NEW: " << node->getValue() << endl;
+      stack_node.push(node);
     }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 235 "comp.y"
+#line 300 "comp.y"
     { printf("LOOP\n");}
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 239 "comp.y"
+#line 304 "comp.y"
     { printf("SHOW\n");}
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 240 "comp.y"
+#line 305 "comp.y"
     { printf("SHOWX\n");}
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1652 "comp.tab.c"
+#line 1717 "comp.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1880,7 +1945,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 242 "comp.y"
+#line 307 "comp.y"
 
 
 void yyerror(const char *s) {

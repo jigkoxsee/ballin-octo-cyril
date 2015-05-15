@@ -262,7 +262,7 @@ Exp:
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
 
-      //TREE Systax
+      //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right;
       node_right = stack_node.top();
@@ -281,7 +281,18 @@ Exp:
     }
   | LEFT Exp RIGHT { }
   | MINUS Exp %prec NEG {
+      //TAC Syntax
       cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+
+      //TREE Syntax
+      NodeBlock *node;
+      node = stack_node.top();
+      cout << "OLD: " << node->getValue() << endl;
+      stack_node.pop();
+      int temp_neg = 0-(node->getValue());
+      node->setValue(temp_neg);
+      cout << "NEW: " << node->getValue() << endl;
+      stack_node.push(node);
     }
 ;
 

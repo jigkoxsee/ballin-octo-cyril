@@ -14,7 +14,7 @@ class NodeBlock
       NodeBlock() {}
       ~NodeBlock() {}
       //virtual ~NodeBlock() {}
-      virtual void setValue() {};
+      virtual void setValue(int value) {};
       virtual int  getValue() {};
       virtual void print() { cout << "NodeBlock" << endl; };
 };
