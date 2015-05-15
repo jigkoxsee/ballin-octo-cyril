@@ -29,6 +29,7 @@ class Variable : public NodeBlock
    public:
       Variable(int var_name) {
          address = var_name * 4; //each frame has 4 bytes
+         this->type = "v";
       }
       ~Variable() {}
       int getValue() {
@@ -45,6 +46,7 @@ class Constant : public NodeBlock
       Constant() {};
       virtual void setValue(int value){
          this->value = value;
+         this->type = 'c';
       }
 
       virtual int getValue(){
