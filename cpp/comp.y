@@ -202,32 +202,97 @@ Exp:
       
     }
   | Exp TIMES Exp {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " * T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
+      stack_node.push(timessyn);
+
+      timessyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     }         
   | Exp DIVIDE Exp {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " / T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
+      stack_node.push(dividesyn);
+
+      dividesyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     } 
   | Exp MOD Exp {
+      //TAC Syntax
       swap_temp = temp.top();
       temp.pop(); 
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right;
+      node_right = stack_node.top();
+      cout << node_right->getValue() << endl;
+      stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      ModSyntax* modsyn = new ModSyntax(node_left,node_right);
+      stack_node.push(modsyn);
+
+      modsyn->print();
+      NodeBlock* node_test = stack_node.top();
+      node_test->print();
+
     }
   | LEFT Exp RIGHT { }
   | MINUS Exp %prec NEG {
+      //TAC Syntax
       cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+
+      //TREE Syntax
+      NodeBlock *node;
+      node = stack_node.top();
+      cout << "OLD: " << node->getValue() << endl;
+      stack_node.pop();
+      int temp_neg = 0-(node->getValue());
+      node->setValue(temp_neg);
+      cout << "NEW: " << node->getValue() << endl;
+      stack_node.push(node);
     }
 ;
 
