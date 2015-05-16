@@ -120,6 +120,49 @@ class MinusSyntax : public NodeBlock
          this->right = right;
          this->type = 'm';
       }
+};
+
+class TimesSyntax : public NodeBlock
+{
+   public:
+      TimesSyntax(NodeBlock *left,NodeBlock *right){
+         this->left = left;
+         this->right = right;
+      }
+      ~TimesSyntax(){}
+      virtual void print(){
+	cout << " left = " << this->left->getValue() << endl;
+	cout << " right = " << this->right->getValue() << endl;
+      }
+};
+
+class DivideSyntax : public NodeBlock
+{
+    public:
+       DivideSyntax(NodeBlock *left,NodeBlock *right){
+         this->left = left;
+         this->right = right;
+       }
+       ~DivideSyntax(){}
+       virtual void print(){
+         cout << " left = " << this->left->getValue() << endl;
+         cout << " right = " << this->right->getValue() << endl;
+       }
+};
+
+class ModSyntax : public NodeBlock
+{
+     public:
+        ModSyntax(NodeBlock *left,NodeBlock *right){
+           this->left = left;
+           this->right = right;
+        }
+        ~ModSyntax(){}
+        virtual void print(){
+           cout << " left = " << this->left->getValue() << endl;
+           cout << " right = " << this->right->getValue() << endl;
+        }
+};
       ~MinusSyntax(){}
     virtual void print(){
       cout << " left = " << this->left->getValue();
