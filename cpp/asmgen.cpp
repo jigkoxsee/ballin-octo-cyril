@@ -160,10 +160,14 @@ string xloop(int *lCount){
 	return asmCode.str();
 }
 
-string xprint(string op){
+string xprint(string op,bool hex){
 	stringstream asmCode;
+	if(hex){
+		asmCode <<"\tmov $showx, %edi"<<endl;
+	}else{
+		asmCode <<"\tmov $show, %edi"<<endl;
+	}
 
-	asmCode <<"\tmov $show, %edi"<<endl;
 	if(op==""){
 		asmCode <<"\tpop %eax"<<endl;
 	}else{
