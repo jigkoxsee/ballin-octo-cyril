@@ -108,7 +108,7 @@ class Equal :public NodeBlock
 		~Equal(){}
 		virtual void print()
 		{
-			cout << this->left->getValue() << " == " << this->right->getValue();
+			cout << " Equal :: " << this->left->getValue() << " == " << this->right->getValue() << endl;
 		}
 };
 

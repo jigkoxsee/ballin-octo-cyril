@@ -115,41 +115,52 @@ Line:
 
 Oprn:
   VAR 
+  {
+  	Variable *node_var = new Variable($1);
+ 	cout << " var = " << $1 << endl;
+ 	stack_node.push(node_var);
+	cout << "var assign @ = " << node_var->getValue() << endl;
+  }
+
   | CONST
+  {
+  	Constant *node_const = new Constant(); //create constant object 
+   node_const->setValue($1);  //add value to constant node
+   //test aassign
+   cout << "const assign : " << node_const->getValue() << endl;
+   stack_node.push(node_const);
+  }
 ;
 
 Condition:
-  Oprn EQ Oprn { printf("CONDITION\n");}
+  Oprn EQ Oprn 
+  { 
+  	NodeBlock *node1 = stack_node.top();
+  	stack_node.pop();
+  	NodeBlock *node2 = stack_node.top();
+  	stack_node.pop();
+
+  	Equal *node_equal = new Equal(node2,node1); //condition object 
+  	stack_node.push(node_equal);
+  	node_equal->print();
+  }
 ;
 
 
 Ifstm:
-  IF Condition ENDLN Stms ENDIF ENDLN 
+  IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
-
-  	//Sample code
-  	Constant *node1 = new Constant();
-  	node1->setValue(3);
-
-  	Constant *node2 = new Constant();
-  	node1->setValue(4);
-
-  	/*
-	NodeBlock *node1 = stack_node.top();
+  	NodeBlock *node_equal = stack_node.top();
   	stack_node.pop();
-  	NodeBlock *node2 = stack_node.top();
-  	stack_node.pop();
-  	*/
-
-  	Equal *node_equal = new Equal(node1,node2); //condition object 
-  	NodeBlock *node_stm = new NodeBlock(); //statements do after pass condition
+	NodeBlock *node_stm = stack_node.top();  //statements do after pass condition
+	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
-	//node_if->print();
+	node_if->print();
   }
 ;
 
 Stm:
-  VAR ASSIGN Exp {
+  VAR ASSIGN Exp ENDLN{
   	NodeBlock *node_exp = stack_node.top();
   	
   	Variable *node_var = new Variable($1);
@@ -160,7 +171,7 @@ Stm:
 ;
 
 Stms:
-  Stm ENDLN{  }
+  Stm ENDLN{ cout << "statement " << endl; }
   | Stm ENDLN Stms { }
 ;
 
@@ -267,7 +278,7 @@ Exp:
 
       TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
       stack_node.push(timessyn);
-      
+
       NodeBlock* node_test = stack_node.top();
       node_test->print();
 
@@ -348,6 +359,10 @@ Display:
   | SHOWX VAR { printf("SHOWX\n");}
 ;
 %%
+
+void printStack(){
+	
+}
 
 void yyerror(const char *s) {
   cout << "EEK, parse error!  Message: " << s << endl;
