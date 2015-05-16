@@ -383,15 +383,16 @@ Loopstm:
 ;
 
 Display:
-  SHOW VAR {
-  
+  SHOW VAR {  
     printf("SHOW\n");
-    
+    //  Variable *node_var = new Variable($2);
+    Show *node_show = new Show ($2*4);
+    node_show->print();
   }
   | SHOWX VAR {
-
     printf("SHOWX\n");
-
+    ShowX *node_show = new ShowX ($2*4);
+    node_show->print();
   }
 ;
 %%

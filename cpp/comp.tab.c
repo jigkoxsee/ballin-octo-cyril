@@ -540,7 +540,7 @@ static const yytype_uint16 yyrline[] =
 {
        0,   103,   103,   104,   108,   109,   110,   111,   112,   113,
      114,   119,   128,   140,   156,   172,   182,   183,   188,   204,
-     213,   243,   273,   297,   321,   347,   348,   364,   386,   391
+     213,   243,   273,   297,   321,   347,   348,   364,   386,   392
 };
 #endif
 
@@ -1796,26 +1796,27 @@ yyreduce:
   case 28:
 /* Line 1792 of yacc.c  */
 #line 386 "comp.y"
-    {
-  
+    {  
     printf("SHOW\n");
-    
+    //  Variable *node_var = new Variable($2);
+    Show *node_show = new Show ((yyvsp[(2) - (2)])*4);
+    node_show->print();
   }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 391 "comp.y"
+#line 392 "comp.y"
     {
-
     printf("SHOWX\n");
-
+    ShowX *node_show = new ShowX ((yyvsp[(2) - (2)])*4);
+    node_show->print();
   }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1819 "comp.tab.c"
+#line 1820 "comp.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2047,7 +2048,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 397 "comp.y"
+#line 398 "comp.y"
 
 
 
