@@ -5,7 +5,7 @@ using namespace std;
 
 class NodeBlock
 {
-   private:
+   protected:
       char type;
    public:
       NodeBlock *left;
@@ -110,4 +110,21 @@ class ModSyntax : public NodeBlock
            cout << " left = " << this->left->getValue() << endl;
            cout << " right = " << this->right->getValue() << endl;
         }
+};
+
+class LoopStatement : public NodeBlock
+{
+      public:
+          LoopStatement(NodeBlock *oprn,NodeBlock *stms){
+	    this->left = oprn;
+	    this->right = stms;
+	    this->type = 'l';
+	  }
+	  ~LoopStatement(){}
+	  virtual void print(){
+	    cout << "Operand : " ;
+	    this->left->print();
+	    cout << "Statement : ";
+	    this->right->print();
+	  }
 };

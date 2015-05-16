@@ -297,12 +297,31 @@ Exp:
 ;
 
 Loopstm:
-  LOOP CONST COLON CONST ENDLN Stms END ENDLN { printf("LOOP\n");}
+  LOOP Oprn ENDLN Stms END ENDLN {
+    printf("LOOP\n");
+
+    stack_node.top()->print();
+    NodeBlock *node_stm = stack_node.top();
+    stack_node.pop();
+    stack_node.top()->print();
+    NodeBlock *node_oprn = stack_node.top();
+    stack_node.pop();
+    LoopStatement *node_loop = new LoopStatement(node_oprn,node_stm);    
+	
+  }
 ;
 
 Display:
-  SHOW VAR { printf("SHOW\n");}
-  | SHOWX VAR { printf("SHOWX\n");}
+  SHOW VAR {
+  
+    printf("SHOW\n");
+    
+  }
+  | SHOWX VAR {
+
+    printf("SHOWX\n");
+
+  }
 ;
 %%
 
