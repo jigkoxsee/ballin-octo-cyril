@@ -156,10 +156,10 @@ Ifstm:
   IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
   	stack_node.top()->print();
-  	NodeBlock *node_equal = stack_node.top();
+  	NodeBlock *node_stm = stack_node.top();
   	stack_node.pop();
   	stack_node.top()->print();
-	NodeBlock *node_stm = stack_node.top();  //statements do after pass condition
+	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
 	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
 	node_if->print();
