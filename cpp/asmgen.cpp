@@ -186,3 +186,22 @@ string xprint(string op,bool hex){
 	asmCode <<"pop %rax"<<endl;
 	return asmCode.str();
 }
+
+string genHead(){
+	stringstream asmC;
+	asmC <<"\t.global main"<<endl;
+	asmC <<"\t.text"<<endl;
+
+	asmC <<"main:"<<endl;
+	asmC <<"subl $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
+
+	
+}
+
+string genTail(){
+	stringstream asmC;
+	asmC <<"show:"<<endl;
+	asmC <<"\t.asciz \"%d"<<endl;
+	asmC <<"showx:"<<endl;
+	asmC <<"\t.asciz \"%x"<<endl;
+}

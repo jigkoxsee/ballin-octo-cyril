@@ -22,7 +22,7 @@ struct node{
    struct node *right, *left;
 };
 
-
+queue<string> asmQ;
 typedef struct node node;
 node *subtree;
 
@@ -428,6 +428,8 @@ void stack_print()
 
 int main() {
   while(yyparse());
+// TODO (ziko) : Travers through queue and write it to file
+
 /*
   // open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
@@ -444,5 +446,6 @@ int main() {
     yyparse();
   } while (!feof(yyin));
 */
-return 0;
+  
+  return 0;
 }
