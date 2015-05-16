@@ -91,7 +91,7 @@ class AddSyntax : public NodeBlock
 		~AddSyntax(){}
 		virtual void print()
 		{
-			cout << " left = " << this->left->getValue();
+			cout << "PLUS :: left = " << this->left->getValue();
 			cout << " right = " << this->right->getValue() << endl;
 		} 
 };
@@ -122,7 +122,7 @@ class MinusSyntax : public NodeBlock
 		}
 		~MinusSyntax(){}
 		virtual void print(){
-			cout << " left = " << this->left->getValue();
+			cout << "MINUS :  left = " << this->left->getValue();
 			cout << " right = " << this->right->getValue() << endl;
 		}
 };
@@ -136,7 +136,7 @@ class TimesSyntax : public NodeBlock
 		}
 		~TimesSyntax(){}
 		virtual void print(){
-			cout << " left = " << this->left->getValue() << endl;
+			cout << " MUL :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
 };
@@ -150,7 +150,7 @@ class DivideSyntax : public NodeBlock
 		}
 		~DivideSyntax(){}
 		virtual void print(){
-			cout << " left = " << this->left->getValue() << endl;
+			cout << "DIV :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
 };
@@ -164,7 +164,7 @@ class ModSyntax : public NodeBlock
 		}
 		~ModSyntax(){}
 		virtual void print(){
-			cout << " left = " << this->left->getValue() << endl;
+			cout << "MOD :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
 };
