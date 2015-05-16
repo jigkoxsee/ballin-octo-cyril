@@ -27,34 +27,6 @@ node *subtree;
 //stack for tree
 stack<NodeBlock*> stack_node;
 
-//Insert Tree Function
-//void insert(node **tree, int val)
-//{
-//      node *temp = NULL;
-//       temp = (node *)malloc(sizeof(node));
-//       temp->left = temp->right = NULL;
-//       temp->data = val;
-//       *tree = temp;
-//}
-//
-//void insert_opnode(node **tree, int op, node *val)
-//{
-//  // if(!(*tree))
-//  // {
-//      printf("opp = %d\n", op);
-//      insert(tree,op);
-//      printf("TREE->data : %d\n", (*tree)->data);
-//  // }
-//    if(!((*tree)->left))
-//    {
-//       (*tree)->left = val;
-//    }
-//    else
-//    {
-//       (*tree)->right =val;
-//    }
-//}
-
 void print_inorder(node *tree)
 {
     if (tree)
@@ -75,6 +47,9 @@ void deltree(node * tree)
     }
 }
 
+string asmShow(){
+	return "mov $show,%edi \nmov %eax,%esi \npush %rax\ncall printf\npop %rax\nret\n";
+}
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -159,10 +134,11 @@ Stm:
 	cout << "var assign @ = " << node_var->getValue() << endl;
 
 //---
-	stringstream asmCode;
+	stringstream asmCode;	
 	asmCode <<"movl "<<node_exp->getAsm()<<",-"<<node_var->getValue()<<"(%rsp)";
+	cout<<"+++++++++++++++++"<<endl;
 	cout<<asmCode.str()<<endl;
-
+	cout<<"-----------------"<<endl;
   }
 ;
 
@@ -219,9 +195,9 @@ Exp:
 
       // FOR TESTING VALUE 
       
-      NodeBlock* node_test = stack_node.top();
-      cout << "test print from stack" << endl;  
-      node_test->print();
+     // NodeBlock* node_test = stack_node.top();
+     // cout << "test print from stack" << endl;  
+     // node_test->print();
 	  
 
     }
