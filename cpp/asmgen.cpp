@@ -23,8 +23,16 @@ string xconstant(int val){
 
 string xadd(string op1,string op2,string dst){
 	stringstream asmCode;
-	asmCode <<"pop %rbx"<<endl;
-	asmCode <<"pop %rax"<<endl;
+	if(op1==""){
+		asmCode <<"pop %rbx"<<endl;
+	}else{
+		asmCode <<"movl -"<<op1<<"(%rsp), %ebx"<<endl;
+	}
+	if(op2==""){
+		asmCode <<"pop %rax"<<endl;
+	}else{
+		asmCode <<"movl -"<<op2<<"(%rsp), %eax"<<endl;
+	}
 
 	asmCode <<"addl %ebx, %eax"<<endl;
 	asmCode <<"push %rax"<<endl;
