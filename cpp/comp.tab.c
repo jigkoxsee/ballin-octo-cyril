@@ -70,6 +70,7 @@
 #include <string>
 //#include <sstream>
 #include <stack>
+#include <queue>
 #include <cstdlib>
 #include "nodeblock.cpp"
 #include "asmgen.cpp"
@@ -88,7 +89,7 @@ struct node{
    struct node *right, *left;
 };
 
-
+queue<string> asmQ;
 typedef struct node node;
 node *subtree;
 
@@ -128,7 +129,7 @@ void convert_to_asm(int opr1,int opr2);
 void yyerror(const char *s);
 
 /* Line 371 of yacc.c  */
-#line 132 "comp.tab.c"
+#line 133 "comp.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -216,7 +217,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 220 "comp.tab.c"
+#line 221 "comp.tab.c"
 
 #ifdef short
 # undef short
@@ -516,8 +517,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    79,    79,    80,    84,    85,    86,    87,    88,    89,
-      90,    95,   104,   117,   134,   149,   163,   164,   170,   187,
+       0,    80,    80,    81,    85,    86,    87,    88,    89,    90,
+      91,    96,   105,   118,   135,   150,   163,   164,   170,   187,
      196,   222,   252,   276,   301,   328,   329,   345,   352,   361,
      383,   389
 };
@@ -1446,13 +1447,13 @@ yyreduce:
     {
         case 10:
 /* Line 1792 of yacc.c  */
-#line 90 "comp.y"
+#line 91 "comp.y"
     { yyerror("oops\n"); }
     break;
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 96 "comp.y"
+#line 97 "comp.y"
     {
   	Variable *node_var = new Variable((yyvsp[(1) - (1)]));
  	//cout << " var = " << $1 << endl;
@@ -1464,7 +1465,7 @@ yyreduce:
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 105 "comp.y"
+#line 106 "comp.y"
     {
   	Constant *node_const = new Constant(); //create constant object 
    node_const->setValue((yyvsp[(1) - (1)]));  //add value to constant node
@@ -1472,13 +1473,13 @@ yyreduce:
    //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
    //stack_print();
-	cout<<xconstant(node_const->getValue())<<endl;
+	asmQ.push(xconstant(node_const->getValue()));
   }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 118 "comp.y"
+#line 119 "comp.y"
     { 
   	NodeBlock *node1 = stack_node.top();
   	stack_node.pop();
@@ -1489,13 +1490,13 @@ yyreduce:
   	stack_node.push(node_equal);
   	//node_equal->print();
   	//stack_print();
-	cout<<xcondition(node1->getAsm(),node2->getAsm(),lCount) <<endl;
+	asmQ.push(xcondition(node1->getAsm(),node2->getAsm(),lCount));
   }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 135 "comp.y"
+#line 136 "comp.y"
     {
   	//NodeBlock *node_stm = stack_node.top();
   	//stack_node.pop();
@@ -1504,13 +1505,13 @@ yyreduce:
 
   	//IfStatement *node_if = new IfStatement(node_equal);
 	//stack_node.push(node_if);
-	cout<<xif(&lCount)<<endl;
+	asmQ.push(xif(&lCount));
   }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 149 "comp.y"
+#line 150 "comp.y"
     {
 	NodeBlock *node_exp = stack_node.top();
   	Variable *node_var = new Variable((yyvsp[(1) - (4)]));
@@ -1518,8 +1519,7 @@ yyreduce:
  	stack_node.push(node_exp);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
 
-	cout<<xassign(node_exp->getAsm(),node_var->getValue())<<endl;
-  	
+	asmQ.push(xassign(node_exp->getAsm(),node_var->getValue()));
   	//stack_print();
   }
     break;
@@ -1553,7 +1553,7 @@ yyreduce:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-	cout<<xconstant(node_const->getValue())<<endl;
+	asmQ.push(xconstant(node_const->getValue()));
    //stack_print();
    }
     break;
@@ -1597,7 +1597,7 @@ yyreduce:
 
       // FOR TESTING VALUE 
       
- 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
+ 	asmQ.push(xadd(node_right->getAsm(),node_left->getAsm(),"")); 
 	  
 
     }
@@ -1634,7 +1634,7 @@ yyreduce:
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
- 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),"")<<endl;      
+ 	asmQ.push(xsub(node_right->getAsm(),node_left->getAsm(),""));      
     }
     break;
 
@@ -1663,7 +1663,7 @@ yyreduce:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
+ 	asmQ.push(xmul(node_right->getAsm(),node_left->getAsm(),""));
     }
     break;
 
@@ -1693,7 +1693,7 @@ yyreduce:
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
 
- 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+ 	asmQ.push(xdiv(node_right->getAsm(),node_left->getAsm(),""));
 }
     break;
 
@@ -1724,7 +1724,7 @@ yyreduce:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+ 	asmQ.push(xmod(node_right->getAsm(),node_left->getAsm(),""));
 
     }
     break;
@@ -1760,7 +1760,7 @@ yyreduce:
     {
   	Variable *node_var = new Variable((yyvsp[(1) - (1)]));
  	stack_node.push(node_var);
-	cout<<xloopStart(node_var->getAsm(),lCount)<<endl;
+	asmQ.push(xloopStart(node_var->getAsm(),lCount));
   }
     break;
 
@@ -1771,7 +1771,7 @@ yyreduce:
   	Constant *node_const = new Constant();
 	node_const->setValue((yyvsp[(1) - (1)]));  //add value to constant node
 	stack_node.push(node_const);
-	cout<<xloopStart(node_const->getAsm(),lCount)<<endl;
+	asmQ.push(xloopStart(node_const->getAsm(),lCount));
   }
     break;
 
@@ -1795,7 +1795,7 @@ yyreduce:
     //stack_print();
     //stack_node.push(node_loop);
     //stack_print();
-	cout<<xloop(&lCount)<<endl;
+	asmQ.push(xloop(&lCount));
   }
     break;
 
@@ -1803,10 +1803,10 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 383 "comp.y"
     {  
-    printf("SHOW\n");
-    //  Variable *node_var = new Variable($2);
+    Variable *node_var = new Variable((yyvsp[(2) - (2)]));
     Show *node_show = new Show ((yyvsp[(2) - (2)])*4);
-    node_show->print();
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),false));
   }
     break;
 
@@ -1814,15 +1814,16 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 389 "comp.y"
     {
-    printf("SHOWX\n");
+    Variable *node_var = new Variable((yyvsp[(2) - (2)]));
     ShowX *node_show = new ShowX ((yyvsp[(2) - (2)])*4);
-    node_show->print();
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),true));
   }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1826 "comp.tab.c"
+#line 1827 "comp.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2054,7 +2055,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 395 "comp.y"
+#line 396 "comp.y"
 
 
 void yyerror(const char *s) {
@@ -2091,6 +2092,10 @@ void stack_print()
 
 int main() {
   while(yyparse());
+	genHead();
+// TODO (ziko) : Travers through queue and write it to file
+	genTail();
+
 /*
   // open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
@@ -2107,5 +2112,6 @@ int main() {
     yyparse();
   } while (!feof(yyin));
 */
-return 0;
+  
+  return 0;
 }
