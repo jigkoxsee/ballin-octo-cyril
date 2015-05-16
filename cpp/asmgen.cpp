@@ -21,7 +21,7 @@ string xconstant(int val){
 	return asmCode.str();
 }
 
-string xadd(string op1,string op2){
+string xadd(string op1,string op2,string dst){
 	stringstream asmCode;
 	asmCode <<"pop %rbx"<<endl;
 	asmCode <<"pop %rax"<<endl;

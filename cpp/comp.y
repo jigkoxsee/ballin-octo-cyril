@@ -210,7 +210,7 @@ Exp:
       NodeBlock* node_test = stack_node.top();
       cout << "test print from stack" << endl;  
       node_test->print();
- 	xadd(node_right->getAsm(),node_left->getAsm()); // TODO : where dest?
+ 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),""); // TODO : where dest?
 	  
 
     }

@@ -111,6 +111,9 @@ class AddSyntax : public NodeBlock
 			this->right->print();
 			cout<< endl;
 		} 
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class Equal :public NodeBlock
