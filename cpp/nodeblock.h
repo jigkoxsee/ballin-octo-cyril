@@ -1,5 +1,6 @@
 #include<string> 
 #include<iostream>
+#include<sstream>
 using namespace std;
 
 
@@ -16,6 +17,7 @@ class NodeBlock
 		virtual void setValue(int) {};
 		virtual int  getValue() {};
 		virtual void print() { cout << "NodeBlock" << endl; };
+		virtual string getAsm() {};
 		void cgen(); // generate code assembly
 };
 
@@ -39,7 +41,11 @@ class Variable : public NodeBlock
 		virtual void print(){
 			cout << "variable = " << endl;
 		}
-
+		virtual string getAsm(){
+			stringstream val;
+			val <<"-"<<address<<"(%rsp)";
+			return val.str();
+		}
 };
 
 class Constant : public NodeBlock  
@@ -59,6 +65,11 @@ class Constant : public NodeBlock
 
 		virtual void print(){
 			cout << "Constant = " << value << endl;
+		}
+		virtual string getAsm(){
+			stringstream val;
+			val <<"$"<<value;
+			return val.str();
 		}
 };
 

@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <stack>
 #include <stdio.h>
 #include <stdlib.h>
@@ -156,6 +157,12 @@ Stm:
  	cout << " var = " << $1 << endl;
  	stack_node.push(node_exp);
 	cout << "var assign @ = " << node_var->getValue() << endl;
+
+//---
+	stringstream asmCode;
+	asmCode <<"movl "<<node_exp->getAsm()<<",-"<<node_var->getValue()<<"(%rsp)";
+	cout<<asmCode.str()<<endl;
+
   }
 ;
 

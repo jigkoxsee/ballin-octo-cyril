@@ -34,3 +34,4 @@
 *.tab.c
 out.comp
 lex.yy.c
+*.swp
