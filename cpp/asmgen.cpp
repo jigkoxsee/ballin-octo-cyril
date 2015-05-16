@@ -110,8 +110,25 @@ string xmod(string op1,string op2,string dst){
 	asmCode <<"push %rdx"<<endl;
 	return asmCode.str();
 }
+string xcondition(string op1,string op2){
+	stringstream asmCode;
+	if(op1==""){
 
-string xneg(string val){
-	
-	return "NEG\n";
+	}else{
+
+	}
+	if(op2==""){
+
+	}
+	asm
+	return asmCode.str();	
 }
+
+string xif(int *lCount){
+	//gen label
+	stringstream asmCode;
+	asmCode <<"L"<<*lCount<<":"<<endl;
+	*lCount=*lCount+1;
+	return asmCode.str();
+}
+

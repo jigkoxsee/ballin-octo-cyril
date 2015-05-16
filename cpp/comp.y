@@ -11,7 +11,7 @@ using namespace std;
 
 void stack_print();
 //TAC initial implementation.
-int count =0;
+int lCount =0;
 stack<int> temp;
 int swap_temp;
 NodeBlock nodeblock; //create nodeblock << need to fixed !!
@@ -122,8 +122,9 @@ Condition:
 
   	Equal *node_equal = new Equal(node2,node1); //condition object 
   	stack_node.push(node_equal);
-  	node_equal->print();
-  	stack_print();
+  	//node_equal->print();
+  	//stack_print();
+	cout<<xcondition(node1->getAsm(),node2->getAsm()) <<endl;
   }
 ;
 
@@ -131,16 +132,18 @@ Condition:
 Ifstm:
   IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
-  	stack_node.top()->print();
+  	//stack_node.top()->print();
   	NodeBlock *node_stm = stack_node.top();
   	stack_node.pop();
-  	stack_node.top()->print();
+  	//stack_node.top()->print();
 	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
 	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
-	node_if->print();
-	stack_print();
-  }
+	//node_if->print();
+//	stack_print();
+
+	cout<<xif(&lCount)<<endl;
+}
 ;
 
 Stm:
@@ -150,18 +153,16 @@ Stm:
  	//cout << " var = " << $1 << endl;
  	stack_node.push(node_exp);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
-//---
-	cout<<"+++++++++++++++++"<<endl;
-	cout<<xassign(node_exp->getAsm(),node_var->getValue());
-	cout<<"-----------------"<<endl;	
+
+	cout<<xassign(node_exp->getAsm(),node_var->getValue())<<endl;
   	
   	//stack_print();
   }
 ;
 
 Stms:
-  Stm ENDLN{ cout << "statement " << endl; }
-  | Stm ENDLN Stms { }
+  Stm ENDLN{}
+  | Stm ENDLN Stms {}
 ;
 
 Exp: 
@@ -180,17 +181,15 @@ Exp:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-	cout<<"+++++++++++++++++"<<endl;
 	cout<<xconstant(node_const->getValue());
-	cout<<"-----------------"<<endl;
    //stack_print();
    } 
   | VAR {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
  	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
+	//cout << "var assign @ = " << node_var->getValue() << endl;
 	stack_print();
 
   }
