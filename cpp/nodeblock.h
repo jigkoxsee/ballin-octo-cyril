@@ -172,3 +172,6 @@ class ModSyntax : public NodeBlock
 			cout << " right = " << this->right->getValue() << endl;
 		}
 };
+
+
+class 

@@ -101,14 +101,14 @@ void yyerror(const char *s);
 %%
 
 Input:
-     | Input Line 
+     | Line ENDLN Input;
 ;
 
 Line:
   ENDLN 
   | Ifstm
   | Loopstm
-  | Stms 
+  | Stm 
   | Display
   | Condition
   | error { yyerror("oops\n"); } 
@@ -220,7 +220,7 @@ Exp:
 
       //TREE Syntax
       NodeBlock *node_left;
-      NodeBlock *node_right; 
+      NodeBlock *node_right;
       node_right = stack_node.top();
       stack_node.pop();
       node_left = stack_node.top();
