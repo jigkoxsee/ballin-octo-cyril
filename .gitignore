@@ -30,3 +30,7 @@
 
 *.out
 *~
+*.tab.h
+*.tab.c
+out.comp
+lex.yy.c
