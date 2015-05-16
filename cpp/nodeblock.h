@@ -81,14 +81,18 @@ class IfStatement : public NodeBlock
 
 class AddSyntax : public NodeBlock 
 {
+
 	public:
 		AddSyntax(NodeBlock *left,NodeBlock *right)
 		{
 			this->left = left;
 			this->right = right;
-			this->type = 'a'; 
+			this->type = 'a';
 		}
 		~AddSyntax(){}
+      virtual int getValue(){
+         return 0;
+      }
 		virtual void print()
 		{
 			cout << "PLUS :: left = " << this->left->getValue();

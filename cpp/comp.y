@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include "nodeblock.h"
 using namespace std;
+
+void stack_print();
 //TAC initial implementation.
 int count =0;
 stack<int> temp;
@@ -120,6 +122,7 @@ Oprn:
  	cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
 	cout << "var assign @ = " << node_var->getValue() << endl;
+  	stack_print();
   }
 
   | CONST
@@ -129,11 +132,12 @@ Oprn:
    //test aassign
    cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
+   stack_print();
   }
 ;
 
 Condition:
-  Oprn EQ Oprn 
+    Oprn EQ Oprn 
   { 
   	NodeBlock *node1 = stack_node.top();
   	stack_node.pop();
@@ -143,6 +147,7 @@ Condition:
   	Equal *node_equal = new Equal(node2,node1); //condition object 
   	stack_node.push(node_equal);
   	node_equal->print();
+  	stack_print();
   }
 ;
 
@@ -150,23 +155,25 @@ Condition:
 Ifstm:
   IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
+  	stack_node.top()->print();
   	NodeBlock *node_equal = stack_node.top();
   	stack_node.pop();
+  	stack_node.top()->print();
 	NodeBlock *node_stm = stack_node.top();  //statements do after pass condition
 	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
 	node_if->print();
+	stack_print();
   }
 ;
 
 Stm:
   VAR ASSIGN Exp ENDLN{
-  	NodeBlock *node_exp = stack_node.top();
-  	
   	Variable *node_var = new Variable($1);
  	cout << " var = " << $1 << endl;
- 	stack_node.push(node_exp);
 	cout << "var assign @ = " << node_var->getValue() << endl;
+  	
+  	stack_print();
   }
 ;
 
@@ -191,6 +198,7 @@ Exp:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
+   stack_print();
    } 
   | VAR {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
@@ -198,6 +206,7 @@ Exp:
  	cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
 	cout << "var assign @ = " << node_var->getValue() << endl;
+	stack_print();
 
   }
   | Exp PLUS Exp {
@@ -207,7 +216,6 @@ Exp:
       cout<<"T"<< count << " = " << "T" << temp.top();
       temp.pop();   
       cout << " + T" << swap_temp << endl; 
-      temp.push(count);count++;
 	  */
 
       //TREE Syntax
@@ -218,7 +226,7 @@ Exp:
       node_left = stack_node.top();
       stack_node.pop();
 
-      AddSyntax* addsyn = new AddSyntax(node_left,node_right);
+      AddSyntax *addsyn = new AddSyntax(node_left,node_right);
       stack_node.push(addsyn);
 
       // FOR TESTING VALUE 
@@ -226,6 +234,8 @@ Exp:
       NodeBlock* node_test = stack_node.top();
       cout << "test print from stack" << endl;  
       node_test->print();
+
+      stack_print();
 	  
 
     }
@@ -335,9 +345,8 @@ Exp:
     }
   | LEFT Exp RIGHT { }
   | MINUS Exp %prec NEG {
-      //TAC Syntax
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
-
+      //TAC SyntaxF
+      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;	
       //TREE Syntax
       NodeBlock *node;
       node = stack_node.top();
@@ -360,9 +369,7 @@ Display:
 ;
 %%
 
-void printStack(){
-	
-}
+
 
 void yyerror(const char *s) {
   cout << "EEK, parse error!  Message: " << s << endl;
@@ -375,7 +382,29 @@ void convert_to_asm(int opr1, int opr2)
 
 }
 
+void stack_print()
+{
+	stack<NodeBlock*> stack_tmp;
 
+	cout << "====== STACK PRINT =======" << endl;
+
+	while(!stack_node.empty())
+	{
+		stack_node.top()->print();
+		NodeBlock* tmp = stack_node.top();
+		stack_tmp.push(tmp);
+		stack_node.pop();
+	}
+
+	while(!stack_tmp.empty()){
+		NodeBlock *tmp2 = stack_tmp.top();
+		stack_node.push(tmp2);
+		stack_tmp.pop();
+	}
+
+	cout << "==========================" << endl;
+
+}
 
 
 int main() {
