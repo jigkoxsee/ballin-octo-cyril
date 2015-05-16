@@ -163,6 +163,7 @@ Ifstm:
 	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
 	node_if->print();
+	stack_node.push(node_if);
 	stack_print();
   }
 ;
@@ -178,8 +179,8 @@ Stm:
 ;
 
 Stms:
-  Stm ENDLN{ cout << "statement " << endl; }
-  | Stm ENDLN Stms { }
+  Stm { cout << "statement " << endl; }
+  | Stm  Stms { }
 ;
 
 Exp: 
@@ -367,10 +368,17 @@ Loopstm:
     NodeBlock *node_stm = stack_node.top();
     stack_node.pop();
     stack_node.top()->print();
-    NodeBlock *node_oprn = stack_node.top();
+    NodeBlock *node_const = stack_node.top();
     stack_node.pop();
-    LoopStatement *node_loop = new LoopStatement(node_oprn,node_stm);    
-	
+    Variable *node_var = new Variable(-1);
+    node_var->print();
+    Equal *node_eql = new Equal (node_var,node_const);
+    node_eql->print();
+    LoopStatement *node_loop = new LoopStatement(node_eql,node_stm);
+    node_loop->print();
+    stack_print();
+    stack_node.push(node_loop);
+    stack_print();
   }
 ;
 

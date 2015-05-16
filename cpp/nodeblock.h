@@ -176,16 +176,16 @@ class ModSyntax : public NodeBlock
 class LoopStatement : public NodeBlock
 {
       public:
-          LoopStatement(NodeBlock *oprn,NodeBlock *stms){
-	    this->left = oprn;
-	    this->right = stms;
-	    this->type = 'l';
-	  }
-	  ~LoopStatement(){}
-	  virtual void print(){
-	    cout << "Operand : " ;
-	    this->left->print();
-	    cout << "Statement : ";
-	    this->right->print();
-	  }
+          LoopStatement(NodeBlock *condition,NodeBlock *statement) {
+          this->left = condition;
+          this->right = statement;
+          this->type = 'l';
+      }
+      ~LoopStatement() {}
+      virtual void print() {
+         cout << "condition is ";
+         this->left->print();
+         cout << " statement ";
+         this->right->print();
+      }
 };

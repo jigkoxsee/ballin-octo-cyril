@@ -73,6 +73,8 @@
 #include <stdlib.h>
 #include "nodeblock.h"
 using namespace std;
+
+void stack_print();
 //TAC initial implementation.
 int count =0;
 stack<int> temp;
@@ -150,7 +152,7 @@ void convert_to_asm(int opr1,int opr2);
 void yyerror(const char *s);
 
 /* Line 371 of yacc.c  */
-#line 154 "comp.tab.c"
+#line 156 "comp.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -238,7 +240,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 242 "comp.tab.c"
+#line 244 "comp.tab.c"
 
 #ifdef short
 # undef short
@@ -515,8 +517,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     4,     7,     9,    11,    13,    15,    17,
-      19,    21,    23,    25,    29,    36,    40,    43,    47,    49,
-      51,    55,    59,    63,    67,    71,    75,    78,    85,    88
+      19,    21,    23,    25,    29,    36,    41,    43,    46,    48,
+      50,    54,    58,    62,    66,    70,    74,    77,    84,    87
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -525,21 +527,20 @@ static const yytype_int8 yyrhs[] =
       24,     0,    -1,    -1,    24,    25,    -1,     6,    -1,    28,
       -1,    32,    -1,    30,    -1,    33,    -1,    27,    -1,     1,
       -1,    16,    -1,     3,    -1,    26,     8,    26,    -1,     9,
-      27,     6,    30,    10,     6,    -1,    16,     7,    31,    -1,
-      29,     6,    -1,    29,     6,    30,    -1,     3,    -1,    16,
-      -1,    31,    18,    31,    -1,    31,    17,    31,    -1,    31,
-      21,    31,    -1,    31,    20,    31,    -1,    31,    19,    31,
-      -1,     4,    31,     5,    -1,    17,    31,    -1,    11,    26,
-       6,    30,    12,     6,    -1,    13,    16,    -1,    14,    16,
-      -1
+      27,     6,    29,    10,     6,    -1,    16,     7,    31,     6,
+      -1,    29,    -1,    29,    30,    -1,     3,    -1,    16,    -1,
+      31,    18,    31,    -1,    31,    17,    31,    -1,    31,    21,
+      31,    -1,    31,    20,    31,    -1,    31,    19,    31,    -1,
+       4,    31,     5,    -1,    17,    31,    -1,    11,    26,     6,
+      30,    12,     6,    -1,    13,    16,    -1,    14,    16,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   101,   101,   102,   106,   107,   108,   109,   110,   111,
-     112,   117,   118,   122,   127,   131,   135,   136,   141,   157,
-     158,   195,   204,   230,   256,   282,   283,   300,   315,   320
+       0,   103,   103,   104,   108,   109,   110,   111,   112,   113,
+     114,   119,   128,   140,   156,   172,   182,   183,   188,   204,
+     213,   243,   273,   297,   321,   347,   348,   364,   386,   391
 };
 #endif
 
@@ -579,7 +580,7 @@ static const yytype_uint8 yyr1[] =
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     2,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     3,     6,     3,     2,     3,     1,     1,
+       1,     1,     1,     3,     6,     4,     1,     2,     1,     1,
        3,     3,     3,     3,     3,     3,     2,     6,     2,     2
 };
 
@@ -589,38 +590,38 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        2,     0,     1,    10,    12,     4,     0,     0,     0,     0,
-      11,     3,     0,     9,     5,     0,     7,     6,     8,    11,
-       0,     0,    28,    29,     0,     0,    16,     0,     0,    18,
-       0,    19,     0,    15,    13,     0,    17,     0,     0,     0,
-      26,     0,     0,     0,     0,     0,     0,     0,    25,    21,
+      11,     3,     0,     9,     5,    16,     7,     6,     8,    11,
+       0,     0,    28,    29,     0,     0,     0,    17,     0,     0,
+      18,     0,    19,     0,     0,    13,     0,     0,     0,    26,
+      15,     0,     0,     0,     0,     0,     0,     0,    25,    21,
       20,    24,    23,    22,    14,    27
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,    11,    12,    13,    14,    15,    16,    33,    17,
+      -1,     1,    11,    12,    13,    14,    15,    16,    34,    17,
       18
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -12
+#define YYPACT_NINF -14
 static const yytype_int8 yypact[] =
 {
-     -12,     1,   -12,   -12,   -12,   -12,     0,     0,   -11,   -10,
-       2,   -12,     5,   -12,   -12,    29,   -12,   -12,   -12,   -12,
-      43,    44,   -12,   -12,    25,     0,    10,    10,    10,   -12,
-      25,   -12,    25,    13,   -12,     2,   -12,     9,    -1,     3,
-     -12,    25,    25,    25,    25,    25,    45,    46,   -12,    24,
-      24,   -12,   -12,   -12,   -12,   -12
+     -14,     1,   -14,   -14,   -14,   -14,    33,    33,   -13,    -5,
+      -1,   -14,     5,   -14,   -14,    16,   -14,   -14,   -14,   -14,
+      28,    31,   -14,   -14,    22,    33,    -1,   -14,    16,    16,
+     -14,    22,   -14,    22,    10,   -14,    38,    -3,     3,   -14,
+     -14,    22,    22,    22,    22,    22,    44,    45,   -14,    21,
+      21,   -14,   -14,   -14,   -14,   -14
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,   -12,   -12,    -7,    47,   -12,   -12,    20,    -5,   -12,
-     -12
+     -14,   -14,   -14,    -7,    46,   -14,    25,   -10,     2,   -14,
+     -14
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -629,28 +630,28 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      21,     2,     3,     4,     4,    22,    23,     5,    48,    24,
-       6,    47,     7,    25,     8,     9,    19,    10,    34,    46,
-      41,    42,    43,    44,    45,    39,    35,    40,    29,    30,
-      41,    42,    43,    44,    45,    26,    49,    50,    51,    52,
-      53,    31,    32,    43,    44,    45,    36,    37,    38,    27,
-      28,    54,    55,    20
+      21,     2,     3,    22,     4,    27,    24,     5,    48,    47,
+       6,    23,     7,    25,     8,     9,    40,    10,    35,    37,
+      41,    42,    43,    44,    45,    30,    31,    41,    42,    43,
+      44,    45,    26,    38,    28,    39,     4,    29,    32,    33,
+      43,    44,    45,    49,    50,    51,    52,    53,    46,    19,
+      54,    55,    20,    36
 };
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-12)))
+  (!!((Yystate) == (-14)))
 
 #define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
 static const yytype_uint8 yycheck[] =
 {
-       7,     0,     1,     3,     3,    16,    16,     6,     5,     7,
-       9,    12,    11,     8,    13,    14,    16,    16,    25,    10,
-      17,    18,    19,    20,    21,    30,    16,    32,     3,     4,
-      17,    18,    19,    20,    21,     6,    41,    42,    43,    44,
-      45,    16,    17,    19,    20,    21,    26,    27,    28,     6,
-       6,     6,     6,     6
+       7,     0,     1,    16,     3,    15,     7,     6,     5,    12,
+       9,    16,    11,     8,    13,    14,     6,    16,    25,    29,
+      17,    18,    19,    20,    21,     3,     4,    17,    18,    19,
+      20,    21,    16,    31,     6,    33,     3,     6,    16,    17,
+      19,    20,    21,    41,    42,    43,    44,    45,    10,    16,
+       6,     6,     6,    28
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -659,9 +660,9 @@ static const yytype_uint8 yystos[] =
 {
        0,    24,     0,     1,     3,     6,     9,    11,    13,    14,
       16,    25,    26,    27,    28,    29,    30,    32,    33,    16,
-      27,    26,    16,    16,     7,     8,     6,     6,     6,     3,
-       4,    16,    17,    31,    26,    16,    30,    30,    30,    31,
-      31,    17,    18,    19,    20,    21,    10,    12,     5,    31,
+      27,    26,    16,    16,     7,     8,    16,    30,     6,     6,
+       3,     4,    16,    17,    31,    26,    29,    30,    31,    31,
+       6,    17,    18,    19,    20,    21,    10,    12,     5,    31,
       31,    31,    31,    31,     6,     6
 };
 
@@ -1464,134 +1465,213 @@ yyreduce:
     {
         case 10:
 /* Line 1792 of yacc.c  */
-#line 112 "comp.y"
+#line 114 "comp.y"
     { yyerror("oops\n"); }
+    break;
+
+  case 11:
+/* Line 1792 of yacc.c  */
+#line 120 "comp.y"
+    {
+  	Variable *node_var = new Variable((yyvsp[(1) - (1)]));
+ 	cout << " var = " << (yyvsp[(1) - (1)]) << endl;
+ 	stack_node.push(node_var);
+	cout << "var assign @ = " << node_var->getValue() << endl;
+  	stack_print();
+  }
+    break;
+
+  case 12:
+/* Line 1792 of yacc.c  */
+#line 129 "comp.y"
+    {
+  	Constant *node_const = new Constant(); //create constant object 
+   node_const->setValue((yyvsp[(1) - (1)]));  //add value to constant node
+   //test aassign
+   cout << "const assign : " << node_const->getValue() << endl;
+   stack_node.push(node_const);
+   stack_print();
+  }
     break;
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 122 "comp.y"
-    { printf("CONDITION\n");}
+#line 141 "comp.y"
+    { 
+  	NodeBlock *node1 = stack_node.top();
+  	stack_node.pop();
+  	NodeBlock *node2 = stack_node.top();
+  	stack_node.pop();
+
+  	Equal *node_equal = new Equal(node2,node1); //condition object 
+  	stack_node.push(node_equal);
+  	node_equal->print();
+  	stack_print();
+  }
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 127 "comp.y"
-    { printf("IF\n");}
+#line 157 "comp.y"
+    {
+  	stack_node.top()->print();
+  	NodeBlock *node_stm = stack_node.top();
+  	stack_node.pop();
+  	stack_node.top()->print();
+	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
+	stack_node.pop();
+  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
+	node_if->print();
+	stack_node.push(node_if);
+	stack_print();
+  }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 131 "comp.y"
-    {count =0;}
+#line 172 "comp.y"
+    {
+  	Variable *node_var = new Variable((yyvsp[(1) - (4)]));
+ 	cout << " var = " << (yyvsp[(1) - (4)]) << endl;
+	cout << "var assign @ = " << node_var->getValue() << endl;
+  	
+  	stack_print();
+  }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 135 "comp.y"
-    {  }
+#line 182 "comp.y"
+    { cout << "statement " << endl; }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 136 "comp.y"
+#line 183 "comp.y"
     { }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 141 "comp.y"
+#line 188 "comp.y"
     {
    //TAC Syntax
-   cout << "T" << count << " = " << (yyvsp[(1) - (1)]) <<endl; 
+   /*cout << "T" << count << " = " << $1 <<endl; 
    temp.push(count); 
-   (yyval) = count; count++;
-
+   $$ = count; count++;
+	*/
    //TREE Syntax --Keep in stack
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue((yyvsp[(1) - (1)]));  //add value to constant node
    //test aassign
-   cout << node_const->getValue() << endl;
+   cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-   cout << stack_node.top()->getValue() << endl;
+   stack_print();
    }
+    break;
+
+  case 19:
+/* Line 1792 of yacc.c  */
+#line 204 "comp.y"
+    {
+  	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
+ 	Variable *node_var = new Variable((yyvsp[(1) - (1)]));
+ 	cout << " var = " << (yyvsp[(1) - (1)]) << endl;
+ 	stack_node.push(node_var);
+	cout << "var assign @ = " << node_var->getValue() << endl;
+	stack_print();
+
+  }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 158 "comp.y"
+#line 213 "comp.y"
     {
       //TAC Syntax
-      swap_temp = temp.top();
+      /*swap_temp = temp.top();
       temp.pop(); 
       cout<<"T"<< count << " = " << "T" << temp.top();
       temp.pop();   
       cout << " + T" << swap_temp << endl; 
-      temp.push(count);count++;
+	  */
 
       //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right; 
       node_right = stack_node.top();
-      cout << node_right->getValue() << endl;
       stack_node.pop();
       node_left = stack_node.top();
       stack_node.pop();
 
-      AddSyntax* addsyn = new AddSyntax(node_left,node_right);
+      AddSyntax *addsyn = new AddSyntax(node_left,node_right);
       stack_node.push(addsyn);
 
-      addsyn->print();
+      // FOR TESTING VALUE 
+      
       NodeBlock* node_test = stack_node.top();
+      cout << "test print from stack" << endl;  
       node_test->print();
 
-      /*node *opnode; 
-      node *it_node;  
-      swap_node = stack_node.top(); 
-      stack_node.pop();
-      insert_opnode(&opnode, '+', &stack_node.top());
-      stack_node.pop();
-      insert_opnode(&opnode, '+',swap_node);
-      stack_node.push(*opnode);
-      cout<< "PRINT NODE" << endl;
-      print_inorder(opnode);*/
+      stack_print();
+	  
 
     }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 195 "comp.y"
+#line 243 "comp.y"
     {
-      swap_temp = temp.top();
-      temp.pop();
-      cout<<"T"<< count << " = " << "T" << temp.top();  
+
+      //TAC Syntax
+      /*swap_temp = temp.top();
       temp.pop(); 
-      cout << " - T" << swap_temp <<  endl;  
+      cout<<"T"<< count << " = " << "T" << temp.top();
+      temp.pop();   
+      cout << " - T" << swap_temp << endl; 
       temp.push(count);count++;
+		*/
+
+      //TREE Syntax
+      NodeBlock *node_left;
+      NodeBlock *node_right; 
+      node_right = stack_node.top();
+	  stack_node.pop();
+      node_left = stack_node.top();
+      stack_node.pop();
+
+      MinusSyntax* minsyn = new MinusSyntax(node_left,node_right);
+      stack_node.push(minsyn);
+      minsyn->print();
+      // FOR TESTING VALUE 
+      /*
+      NodeBlock* node_test = stack_node.top();
+      cout << "test print from stack" << endl;  
+      node_test->print();
+	  */
       
     }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 204 "comp.y"
+#line 273 "comp.y"
     {
       //TAC Syntax
-      swap_temp = temp.top();
+     /* swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " * T" << swap_temp << endl;
       temp.push(count);count++;
-
+	 */
       //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right;
       node_right = stack_node.top();
-      cout << node_right->getValue() << endl;
       stack_node.pop();
       node_left = stack_node.top();
       stack_node.pop();
@@ -1599,7 +1679,6 @@ yyreduce:
       TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
       stack_node.push(timessyn);
 
-      timessyn->print();
       NodeBlock* node_test = stack_node.top();
       node_test->print();
 
@@ -1608,21 +1687,20 @@ yyreduce:
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 230 "comp.y"
+#line 297 "comp.y"
     {
       //TAC Syntax
-      swap_temp = temp.top();
+      /*swap_temp = temp.top();
       temp.pop();
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " / T" << swap_temp << endl;
       temp.push(count);count++;
-
+	 */
       //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right;
       node_right = stack_node.top();
-      cout << node_right->getValue() << endl;
       stack_node.pop();
       node_left = stack_node.top();
       stack_node.pop();
@@ -1630,7 +1708,6 @@ yyreduce:
       DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
       stack_node.push(dividesyn);
 
-      dividesyn->print();
       NodeBlock* node_test = stack_node.top();
       node_test->print();
 
@@ -1639,21 +1716,22 @@ yyreduce:
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 256 "comp.y"
+#line 321 "comp.y"
     {
       //TAC Syntax
+  	  /*
       swap_temp = temp.top();
       temp.pop(); 
       cout << "T" << count << " = " << "T" << temp.top();
       temp.pop();
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
+	  */
 
       //TREE Syntax
       NodeBlock *node_left;
       NodeBlock *node_right;
       node_right = stack_node.top();
-      cout << node_right->getValue() << endl;
       stack_node.pop();
       node_left = stack_node.top();
       stack_node.pop();
@@ -1661,7 +1739,6 @@ yyreduce:
       ModSyntax* modsyn = new ModSyntax(node_left,node_right);
       stack_node.push(modsyn);
 
-      modsyn->print();
       NodeBlock* node_test = stack_node.top();
       node_test->print();
 
@@ -1670,17 +1747,16 @@ yyreduce:
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 282 "comp.y"
+#line 347 "comp.y"
     { }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 283 "comp.y"
+#line 348 "comp.y"
     {
-      //TAC Syntax
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
-
+      //TAC SyntaxF
+      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;	
       //TREE Syntax
       NodeBlock *node;
       node = stack_node.top();
@@ -1695,7 +1771,7 @@ yyreduce:
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 300 "comp.y"
+#line 364 "comp.y"
     {
     printf("LOOP\n");
 
@@ -1703,16 +1779,23 @@ yyreduce:
     NodeBlock *node_stm = stack_node.top();
     stack_node.pop();
     stack_node.top()->print();
-    NodeBlock *node_oprn = stack_node.top();
+    NodeBlock *node_const = stack_node.top();
     stack_node.pop();
-    LoopStatement *node_loop = new LoopStatement(node_oprn,node_stm);    
-	
+    Variable *node_var = new Variable(-1);
+    node_var->print();
+    Equal *node_eql = new Equal (node_var,node_const);
+    node_eql->print();
+    LoopStatement *node_loop = new LoopStatement(node_eql,node_stm);
+    node_loop->print();
+    stack_print();
+    stack_node.push(node_loop);
+    stack_print();
   }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 315 "comp.y"
+#line 386 "comp.y"
     {
   
     printf("SHOW\n");
@@ -1722,7 +1805,7 @@ yyreduce:
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 320 "comp.y"
+#line 391 "comp.y"
     {
 
     printf("SHOWX\n");
@@ -1732,7 +1815,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 1736 "comp.tab.c"
+#line 1819 "comp.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1964,7 +2047,9 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 326 "comp.y"
+#line 397 "comp.y"
+
+
 
 
 void yyerror(const char *s) {
@@ -1978,7 +2063,29 @@ void convert_to_asm(int opr1, int opr2)
 
 }
 
+void stack_print()
+{
+	stack<NodeBlock*> stack_tmp;
 
+	cout << "====== STACK PRINT =======" << endl;
+
+	while(!stack_node.empty())
+	{
+		stack_node.top()->print();
+		NodeBlock* tmp = stack_node.top();
+		stack_tmp.push(tmp);
+		stack_node.pop();
+	}
+
+	while(!stack_tmp.empty()){
+		NodeBlock *tmp2 = stack_tmp.top();
+		stack_node.push(tmp2);
+		stack_tmp.pop();
+	}
+
+	cout << "==========================" << endl;
+
+}
 
 
 int main() {
