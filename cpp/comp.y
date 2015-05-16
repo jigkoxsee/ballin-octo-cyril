@@ -150,7 +150,7 @@ Ifstm:
 
 Stm:
   VAR ASSIGN Exp {
-  	NodeBlock node_exp = stack_node.top();
+  	NodeBlock *node_exp = stack_node.top();
   	
   	Variable *node_var = new Variable($1);
  	cout << " var = " << $1 << endl;
