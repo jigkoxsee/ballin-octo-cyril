@@ -522,8 +522,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint16 yyrline[] =
 {
        0,   101,   101,   102,   106,   107,   108,   109,   110,   111,
-     112,   117,   118,   122,   127,   131,   135,   136,   141,   156,
-     164,   196,   226,   234,   242,   250,   251,   257,   261,   262
+     112,   117,   118,   122,   127,   152,   156,   157,   162,   177,
+     185,   217,   247,   255,   263,   271,   272,   278,   282,   283
 };
 #endif
 
@@ -1337,31 +1337,51 @@ yyreduce:
     break;
 
   case 14:
-#line 127 "comp.y" /* yacc.c:1646  */
-    { printf("IF\n");}
-#line 1343 "comp.tab.c" /* yacc.c:1646  */
+#line 128 "comp.y" /* yacc.c:1646  */
+    {
+
+  	//Sample code
+  	Constant *node1 = new Constant();
+  	node1->setValue(3);
+
+  	Constant *node2 = new Constant();
+  	node1->setValue(4);
+
+  	/*
+	NodeBlock *node1 = stack_node.top();
+  	stack_node.pop();
+  	NodeBlock *node2 = stack_node.top();
+  	stack_node.pop();
+  	*/
+
+  	Equal *node_equal = new Equal(node1,node2); //condition object 
+  	NodeBlock *node_stm = new NodeBlock(); //statements do after pass condition
+  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
+	//node_if->print();
+  }
+#line 1363 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 131 "comp.y" /* yacc.c:1646  */
+#line 152 "comp.y" /* yacc.c:1646  */
     {count =0;}
-#line 1349 "comp.tab.c" /* yacc.c:1646  */
+#line 1369 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 135 "comp.y" /* yacc.c:1646  */
+#line 156 "comp.y" /* yacc.c:1646  */
     {  }
-#line 1355 "comp.tab.c" /* yacc.c:1646  */
+#line 1375 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 136 "comp.y" /* yacc.c:1646  */
+#line 157 "comp.y" /* yacc.c:1646  */
     { }
-#line 1361 "comp.tab.c" /* yacc.c:1646  */
+#line 1381 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 141 "comp.y" /* yacc.c:1646  */
+#line 162 "comp.y" /* yacc.c:1646  */
     {
    //TAC Syntax
    /*cout << "T" << count << " = " << $1 <<endl; 
@@ -1377,11 +1397,11 @@ yyreduce:
    //insert(&constant_node, $1);
    stack_node.push(node_const);
    }
-#line 1381 "comp.tab.c" /* yacc.c:1646  */
+#line 1401 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 156 "comp.y" /* yacc.c:1646  */
+#line 177 "comp.y" /* yacc.c:1646  */
     {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
  	Variable *node_var = new Variable((yyvsp[0]));
@@ -1390,11 +1410,11 @@ yyreduce:
 	cout << "var assign @ = " << node_var->getValue() << endl;
 
   }
-#line 1394 "comp.tab.c" /* yacc.c:1646  */
+#line 1414 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 164 "comp.y" /* yacc.c:1646  */
+#line 185 "comp.y" /* yacc.c:1646  */
     {
       //TAC Syntax
       /*swap_temp = temp.top();
@@ -1427,11 +1447,11 @@ yyreduce:
 	  
 
     }
-#line 1431 "comp.tab.c" /* yacc.c:1646  */
+#line 1451 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 196 "comp.y" /* yacc.c:1646  */
+#line 217 "comp.y" /* yacc.c:1646  */
     {
 
       //TAC Syntax
@@ -1462,11 +1482,11 @@ yyreduce:
 	  */
       
     }
-#line 1466 "comp.tab.c" /* yacc.c:1646  */
+#line 1486 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 226 "comp.y" /* yacc.c:1646  */
+#line 247 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop();
@@ -1475,11 +1495,11 @@ yyreduce:
       cout << " * T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1479 "comp.tab.c" /* yacc.c:1646  */
+#line 1499 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 234 "comp.y" /* yacc.c:1646  */
+#line 255 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop();
@@ -1488,11 +1508,11 @@ yyreduce:
       cout << " / T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1492 "comp.tab.c" /* yacc.c:1646  */
+#line 1512 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 242 "comp.y" /* yacc.c:1646  */
+#line 263 "comp.y" /* yacc.c:1646  */
     {
       swap_temp = temp.top();
       temp.pop(); 
@@ -1501,43 +1521,43 @@ yyreduce:
       cout << " % T" << swap_temp << endl;
       temp.push(count);count++;
     }
-#line 1505 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 250 "comp.y" /* yacc.c:1646  */
-    { }
-#line 1511 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 26:
-#line 251 "comp.y" /* yacc.c:1646  */
-    {
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
-    }
-#line 1519 "comp.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 257 "comp.y" /* yacc.c:1646  */
-    { printf("LOOP\n");}
 #line 1525 "comp.tab.c" /* yacc.c:1646  */
     break;
 
-  case 28:
-#line 261 "comp.y" /* yacc.c:1646  */
-    { printf("SHOW\n");}
+  case 25:
+#line 271 "comp.y" /* yacc.c:1646  */
+    { }
 #line 1531 "comp.tab.c" /* yacc.c:1646  */
     break;
 
+  case 26:
+#line 272 "comp.y" /* yacc.c:1646  */
+    {
+      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+    }
+#line 1539 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 27:
+#line 278 "comp.y" /* yacc.c:1646  */
+    { printf("LOOP\n");}
+#line 1545 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 28:
+#line 282 "comp.y" /* yacc.c:1646  */
+    { printf("SHOW\n");}
+#line 1551 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
   case 29:
-#line 262 "comp.y" /* yacc.c:1646  */
+#line 283 "comp.y" /* yacc.c:1646  */
     { printf("SHOWX\n");}
-#line 1537 "comp.tab.c" /* yacc.c:1646  */
+#line 1557 "comp.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1541 "comp.tab.c" /* yacc.c:1646  */
+#line 1561 "comp.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1765,7 +1785,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 264 "comp.y" /* yacc.c:1906  */
+#line 285 "comp.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *s) {

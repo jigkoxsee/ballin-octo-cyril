@@ -109,7 +109,7 @@ Line:
   | Stms 
   | Display
   | Condition
-  | error { yyerror("oops\n"); }
+  | error { yyerror("oops\n"); } 
 ;
 
 
@@ -124,11 +124,39 @@ Condition:
 
 
 Ifstm:
-  IF Condition ENDLN Stms ENDIF ENDLN { printf("IF\n");}
+  IF Condition ENDLN Stms ENDIF ENDLN 
+  {
+
+  	//Sample code
+  	Constant *node1 = new Constant();
+  	node1->setValue(3);
+
+  	Constant *node2 = new Constant();
+  	node1->setValue(4);
+
+  	/*
+	NodeBlock *node1 = stack_node.top();
+  	stack_node.pop();
+  	NodeBlock *node2 = stack_node.top();
+  	stack_node.pop();
+  	*/
+
+  	Equal *node_equal = new Equal(node1,node2); //condition object 
+  	NodeBlock *node_stm = new NodeBlock(); //statements do after pass condition
+  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
+	//node_if->print();
+  }
 ;
 
 Stm:
-  VAR ASSIGN Exp {count =0;}
+  VAR ASSIGN Exp {
+  	NodeBlock node_exp = stack_node.top();
+  	
+  	Variable *node_var = new Variable($1);
+ 	cout << " var = " << $1 << endl;
+ 	stack_node.push(node_exp);
+	cout << "var assign @ = " << node_var->getValue() << endl;
+  }
 ;
 
 Stms:
