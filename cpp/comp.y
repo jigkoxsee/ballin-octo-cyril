@@ -93,9 +93,9 @@ Oprn:
   VAR 
   {
   	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
+	//cout << "var assign @ = " << node_var->getValue() << endl;
   }
 
   | CONST
@@ -103,7 +103,7 @@ Oprn:
   	Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
   }
 ;
@@ -140,9 +140,9 @@ Stm:
   	NodeBlock *node_exp = stack_node.top();
   	
   	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_exp);
-	cout << "var assign @ = " << node_var->getValue() << endl;
+	//cout << "var assign @ = " << node_var->getValue() << endl;
 
 //---
 	cout<<"+++++++++++++++++"<<endl;
@@ -168,7 +168,7 @@ Exp:
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
@@ -207,10 +207,10 @@ Exp:
 
       // FOR TESTING VALUE 
       
-      NodeBlock* node_test = stack_node.top();
-      cout << "test print from stack" << endl;  
-      node_test->print();
- 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),""); // TODO : where dest?
+      //NodeBlock* node_test = stack_node.top();
+      //cout << "test print from stack" << endl;  
+      //node_test->print();
+ 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),""); 
 	  
 
     }
@@ -235,13 +235,14 @@ Exp:
 
       MinusSyntax* minsyn = new MinusSyntax(node_left,node_right);
       stack_node.push(minsyn);
-      minsyn->print();
+      //minsyn->print();
       // FOR TESTING VALUE 
       /*
       NodeBlock* node_test = stack_node.top();
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
+ 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),""); 
       
     }
   | Exp TIMES Exp {
@@ -264,9 +265,9 @@ Exp:
       TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
       stack_node.push(timessyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
-
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),""); 
     }         
   | Exp DIVIDE Exp {
       //TAC Syntax
@@ -288,9 +289,10 @@ Exp:
       DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
       stack_node.push(dividesyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
 
+ 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),""); 
     } 
   | Exp MOD Exp {
       //TAC Syntax
@@ -314,23 +316,24 @@ Exp:
       ModSyntax* modsyn = new ModSyntax(node_left,node_right);
       stack_node.push(modsyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),""); 
 
     }
   | LEFT Exp RIGHT { }
   | MINUS Exp %prec NEG {
       //TAC Syntax
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+      //cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
 
       //TREE Syntax
       NodeBlock *node;
       node = stack_node.top();
-      cout << "OLD: " << node->getValue() << endl;
+      //cout << "OLD: " << node->getValue() << endl;
       stack_node.pop();
       int temp_neg = 0-(node->getValue());
       node->setValue(temp_neg);
-      cout << "NEW: " << node->getValue() << endl;
+      //cout << "NEW: " << node->getValue() << endl;
       stack_node.push(node);
     }
 ;
@@ -345,22 +348,11 @@ Display:
 ;
 %%
 
-void printStack(){
-	
-}
-
 void yyerror(const char *s) {
   cout << "EEK, parse error!  Message: " << s << endl;
   // might as well halt now:
   exit(-1);
 }
-
-void convert_to_asm(int opr1, int opr2)
-{
-
-}
-
-
 
 
 int main() {

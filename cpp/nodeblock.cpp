@@ -145,6 +145,9 @@ class MinusSyntax : public NodeBlock
 			cout << "MINUS :  left = " << this->left->getValue();
 			cout << " right = " << this->right->getValue() << endl;
 		}
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class TimesSyntax : public NodeBlock
@@ -158,6 +161,9 @@ class TimesSyntax : public NodeBlock
 		virtual void print(){
 			cout << " MUL :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
+		}
+		virtual string getAsm(){
+			return "";
 		}
 };
 
@@ -173,6 +179,9 @@ class DivideSyntax : public NodeBlock
 			cout << "DIV :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class ModSyntax : public NodeBlock
@@ -186,5 +195,8 @@ class ModSyntax : public NodeBlock
 		virtual void print(){
 			cout << "MOD :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
+		}
+		virtual string getAsm(){
+			return "";
 		}
 };
