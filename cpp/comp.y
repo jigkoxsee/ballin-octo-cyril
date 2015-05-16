@@ -2,11 +2,11 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
-#include <sstream>
+//#include <sstream>
 #include <stack>
-#include <stdio.h>
-#include <stdlib.h>
-#include "nodeblock.h"
+#include <cstdlib>
+#include "nodeblock.cpp"
+#include "asmgen.cpp"
 using namespace std;
 //TAC initial implementation.
 int count =0;
@@ -145,10 +145,8 @@ Stm:
 	cout << "var assign @ = " << node_var->getValue() << endl;
 
 //---
-	stringstream asmCode;	
-	asmCode <<"movl "<<node_exp->getAsm()<<",-"<<node_var->getValue()<<"(%rsp)";
 	cout<<"+++++++++++++++++"<<endl;
-	cout<<asmCode.str()<<endl;
+	cout<<xassign(node_exp->getAsm(),node_var->getValue());
 	cout<<"-----------------"<<endl;
   }
 ;
@@ -174,6 +172,9 @@ Exp:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
+	cout<<"+++++++++++++++++"<<endl;
+	cout<<xconstant(node_const->getValue());
+	cout<<"-----------------"<<endl;
    } 
   | VAR {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
@@ -206,9 +207,10 @@ Exp:
 
       // FOR TESTING VALUE 
       
-     // NodeBlock* node_test = stack_node.top();
-     // cout << "test print from stack" << endl;  
-     // node_test->print();
+      NodeBlock* node_test = stack_node.top();
+      cout << "test print from stack" << endl;  
+      node_test->print();
+ 	xadd(node_right->getAsm(),node_left->getAsm()); // TODO : where dest?
 	  
 
     }

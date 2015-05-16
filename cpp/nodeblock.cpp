@@ -6,9 +6,8 @@ using namespace std;
 
 class NodeBlock
 {
-	protected   : 
-		char type; //tell about type of nodeBlock
 	public:
+		char type; //tell about type of nodeBlock
 		NodeBlock *left; 
 		NodeBlock *right;
 		//int value;
@@ -42,8 +41,11 @@ class Variable : public NodeBlock
 			cout << "variable = " << endl;
 		}
 		virtual string getAsm(){
+	//		stringstream val;
+	//		val <<"-"<<address<<"(%rsp)";
+	//		return val.str();
 			stringstream val;
-			val <<"-"<<address<<"(%rsp)";
+			val <<address;
 			return val.str();
 		}
 };
@@ -67,9 +69,10 @@ class Constant : public NodeBlock
 			cout << "Constant = " << value << endl;
 		}
 		virtual string getAsm(){
-			stringstream val;
-			val <<"$"<<value;
-			return val.str();
+			//stringstream val;
+			//val <<"$"<<value;
+			//return val.str();
+			return "";
 		}
 };
 
@@ -102,8 +105,11 @@ class AddSyntax : public NodeBlock
 		~AddSyntax(){}
 		virtual void print()
 		{
-			cout << "PLUS :: left = " << this->left->getValue();
-			cout << " right = " << this->right->getValue() << endl;
+			cout << "PLUS :: left = ";
+			this->left->print();
+			cout << " right = ";
+			this->right->print();
+			cout<< endl;
 		} 
 };
 
