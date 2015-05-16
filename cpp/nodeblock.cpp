@@ -79,17 +79,17 @@ class Constant : public NodeBlock
 class IfStatement : public NodeBlock
 {
 	public:
-		IfStatement(NodeBlock *condition,NodeBlock *then) {
+		IfStatement(NodeBlock *condition) {
 			this->left = condition;
-			this->right = then;
+			//this->right = then;
 			this->type = 'i';
 		}
 		~IfStatement() {}
 		virtual void print() {
 			cout << "condition is ";  
 			this->left->print();
-			cout << " then ";
-			this->right->print();
+			//cout << " then ";
+			//this->right->print();
 		}
 };
 
@@ -204,3 +204,49 @@ class ModSyntax : public NodeBlock
 			return "";
 		}
 };
+
+class LoopStatement : public NodeBlock
+{
+      public:
+          LoopStatement(NodeBlock *condition) {
+          this->left = condition;
+          //this->right = statement;
+          this->type = 'l';
+      }
+      ~LoopStatement() {}
+      virtual void print() {
+         cout << "condition is ";
+         this->left->print();
+         //cout << " statement ";
+         //this->right->print();
+      }
+};
+
+class Show : public NodeBlock
+{
+      private:
+            int variable;
+      public:
+         Show(int variable){
+            this->variable = variable;
+	 }
+	 ~Show(){}
+	 virtual void print(){
+	   cout << "SHOW : " << variable << endl;
+	 }
+};
+
+class ShowX : public NodeBlock 
+{
+       private:
+          int variable;
+       public:
+          ShowX(int variable){
+             this->variable = variable;
+       }
+       ~ShowX(){}
+       virtual void print(){
+            cout << "SHOWX : " << variable << endl;
+       }
+};
+

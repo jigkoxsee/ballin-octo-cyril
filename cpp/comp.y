@@ -108,7 +108,8 @@ Oprn:
    //test aassign
    //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
-   stack_print();
+   //stack_print();
+	cout<<xconstant(node_const->getValue())<<endl;
   }
 ;
 
@@ -124,26 +125,24 @@ Condition:
   	stack_node.push(node_equal);
   	//node_equal->print();
   	//stack_print();
-	cout<<xcondition(node1->getAsm(),node2->getAsm()) <<endl;
+	cout<<xcondition(node1->getAsm(),node2->getAsm(),lCount) <<endl;
   }
 ;
 
 
 Ifstm:
-  IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
+  IF Condition ENDLN Stms ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
-  	//stack_node.top()->print();
-  	NodeBlock *node_stm = stack_node.top();
-  	stack_node.pop();
-  	//stack_node.top()->print();
-	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
-	stack_node.pop();
-  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
-	//node_if->print();
-//	stack_print();
+  	//NodeBlock *node_stm = stack_node.top();
+  	//stack_node.pop();
+	//NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
+	//stack_node.pop(); // TODO memory leak?
 
+  	//IfStatement *node_if = new IfStatement(node_equal);
+	//stack_node.push(node_if);
 	cout<<xif(&lCount)<<endl;
-}
+  }
+
 ;
 
 Stm:
@@ -161,8 +160,9 @@ Stm:
 ;
 
 Stms:
-  Stm ENDLN{}
-  | Stm ENDLN Stms {}
+  Stm {  }
+  | Stm  Stms { }
+
 ;
 
 Exp: 
@@ -181,7 +181,7 @@ Exp:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-	cout<<xconstant(node_const->getValue());
+	cout<<xconstant(node_const->getValue())<<endl;
    //stack_print();
    } 
   | VAR {
@@ -190,7 +190,7 @@ Exp:
  	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
-	stack_print();
+	//stack_print();
 
   }
   | Exp PLUS Exp {
@@ -215,7 +215,7 @@ Exp:
 
       // FOR TESTING VALUE 
       
- 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),""); 
+ 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
 	  
 
     }
@@ -247,8 +247,7 @@ Exp:
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
- 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),""); 
-      
+ 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),"")<<endl;      
     }
   | Exp TIMES Exp {
       //TAC Syntax
@@ -272,7 +271,7 @@ Exp:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),""); 
+ 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
     }         
   | Exp DIVIDE Exp {
       //TAC Syntax
@@ -297,8 +296,8 @@ Exp:
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
 
- 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),""); 
-    } 
+ 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+} 
   | Exp MOD Exp {
       //TAC Syntax
   	  /*
@@ -323,7 +322,7 @@ Exp:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),""); 
+ 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),"")<<endl;
 
     }
   | LEFT Exp RIGHT { }
@@ -342,14 +341,56 @@ Exp:
       stack_node.push(node);
     }
 ;
+LNO:
+  VAR 
+  {
+  	Variable *node_var = new Variable($1);
+ 	stack_node.push(node_var);
+	cout<<xloopStart(node_var->getAsm(),lCount)<<endl;
+  }
 
+  | CONST
+  {
+  	Constant *node_const = new Constant();
+	node_const->setValue($1);  //add value to constant node
+	stack_node.push(node_const);
+	cout<<xloopStart(node_const->getAsm(),lCount)<<endl;
+  }
+;
 Loopstm:
-  LOOP CONST COLON CONST ENDLN Stms END ENDLN { printf("LOOP\n");}
+  LOOP LNO ENDLN Stms END ENDLN {
+
+    //stack_node.top()->print();
+    //NodeBlock *node_stm = stack_node.top();
+    //stack_node.pop();
+    //stack_node.top()->print();
+    //NodeBlock *node_const = stack_node.top();
+    //stack_node.pop();
+    Variable *node_var = new Variable(-1);
+    //node_var->print();
+
+    LoopStatement *node_loop = new LoopStatement(node_var);
+
+    //node_loop->print();
+    //stack_print();
+    //stack_node.push(node_loop);
+    //stack_print();
+	cout<<xloop(&lCount)<<endl;
+  }
 ;
 
 Display:
-  SHOW VAR { printf("SHOW\n");}
-  | SHOWX VAR { printf("SHOWX\n");}
+  SHOW VAR {  
+    printf("SHOW\n");
+    //  Variable *node_var = new Variable($2);
+    Show *node_show = new Show ($2*4);
+    node_show->print();
+  }
+  | SHOWX VAR {
+    printf("SHOWX\n");
+    ShowX *node_show = new ShowX ($2*4);
+    node_show->print();
+  }
 ;
 %%
 
