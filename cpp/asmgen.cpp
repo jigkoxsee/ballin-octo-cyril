@@ -201,8 +201,8 @@ string genHead(){
 string genTail(){
 	stringstream asmC;
 	asmC <<"show:"<<endl;
-	asmC <<"\t.asciz \"%d"<<endl;
+	asmC <<"\t.asciz \"%d\""<<endl;
 	asmC <<"showx:"<<endl;
-	asmC <<"\t.asciz \"%x"<<endl;
+	asmC <<"\t.asciz \"%x\""<<endl;
 	return asmC.str();
 }

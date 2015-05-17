@@ -368,7 +368,7 @@ Loopstm:
     //stack_node.top()->print();
     //NodeBlock *node_const = stack_node.top();
     //stack_node.pop();
-    Variable *node_var = new Vgit ariable(-1);
+    Variable *node_var = new Variable(-1);
     //node_var->print();
 
     LoopStatement *node_loop = new LoopStatement(node_var);
@@ -434,8 +434,7 @@ int main() {
 	cout<<"END"<<endl;
 	cout<<genHead()<<endl;
 // TODO (ziko) : Travers through queue and write it to file
-	while(asmQ.empty()){
-		cout<<"-=-=-"<<endl;
+	while(!asmQ.empty()){
 		cout<<asmQ.front()<<endl;
 		asmQ.pop();
 	}

@@ -249,4 +249,4 @@ class ShowX : public NodeBlock
        virtual void print(){
             cout << "SHOWX : " << variable << endl;
        }
-};y
+};
