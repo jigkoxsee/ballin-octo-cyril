@@ -67,17 +67,18 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+//#include <sstream>
 #include <stack>
 #include <queue>
-#include <stdio.h>
-#include <stdlib.h>
-#include "nodeblock.h"
+#include <cstdlib>
+#include "nodeblock.cpp"
+#include "asmgen.cpp"
 using namespace std;
 
 void stack_print();
 queue<NodeBlock*> queue_node;
 //TAC initial implementation.
-int count =0;
+int lCount =0;
 stack<int> temp;
 
 int swap_temp;
@@ -89,42 +90,12 @@ struct node{
    struct node *right, *left;
 };
 
-
+queue<string> asmQ;
 typedef struct node node;
 node *subtree;
 
 //stack for tree
 stack<NodeBlock*> stack_node;
-
-
-//Insert Tree Function
-//void insert(node **tree, int val)
-//{
-//      node *temp = NULL;
-//       temp = (node *)malloc(sizeof(node));
-//       temp->left = temp->right = NULL;
-//       temp->data = val;
-//       *tree = temp;
-//}
-//
-//void insert_opnode(node **tree, int op, node *val)
-//{
-//  // if(!(*tree))
-//  // {
-//      printf("opp = %d\n", op);
-//      insert(tree,op);
-//      printf("TREE->data : %d\n", (*tree)->data);
-//  // }
-//    if(!((*tree)->left))
-//    {
-//       (*tree)->left = val;
-//    }
-//    else
-//    {
-//       (*tree)->right =val;
-//    }
-//}
-
 
 void print_inorder(node *tree)
 {
@@ -146,6 +117,9 @@ void deltree(node * tree)
     }
 }
 
+string asmShow(){
+	return "mov $show,%edi \nmov %eax,%esi \npush %rax\ncall printf\npop %rax\nret\n";
+}
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -155,7 +129,7 @@ extern "C" FILE *yyin;
 void convert_to_asm(int opr1,int opr2);
 void yyerror(const char *s);
 
-#line 159 "comp.tab.c" /* yacc.c:339  */
+#line 133 "comp.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -229,7 +203,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 233 "comp.tab.c" /* yacc.c:358  */
+#line 207 "comp.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -469,18 +443,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  24
+#define YYFINAL  26
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   55
+#define YYLAST   60
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  23
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  11
+#define YYNNTS  12
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  29
+#define YYNRULES  31
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  57
+#define YYNSTATES  59
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -528,9 +502,10 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   108,   108,   109,   113,   114,   115,   116,   117,   118,
-     119,   124,   133,   145,   161,   177,   187,   188,   193,   209,
-     218,   248,   278,   302,   326,   352,   353,   369,   391,   396
+       0,    82,    82,    83,    87,    88,    89,    90,    91,    92,
+      93,    98,   107,   120,   137,   152,   166,   167,   173,   190,
+     199,   225,   255,   279,   304,   331,   332,   348,   355,   364,
+     386,   392
 };
 #endif
 
@@ -543,7 +518,7 @@ static const char *const yytname[] =
   "ASSIGN", "EQ", "IF", "ENDIF", "LOOP", "END", "SHOW", "SHOWX", "COLON",
   "VAR", "PLUS", "MINUS", "TIMES", "DIVIDE", "MOD", "NEG", "$accept",
   "Input", "Line", "Oprn", "Condition", "Ifstm", "Stm", "Stms", "Exp",
-  "Loopstm", "Display", YY_NULLPTR
+  "LNO", "Loopstm", "Display", YY_NULLPTR
 };
 #endif
 
@@ -558,10 +533,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -12
+#define YYPACT_NINF -17
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-12)))
+  (!!((Yystate) == (-17)))
 
 #define YYTABLE_NINF -3
 
@@ -572,12 +547,12 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       1,   -12,   -12,   -12,    25,    25,   -10,    -8,    -2,     9,
-       1,     5,   -12,   -12,     0,   -12,   -12,   -12,   -12,    14,
-      16,   -12,   -12,    31,   -12,   -12,    25,    -2,   -12,     0,
-       0,   -12,    31,   -12,    31,    12,   -12,    29,    32,     6,
-     -12,   -12,    31,    31,    31,    31,    31,    37,    39,   -12,
-      17,    17,   -12,   -12,   -12,   -12,   -12
+      10,   -17,   -17,   -17,    -2,    -1,   -10,    -9,     1,     9,
+      10,     4,   -17,   -17,     6,   -17,   -17,   -17,   -17,    19,
+     -17,   -17,    22,   -17,   -17,    27,   -17,   -17,    -2,     1,
+     -17,     6,     6,   -17,    27,   -17,    27,    21,   -17,    34,
+      17,    15,   -17,   -17,    27,    27,    27,    27,    27,    31,
+      41,   -17,   -16,   -16,   -17,   -17,   -17,   -17,   -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -587,24 +562,24 @@ static const yytype_uint8 yydefact[] =
 {
        0,    10,    12,     4,     0,     0,     0,     0,    11,     0,
        0,     0,     9,     5,    16,     7,     6,     8,    11,     0,
-       0,    28,    29,     0,     1,     3,     0,     0,    17,     0,
-       0,    18,     0,    19,     0,     0,    13,     0,     0,     0,
-      26,    15,     0,     0,     0,     0,     0,     0,     0,    25,
-      20,    21,    22,    23,    24,    14,    27
+      28,    27,     0,    30,    31,     0,     1,     3,     0,     0,
+      17,     0,     0,    18,     0,    19,     0,     0,    13,     0,
+       0,     0,    26,    15,     0,     0,     0,     0,     0,     0,
+       0,    25,    20,    21,    22,    23,    24,    14,    29
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -12,    36,   -12,    -5,    44,   -12,    26,   -11,     8,   -12,
-     -12
+     -17,    39,   -17,    23,    46,   -17,   -17,   -14,    12,   -17,
+     -17,   -17
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     9,    10,    11,    12,    13,    14,    15,    35,    16,
-      17
+      -1,     9,    10,    11,    12,    13,    14,    15,    37,    22,
+      16,    17
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -612,22 +587,24 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      20,    -2,     1,    28,     2,    23,    21,     3,    22,    24,
-       4,    49,     5,    26,     6,     7,    27,     8,    41,    38,
-      29,    36,    30,    42,    43,    44,    45,    46,     2,    42,
-      43,    44,    45,    46,    31,    32,    44,    45,    46,    47,
-      39,    18,    40,    55,    48,    56,    25,    33,    19,    34,
-      50,    51,    52,    53,    54,    37
+      30,     2,    20,    46,    47,    48,    23,    24,    25,    26,
+      -2,     1,    28,     2,    18,    21,     3,    39,    40,     4,
+      51,     5,    29,     6,     7,    31,     8,    43,    32,    50,
+      33,    34,    44,    45,    46,    47,    48,    57,    44,    45,
+      46,    47,    48,    35,    49,    36,    41,    58,    42,    27,
+      19,    38,     0,     0,     0,     0,    52,    53,    54,    55,
+      56
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-       5,     0,     1,    14,     3,     7,    16,     6,    16,     0,
-       9,     5,    11,     8,    13,    14,    16,    16,     6,    30,
-       6,    26,     6,    17,    18,    19,    20,    21,     3,    17,
-      18,    19,    20,    21,     3,     4,    19,    20,    21,    10,
-      32,    16,    34,     6,    12,     6,    10,    16,     4,    18,
-      42,    43,    44,    45,    46,    29
+      14,     3,     3,    19,    20,    21,    16,    16,     7,     0,
+       0,     1,     8,     3,    16,    16,     6,    31,    32,     9,
+       5,    11,    16,    13,    14,     6,    16,     6,     6,    12,
+       3,     4,    17,    18,    19,    20,    21,     6,    17,    18,
+      19,    20,    21,    16,    10,    18,    34,     6,    36,    10,
+       4,    28,    -1,    -1,    -1,    -1,    44,    45,    46,    47,
+      48
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -635,11 +612,11 @@ static const yytype_uint8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     1,     3,     6,     9,    11,    13,    14,    16,    24,
-      25,    26,    27,    28,    29,    30,    32,    33,    16,    27,
-      26,    16,    16,     7,     0,    24,     8,    16,    30,     6,
-       6,     3,     4,    16,    18,    31,    26,    29,    30,    31,
-      31,     6,    17,    18,    19,    20,    21,    10,    12,     5,
-      31,    31,    31,    31,    31,     6,     6
+      25,    26,    27,    28,    29,    30,    33,    34,    16,    27,
+       3,    16,    32,    16,    16,     7,     0,    24,     8,    16,
+      30,     6,     6,     3,     4,    16,    18,    31,    26,    30,
+      30,    31,    31,     6,    17,    18,    19,    20,    21,    10,
+      12,     5,    31,    31,    31,    31,    31,     6,     6
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -647,7 +624,8 @@ static const yytype_uint8 yyr1[] =
 {
        0,    23,    24,    24,    25,    25,    25,    25,    25,    25,
       25,    26,    26,    27,    28,    29,    30,    30,    31,    31,
-      31,    31,    31,    31,    31,    31,    31,    32,    33,    33
+      31,    31,    31,    31,    31,    31,    31,    32,    32,    33,
+      34,    34
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -655,7 +633,8 @@ static const yytype_uint8 yyr2[] =
 {
        0,     2,     0,     2,     1,     1,     1,     1,     1,     1,
        1,     1,     1,     3,     6,     4,     1,     2,     1,     1,
-       3,     3,     3,     3,     3,     3,     2,     6,     2,     2
+       3,     3,     3,     3,     3,     3,     2,     1,     1,     6,
+       2,     2
 };
 
 
@@ -1332,38 +1311,39 @@ yyreduce:
   switch (yyn)
     {
         case 10:
-#line 119 "comp.y" /* yacc.c:1646  */
+#line 93 "comp.y" /* yacc.c:1646  */
     { yyerror("oops\n"); }
-#line 1338 "comp.tab.c" /* yacc.c:1646  */
+#line 1317 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 125 "comp.y" /* yacc.c:1646  */
+#line 99 "comp.y" /* yacc.c:1646  */
     {
   	Variable *node_var = new Variable((yyvsp[0]));
- 	cout << " var = " << (yyvsp[0]) << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
-  	stack_print();
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+  	//stack_print();
   }
-#line 1350 "comp.tab.c" /* yacc.c:1646  */
+#line 1329 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 134 "comp.y" /* yacc.c:1646  */
+#line 108 "comp.y" /* yacc.c:1646  */
     {
   	Constant *node_const = new Constant(); //create constant object 
    node_const->setValue((yyvsp[0]));  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
-   stack_print();
+   //stack_print();
+	cout<<xconstant(node_const->getValue())<<endl;
   }
-#line 1363 "comp.tab.c" /* yacc.c:1646  */
+#line 1343 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 146 "comp.y" /* yacc.c:1646  */
+#line 121 "comp.y" /* yacc.c:1646  */
     { 
   	NodeBlock *node1 = stack_node.top();
   	stack_node.pop();
@@ -1372,55 +1352,58 @@ yyreduce:
 
   	Equal *node_equal = new Equal(node2,node1); //condition object 
   	stack_node.push(node_equal);
-  	node_equal->print();
-  	stack_print();
+  	//node_equal->print();
+  	//stack_print();
+	cout<<xcondition(node1->getAsm(),node2->getAsm(),lCount) <<endl;
   }
-#line 1379 "comp.tab.c" /* yacc.c:1646  */
+#line 1360 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 162 "comp.y" /* yacc.c:1646  */
+#line 138 "comp.y" /* yacc.c:1646  */
     {
-  	stack_node.top()->print();
-  	NodeBlock *node_stm = stack_node.top();
-  	stack_node.pop();
-  	stack_node.top()->print();
-	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
-	stack_node.pop();
-  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
-	node_if->print();
-	stack_node.push(node_if);
-	stack_print();
+  	//NodeBlock *node_stm = stack_node.top();
+  	//stack_node.pop();
+	//NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
+	//stack_node.pop(); // TODO memory leak?
+
+  	//IfStatement *node_if = new IfStatement(node_equal);
+	//stack_node.push(node_if);
+	cout<<xif(&lCount)<<endl;
   }
-#line 1396 "comp.tab.c" /* yacc.c:1646  */
+#line 1375 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 177 "comp.y" /* yacc.c:1646  */
+#line 152 "comp.y" /* yacc.c:1646  */
     {
+	NodeBlock *node_exp = stack_node.top();
   	Variable *node_var = new Variable((yyvsp[-3]));
- 	cout << " var = " << (yyvsp[-3]) << endl;
-	cout << "var assign @ = " << node_var->getValue() << endl;
+ 	//cout << " var = " << $1 << endl;
+ 	stack_node.push(node_exp);
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+
+	cout<<xassign(node_exp->getAsm(),node_var->getValue())<<endl;
   	
-  	stack_print();
+  	//stack_print();
   }
-#line 1408 "comp.tab.c" /* yacc.c:1646  */
+#line 1391 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 187 "comp.y" /* yacc.c:1646  */
-    { cout << "statement " << endl; }
-#line 1414 "comp.tab.c" /* yacc.c:1646  */
+#line 166 "comp.y" /* yacc.c:1646  */
+    {  }
+#line 1397 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 188 "comp.y" /* yacc.c:1646  */
+#line 167 "comp.y" /* yacc.c:1646  */
     { }
-#line 1420 "comp.tab.c" /* yacc.c:1646  */
+#line 1403 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 193 "comp.y" /* yacc.c:1646  */
+#line 173 "comp.y" /* yacc.c:1646  */
     {
    //TAC Syntax
    /*cout << "T" << count << " = " << $1 <<endl; 
@@ -1431,31 +1414,32 @@ yyreduce:
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue((yyvsp[0]));  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-   stack_print();
+	cout<<xconstant(node_const->getValue())<<endl;
+   //stack_print();
    }
-#line 1441 "comp.tab.c" /* yacc.c:1646  */
+#line 1425 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 209 "comp.y" /* yacc.c:1646  */
+#line 190 "comp.y" /* yacc.c:1646  */
     {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
  	Variable *node_var = new Variable((yyvsp[0]));
- 	cout << " var = " << (yyvsp[0]) << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
-	stack_print();
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+	//stack_print();
 
   }
-#line 1455 "comp.tab.c" /* yacc.c:1646  */
+#line 1439 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 218 "comp.y" /* yacc.c:1646  */
+#line 199 "comp.y" /* yacc.c:1646  */
     {
       //TAC Syntax
       /*swap_temp = temp.top();
@@ -1478,19 +1462,15 @@ yyreduce:
 
       // FOR TESTING VALUE 
       
-      NodeBlock* node_test = stack_node.top();
-      cout << "test print from stack" << endl;  
-      node_test->print();
-
-      stack_print();
+ 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
 	  
 
     }
-#line 1490 "comp.tab.c" /* yacc.c:1646  */
+#line 1470 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 248 "comp.y" /* yacc.c:1646  */
+#line 225 "comp.y" /* yacc.c:1646  */
     {
 
       //TAC Syntax
@@ -1512,20 +1492,20 @@ yyreduce:
 
       MinusSyntax* minsyn = new MinusSyntax(node_left,node_right);
       stack_node.push(minsyn);
-      minsyn->print();
+      //minsyn->print();
       // FOR TESTING VALUE 
       /*
       NodeBlock* node_test = stack_node.top();
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
-      
+ 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),"")<<endl;      
     }
-#line 1525 "comp.tab.c" /* yacc.c:1646  */
+#line 1505 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 278 "comp.y" /* yacc.c:1646  */
+#line 255 "comp.y" /* yacc.c:1646  */
     {
       //TAC Syntax
      /* swap_temp = temp.top();
@@ -1546,15 +1526,15 @@ yyreduce:
       TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
       stack_node.push(timessyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
-
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
     }
-#line 1554 "comp.tab.c" /* yacc.c:1646  */
+#line 1534 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 302 "comp.y" /* yacc.c:1646  */
+#line 279 "comp.y" /* yacc.c:1646  */
     {
       //TAC Syntax
       /*swap_temp = temp.top();
@@ -1575,15 +1555,16 @@ yyreduce:
       DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
       stack_node.push(dividesyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
 
-    }
-#line 1583 "comp.tab.c" /* yacc.c:1646  */
+ 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+}
+#line 1564 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 326 "comp.y" /* yacc.c:1646  */
+#line 304 "comp.y" /* yacc.c:1646  */
     {
       //TAC Syntax
   	  /*
@@ -1606,83 +1587,107 @@ yyreduce:
       ModSyntax* modsyn = new ModSyntax(node_left,node_right);
       stack_node.push(modsyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),"")<<endl;
 
     }
-#line 1614 "comp.tab.c" /* yacc.c:1646  */
+#line 1596 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 25:
-#line 352 "comp.y" /* yacc.c:1646  */
+#line 331 "comp.y" /* yacc.c:1646  */
     { }
-#line 1620 "comp.tab.c" /* yacc.c:1646  */
+#line 1602 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 26:
-#line 353 "comp.y" /* yacc.c:1646  */
+#line 332 "comp.y" /* yacc.c:1646  */
     {
-      //TAC SyntaxF
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;	
+      //TAC Syntax
+      //cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+
       //TREE Syntax
       NodeBlock *node;
       node = stack_node.top();
-      cout << "OLD: " << node->getValue() << endl;
+      //cout << "OLD: " << node->getValue() << endl;
       stack_node.pop();
       int temp_neg = 0-(node->getValue());
       node->setValue(temp_neg);
-      cout << "NEW: " << node->getValue() << endl;
+      //cout << "NEW: " << node->getValue() << endl;
       stack_node.push(node);
     }
-#line 1638 "comp.tab.c" /* yacc.c:1646  */
+#line 1621 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 369 "comp.y" /* yacc.c:1646  */
+#line 349 "comp.y" /* yacc.c:1646  */
     {
-    printf("LOOP\n");
-
-    stack_node.top()->print();
-    NodeBlock *node_stm = stack_node.top();
-    stack_node.pop();
-    stack_node.top()->print();
-    NodeBlock *node_const = stack_node.top();
-    stack_node.pop();
-    Variable *node_var = new Variable(-1);
-    node_var->print();
-    Equal *node_eql = new Equal (node_var,node_const);
-    node_eql->print();
-    LoopStatement *node_loop = new LoopStatement(node_eql,node_stm);
-    node_loop->print();
-    stack_print();
-    stack_node.push(node_loop);
-    stack_print();
+  	Variable *node_var = new Variable((yyvsp[0]));
+ 	stack_node.push(node_var);
+	cout<<xloopStart(node_var->getAsm(),lCount)<<endl;
   }
-#line 1662 "comp.tab.c" /* yacc.c:1646  */
+#line 1631 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 28:
-#line 391 "comp.y" /* yacc.c:1646  */
+#line 356 "comp.y" /* yacc.c:1646  */
     {
-  
-    printf("SHOW\n");
-    
+  	Constant *node_const = new Constant();
+	node_const->setValue((yyvsp[0]));  //add value to constant node
+	stack_node.push(node_const);
+	cout<<xloopStart(node_const->getAsm(),lCount)<<endl;
   }
-#line 1672 "comp.tab.c" /* yacc.c:1646  */
+#line 1642 "comp.tab.c" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 396 "comp.y" /* yacc.c:1646  */
+#line 364 "comp.y" /* yacc.c:1646  */
     {
 
-    printf("SHOWX\n");
+    //stack_node.top()->print();
+    //NodeBlock *node_stm = stack_node.top();
+    //stack_node.pop();
+    //stack_node.top()->print();
+    //NodeBlock *node_const = stack_node.top();
+    //stack_node.pop();
+    Variable *node_var = new Variable(-1);
+    //node_var->print();
 
+    LoopStatement *node_loop = new LoopStatement(node_var);
+
+    //node_loop->print();
+    //stack_print();
+    //stack_node.push(node_loop);
+    //stack_print();
+	cout<<xloop(&lCount)<<endl;
   }
-#line 1682 "comp.tab.c" /* yacc.c:1646  */
+#line 1666 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 30:
+#line 386 "comp.y" /* yacc.c:1646  */
+    {  
+    printf("SHOW\n");
+    //  Variable *node_var = new Variable($2);
+    Show *node_show = new Show ((yyvsp[0])*4);
+    node_show->print();
+  }
+#line 1677 "comp.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 31:
+#line 392 "comp.y" /* yacc.c:1646  */
+    {
+    printf("SHOWX\n");
+    ShowX *node_show = new ShowX ((yyvsp[0])*4);
+    node_show->print();
+  }
+#line 1687 "comp.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1686 "comp.tab.c" /* yacc.c:1646  */
+#line 1691 "comp.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1910,9 +1915,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 402 "comp.y" /* yacc.c:1906  */
-
-
+#line 398 "comp.y" /* yacc.c:1906  */
 
 
 void yyerror(const char *s) {
@@ -1921,10 +1924,6 @@ void yyerror(const char *s) {
   exit(-1);
 }
 
-void convert_to_asm(int opr1, int opr2)
-{
-
-}
 
 void stack_print()
 {
@@ -1953,6 +1952,8 @@ void stack_print()
 
 int main() {
   while(yyparse());
+// TODO (ziko) : Travers through queue and write it to file
+
 /*
   // open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
@@ -1969,5 +1970,6 @@ int main() {
     yyparse();
   } while (!feof(yyin));
 */
-return 0;
+  
+  return 0;
 }

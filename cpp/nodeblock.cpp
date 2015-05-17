@@ -1,13 +1,13 @@
 #include<string> 
 #include<iostream>
+#include<sstream>
 using namespace std;
 
 
 class NodeBlock
 {
-	protected   : 
-		char type; //tell about type of nodeBlock
 	public:
+		char type; //tell about type of nodeBlock
 		NodeBlock *left; 
 		NodeBlock *right;
 		//int value;
@@ -16,6 +16,7 @@ class NodeBlock
 		virtual void setValue(int) {};
 		virtual int  getValue() {};
 		virtual void print() { cout << "NodeBlock" << endl; };
+		virtual string getAsm() {};
 		void cgen(); // generate code assembly
 };
 
@@ -39,7 +40,14 @@ class Variable : public NodeBlock
 		virtual void print(){
 			cout << "variable = " << endl;
 		}
-
+		virtual string getAsm(){
+	//		stringstream val;
+	//		val <<"-"<<address<<"(%rsp)";
+	//		return val.str();
+			stringstream val;
+			val <<address;
+			return val.str();
+		}
 };
 
 class Constant : public NodeBlock  
@@ -60,22 +68,28 @@ class Constant : public NodeBlock
 		virtual void print(){
 			cout << "Constant = " << value << endl;
 		}
+		virtual string getAsm(){
+			//stringstream val;
+			//val <<"$"<<value;
+			//return val.str();
+			return "";
+		}
 };
 
 class IfStatement : public NodeBlock
 {
 	public:
-		IfStatement(NodeBlock *condition,NodeBlock *then) {
+		IfStatement(NodeBlock *condition) {
 			this->left = condition;
-			this->right = then;
+			//this->right = then;
 			this->type = 'i';
 		}
 		~IfStatement() {}
 		virtual void print() {
 			cout << "condition is ";  
 			this->left->print();
-			cout << " then ";
-			this->right->print();
+			//cout << " then ";
+			//this->right->print();
 		}
 };
 
@@ -95,9 +109,15 @@ class AddSyntax : public NodeBlock
       }
 		virtual void print()
 		{
-			cout << "PLUS :: left = " << this->left->getValue();
-			cout << " right = " << this->right->getValue() << endl;
+			cout << "PLUS :: left = ";
+			this->left->print();
+			cout << " right = ";
+			this->right->print();
+			cout<< endl;
 		} 
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class Equal :public NodeBlock
@@ -129,6 +149,9 @@ class MinusSyntax : public NodeBlock
 			cout << "MINUS :  left = " << this->left->getValue();
 			cout << " right = " << this->right->getValue() << endl;
 		}
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class TimesSyntax : public NodeBlock
@@ -142,6 +165,9 @@ class TimesSyntax : public NodeBlock
 		virtual void print(){
 			cout << " MUL :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
+		}
+		virtual string getAsm(){
+			return "";
 		}
 };
 
@@ -157,6 +183,9 @@ class DivideSyntax : public NodeBlock
 			cout << "DIV :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class ModSyntax : public NodeBlock
@@ -171,21 +200,53 @@ class ModSyntax : public NodeBlock
 			cout << "MOD :: left = " << this->left->getValue() << endl;
 			cout << " right = " << this->right->getValue() << endl;
 		}
+		virtual string getAsm(){
+			return "";
+		}
 };
 
 class LoopStatement : public NodeBlock
 {
       public:
-          LoopStatement(NodeBlock *condition,NodeBlock *statement) {
+          LoopStatement(NodeBlock *condition) {
           this->left = condition;
-          this->right = statement;
+          //this->right = statement;
           this->type = 'l';
       }
       ~LoopStatement() {}
       virtual void print() {
          cout << "condition is ";
          this->left->print();
-         cout << " statement ";
-         this->right->print();
+         //cout << " statement ";
+         //this->right->print();
       }
+
+};
+
+class Show : public NodeBlock
+{
+      private:
+            int variable;
+      public:
+         Show(int variable){
+            this->variable = variable;
+	 }
+	 ~Show(){}
+	 virtual void print(){
+	   cout << "SHOW : " << variable << endl;
+	 }
+};
+
+class ShowX : public NodeBlock 
+{
+       private:
+          int variable;
+       public:
+          ShowX(int variable){
+             this->variable = variable;
+       }
+       ~ShowX(){}
+       virtual void print(){
+            cout << "SHOWX : " << variable << endl;
+       }
 };
