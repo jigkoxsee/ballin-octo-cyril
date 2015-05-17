@@ -2,15 +2,17 @@
 #include <cstdio>
 #include <iostream>
 #include <string>
+//#include <sstream>
 #include <stack>
-#include <stdio.h>
-#include <stdlib.h>
-#include "nodeblock.h"
+#include <queue>
+#include <cstdlib>
+#include "nodeblock.cpp"
+#include "asmgen.cpp"
 using namespace std;
 
 void stack_print();
 //TAC initial implementation.
-int count =0;
+int lCount =0;
 stack<int> temp;
 int swap_temp;
 NodeBlock nodeblock; //create nodeblock << need to fixed !!
@@ -21,40 +23,12 @@ struct node{
    struct node *right, *left;
 };
 
-
+queue<string> asmQ;
 typedef struct node node;
 node *subtree;
 
 //stack for tree
 stack<NodeBlock*> stack_node;
-
-//Insert Tree Function
-//void insert(node **tree, int val)
-//{
-//      node *temp = NULL;
-//       temp = (node *)malloc(sizeof(node));
-//       temp->left = temp->right = NULL;
-//       temp->data = val;
-//       *tree = temp;
-//}
-//
-//void insert_opnode(node **tree, int op, node *val)
-//{
-//  // if(!(*tree))
-//  // {
-//      printf("opp = %d\n", op);
-//      insert(tree,op);
-//      printf("TREE->data : %d\n", (*tree)->data);
-//  // }
-//    if(!((*tree)->left))
-//    {
-//       (*tree)->left = val;
-//    }
-//    else
-//    {
-//       (*tree)->right =val;
-//    }
-//}
 
 void print_inorder(node *tree)
 {
@@ -76,6 +50,9 @@ void deltree(node * tree)
     }
 }
 
+string asmShow(){
+	return "mov $show,%edi \nmov %eax,%esi \npush %rax\ncall printf\npop %rax\nret\n";
+}
 
 // stuff from flex that bison needs to know about:
 extern "C" int yylex();
@@ -119,10 +96,10 @@ Oprn:
   VAR 
   {
   	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
-  	stack_print();
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+  	//stack_print();
   }
 
   | CONST
@@ -130,9 +107,10 @@ Oprn:
   	Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
-   stack_print();
+   //stack_print();
+	asmQ.push(xconstant(node_const->getValue()));
   }
 ;
 
@@ -146,40 +124,45 @@ Condition:
 
   	Equal *node_equal = new Equal(node2,node1); //condition object 
   	stack_node.push(node_equal);
-  	node_equal->print();
-  	stack_print();
+  	//node_equal->print();
+  	//stack_print();
+	asmQ.push(xcondition(node1->getAsm(),node2->getAsm(),lCount));
   }
 ;
 
 
 Ifstm:
-  IF Condition ENDLN Stm ENDIF ENDLN  // change Stms to Stm for first version support only one statement
+  IF Condition ENDLN Stms ENDIF ENDLN  // change Stms to Stm for first version support only one statement
   {
-  	stack_node.top()->print();
-  	NodeBlock *node_stm = stack_node.top();
-  	stack_node.pop();
-  	stack_node.top()->print();
-	NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
-	stack_node.pop();
-  	IfStatement *node_if = new IfStatement(node_equal,node_stm);
-	node_if->print();
-	stack_print();
+  	//NodeBlock *node_stm = stack_node.top();
+  	//stack_node.pop();
+	//NodeBlock *node_equal = stack_node.top();  //statements do after pass condition
+	//stack_node.pop(); // TODO memory leak?
+
+  	//IfStatement *node_if = new IfStatement(node_equal);
+	//stack_node.push(node_if);
+	asmQ.push(xif(&lCount));
   }
+
 ;
 
 Stm:
   VAR ASSIGN Exp ENDLN{
+	NodeBlock *node_exp = stack_node.top();
   	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
-	cout << "var assign @ = " << node_var->getValue() << endl;
-  	
-  	stack_print();
+ 	//cout << " var = " << $1 << endl;
+ 	stack_node.push(node_exp);
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+
+	asmQ.push(xassign(node_exp->getAsm(),node_var->getValue()));
+  	//stack_print();
   }
 ;
 
 Stms:
-  Stm ENDLN{ cout << "statement " << endl; }
-  | Stm ENDLN Stms { }
+  Stm {  }
+  | Stm  Stms { }
+
 ;
 
 Exp: 
@@ -194,19 +177,20 @@ Exp:
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
    //test aassign
-   cout << "const assign : " << node_const->getValue() << endl;
+   //cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-   stack_print();
+	asmQ.push(xconstant(node_const->getValue()));
+   //stack_print();
    } 
   | VAR {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
  	Variable *node_var = new Variable($1);
- 	cout << " var = " << $1 << endl;
+ 	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
-	cout << "var assign @ = " << node_var->getValue() << endl;
-	stack_print();
+	//cout << "var assign @ = " << node_var->getValue() << endl;
+	//stack_print();
 
   }
   | Exp PLUS Exp {
@@ -231,11 +215,7 @@ Exp:
 
       // FOR TESTING VALUE 
       
-      NodeBlock* node_test = stack_node.top();
-      cout << "test print from stack" << endl;  
-      node_test->print();
-
-      stack_print();
+ 	asmQ.push(xadd(node_right->getAsm(),node_left->getAsm(),"")); 
 	  
 
     }
@@ -260,14 +240,14 @@ Exp:
 
       MinusSyntax* minsyn = new MinusSyntax(node_left,node_right);
       stack_node.push(minsyn);
-      minsyn->print();
+      //minsyn->print();
       // FOR TESTING VALUE 
       /*
       NodeBlock* node_test = stack_node.top();
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
-      
+ 	asmQ.push(xsub(node_right->getAsm(),node_left->getAsm(),""));      
     }
   | Exp TIMES Exp {
       //TAC Syntax
@@ -289,9 +269,9 @@ Exp:
       TimesSyntax* timessyn = new TimesSyntax(node_left,node_right);
       stack_node.push(timessyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
-
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	asmQ.push(xmul(node_right->getAsm(),node_left->getAsm(),""));
     }         
   | Exp DIVIDE Exp {
       //TAC Syntax
@@ -313,10 +293,11 @@ Exp:
       DivideSyntax* dividesyn = new DivideSyntax(node_left,node_right);
       stack_node.push(dividesyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
 
-    } 
+ 	asmQ.push(xdiv(node_right->getAsm(),node_left->getAsm(),""));
+} 
   | Exp MOD Exp {
       //TAC Syntax
   	  /*
@@ -339,37 +320,80 @@ Exp:
       ModSyntax* modsyn = new ModSyntax(node_left,node_right);
       stack_node.push(modsyn);
 
-      NodeBlock* node_test = stack_node.top();
-      node_test->print();
+      //NodeBlock* node_test = stack_node.top();
+      //node_test->print();
+ 	asmQ.push(xmod(node_right->getAsm(),node_left->getAsm(),""));
 
     }
   | LEFT Exp RIGHT { }
   | MINUS Exp %prec NEG {
-      //TAC SyntaxF
-      cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;	
+      //TAC Syntax
+      //cout << "T" << temp.top() << " =  -" << "T" << temp.top() << endl;
+
       //TREE Syntax
       NodeBlock *node;
       node = stack_node.top();
-      cout << "OLD: " << node->getValue() << endl;
+      //cout << "OLD: " << node->getValue() << endl;
       stack_node.pop();
       int temp_neg = 0-(node->getValue());
       node->setValue(temp_neg);
-      cout << "NEW: " << node->getValue() << endl;
+      //cout << "NEW: " << node->getValue() << endl;
       stack_node.push(node);
     }
 ;
+LNO:
+  VAR 
+  {
+  	Variable *node_var = new Variable($1);
+ 	stack_node.push(node_var);
+	asmQ.push(xloopStart(node_var->getAsm(),lCount));
+  }
 
+  | CONST
+  {
+  	Constant *node_const = new Constant();
+	node_const->setValue($1);  //add value to constant node
+	stack_node.push(node_const);
+	asmQ.push(xloopStart(node_const->getAsm(),lCount));
+  }
+;
 Loopstm:
-  LOOP CONST COLON CONST ENDLN Stms END ENDLN { printf("LOOP\n");}
+  LOOP LNO ENDLN Stms END ENDLN {
+
+    //stack_node.top()->print();
+    //NodeBlock *node_stm = stack_node.top();
+    //stack_node.pop();
+    //stack_node.top()->print();
+    //NodeBlock *node_const = stack_node.top();
+    //stack_node.pop();
+    Variable *node_var = new Variable(-1);
+    //node_var->print();
+
+    LoopStatement *node_loop = new LoopStatement(node_var);
+
+    //node_loop->print();
+    //stack_print();
+    //stack_node.push(node_loop);
+    //stack_print();
+	asmQ.push(xloop(&lCount));
+  }
 ;
 
 Display:
-  SHOW VAR { printf("SHOW\n");}
-  | SHOWX VAR { printf("SHOWX\n");}
+  SHOW VAR {  
+    Variable *node_var = new Variable($2);
+    Show *node_show = new Show ($2*4);
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),false));
+  }
+  | SHOWX VAR {
+    Variable *node_var = new Variable($2);
+    ShowX *node_show = new ShowX ($2*4);
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),true));
+  }
 ;
 %%
-
-
 
 void yyerror(const char *s) {
   cout << "EEK, parse error!  Message: " << s << endl;
@@ -377,10 +401,6 @@ void yyerror(const char *s) {
   exit(-1);
 }
 
-void convert_to_asm(int opr1, int opr2)
-{
-
-}
 
 void stack_print()
 {
@@ -409,6 +429,14 @@ void stack_print()
 
 int main() {
   while(yyparse());
+	cout<<genHead()<<endl;
+// TODO (ziko) : Travers through queue and write it to file
+	while(asmQ.empty()){
+		cout<<asmQ.front()<<endl;
+		asmQ.pop();
+	}
+	cout<<genTail()<<endl;
+
 /*
   // open a file handle to a particular file:
   FILE *myfile = fopen("a.snazzle.file", "r");
@@ -425,5 +453,6 @@ int main() {
     yyparse();
   } while (!feof(yyin));
 */
-return 0;
+  
+  return 0;
 }
