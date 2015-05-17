@@ -112,7 +112,7 @@ Oprn:
    //cout << "const assign : " << node_const->getValue() << endl;
    stack_node.push(node_const);
    //stack_print();
-	cout<<xconstant(node_const->getValue())<<endl;
+	asmQ.push(xconstant(node_const->getValue()));
   }
 ;
 
@@ -128,7 +128,7 @@ Condition:
   	stack_node.push(node_equal);
   	//node_equal->print();
   	//stack_print();
-	cout<<xcondition(node1->getAsm(),node2->getAsm(),lCount) <<endl;
+	asmQ.push(xcondition(node1->getAsm(),node2->getAsm(),lCount));
   }
 ;
 
@@ -143,7 +143,7 @@ Ifstm:
 
   	//IfStatement *node_if = new IfStatement(node_equal);
 	//stack_node.push(node_if);
-	cout<<xif(&lCount)<<endl;
+	asmQ.push(xif(&lCount));
   }
 
 ;
@@ -156,8 +156,7 @@ Stm:
  	stack_node.push(node_exp);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
 
-	cout<<xassign(node_exp->getAsm(),node_var->getValue())<<endl;
-  	
+	asmQ.push(xassign(node_exp->getAsm(),node_var->getValue()));
   	//stack_print();
   }
 ;
@@ -184,7 +183,7 @@ Exp:
 
    //insert(&constant_node, $1);
    stack_node.push(node_const);
-	cout<<xconstant(node_const->getValue())<<endl;
+	asmQ.push(xconstant(node_const->getValue()));
    //stack_print();
    } 
   | VAR {
@@ -218,7 +217,7 @@ Exp:
 
       // FOR TESTING VALUE 
       
- 	cout<<xadd(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
+ 	asmQ.push(xadd(node_right->getAsm(),node_left->getAsm(),"")); 
 	  
 
     }
@@ -250,7 +249,7 @@ Exp:
       cout << "test print from stack" << endl;  
       node_test->print();
 	  */
- 	cout<<xsub(node_right->getAsm(),node_left->getAsm(),"")<<endl;      
+ 	asmQ.push(xsub(node_right->getAsm(),node_left->getAsm(),""));      
     }
   | Exp TIMES Exp {
       //TAC Syntax
@@ -274,7 +273,7 @@ Exp:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmul(node_right->getAsm(),node_left->getAsm(),"")<<endl; 
+ 	asmQ.push(xmul(node_right->getAsm(),node_left->getAsm(),""));
     }         
   | Exp DIVIDE Exp {
       //TAC Syntax
@@ -299,7 +298,7 @@ Exp:
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
 
- 	cout<<xdiv(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+ 	asmQ.push(xdiv(node_right->getAsm(),node_left->getAsm(),""));
 } 
   | Exp MOD Exp {
       //TAC Syntax
@@ -325,7 +324,7 @@ Exp:
 
       //NodeBlock* node_test = stack_node.top();
       //node_test->print();
- 	cout<<xmod(node_right->getAsm(),node_left->getAsm(),"")<<endl;
+ 	asmQ.push(xmod(node_right->getAsm(),node_left->getAsm(),""));
 
     }
   | LEFT Exp RIGHT { }
@@ -349,7 +348,7 @@ LNO:
   {
   	Variable *node_var = new Variable($1);
  	stack_node.push(node_var);
-	cout<<xloopStart(node_var->getAsm(),lCount)<<endl;
+	asmQ.push(xloopStart(node_var->getAsm(),lCount));
   }
 
   | CONST
@@ -357,7 +356,7 @@ LNO:
   	Constant *node_const = new Constant();
 	node_const->setValue($1);  //add value to constant node
 	stack_node.push(node_const);
-	cout<<xloopStart(node_const->getAsm(),lCount)<<endl;
+	asmQ.push(xloopStart(node_const->getAsm(),lCount));
   }
 ;
 Loopstm:
@@ -369,7 +368,7 @@ Loopstm:
     //stack_node.top()->print();
     //NodeBlock *node_const = stack_node.top();
     //stack_node.pop();
-    Variable *node_var = new Variable(-1);
+    Variable *node_var = new Vgit ariable(-1);
     //node_var->print();
 
     LoopStatement *node_loop = new LoopStatement(node_var);
@@ -378,21 +377,22 @@ Loopstm:
     //stack_print();
     //stack_node.push(node_loop);
     //stack_print();
-	cout<<xloop(&lCount)<<endl;
+	asmQ.push(xloop(&lCount));
   }
 ;
 
 Display:
   SHOW VAR {  
-    printf("SHOW\n");
-    //  Variable *node_var = new Variable($2);
+    Variable *node_var = new Variable($2);
     Show *node_show = new Show ($2*4);
-    node_show->print();
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),false));
   }
   | SHOWX VAR {
-    printf("SHOWX\n");
+    Variable *node_var = new Variable($2);
     ShowX *node_show = new ShowX ($2*4);
-    node_show->print();
+//    node_show->print();
+    asmQ.push(xprint(node_var->getAsm(),true));
   }
 ;
 %%
@@ -431,7 +431,13 @@ void stack_print()
 
 int main() {
   while(yyparse());
+	cout<<genHead()<<endl;
 // TODO (ziko) : Travers through queue and write it to file
+	while(asmQ.empty()){
+		cout<<asmQ.front()<<endl;
+		asmQ.pop();
+	}
+	cout<<genTail()<<endl;
 
 /*
   // open a file handle to a particular file:
