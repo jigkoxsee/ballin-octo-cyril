@@ -8,9 +8,9 @@ string xassign(string op1,int offset){
 	stringstream asmCode;
 	if(op1==""){
 		asmCode <<"\tpop %rax"<<endl;	
-		asmCode <<"\tmovl %eax,-"<<offset<<"(%rsp)"<<endl;
+		asmCode <<"\tmov %eax,-"<<offset<<"(%rbp)"<<endl;
 	}else
-		asmCode <<"\tmovl -"<<op1<<"(%rsp),-"<<offset<<"(%rsp)"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp),-"<<offset<<"(%rbp)"<<endl;
 	return asmCode.str();
 }
 
@@ -26,12 +26,12 @@ string xadd(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
 	asmCode <<"\taddl %ebx, %eax"<<endl;
@@ -44,12 +44,12 @@ string xsub(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
 	asmCode <<"\tsubl %ebx, %eax"<<endl;
@@ -62,12 +62,12 @@ string xmul(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
 	asmCode <<"\tmull %ebx, %eax"<<endl;
@@ -79,12 +79,12 @@ string xdiv(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
 	asmCode <<"\tdivl %ebx, %eax"<<endl;
@@ -97,12 +97,12 @@ string xmod(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
 	asmCode <<"\tdivl %ebx, %eax"<<endl;
@@ -115,12 +115,12 @@ string xcondition(string op1,string op2,int lCount){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op1<<"(%rsp),%ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp),%ebx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op2<<"(%rsp),%eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp),%eax"<<endl;
 	}
 	asmCode <<"\tcmp %eax,%ebx"<<endl;
 	asmCode <<"\tjnz L"<<lCount<<":"<<endl;
@@ -140,7 +140,7 @@ string xloopStart(string op,int lCount){
 	if(op==""){
 		asmCode <<"\tpop %ecx"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op<<"(%rsp), %ecx"<<endl;
+		asmCode <<"\tmov -"<<op<<"(%rbp), %ecx"<<endl;
 	}
 	asmCode <<"\txor %rax,%rax"<<endl;
 	asmCode <<"\tcmp %rax,%ecx"<<endl;
@@ -171,7 +171,7 @@ string xprint(string op,bool hex){
 	if(op==""){
 		asmCode <<"\tpop %eax"<<endl;
 	}else{
-		asmCode <<"\tmovl -"<<op<<"(%rsp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op<<"(%rbp), %eax"<<endl;
 	}
 	asmCode <<"\tmovl %eax,%esi"<<endl;
 
@@ -193,8 +193,8 @@ string genHead(){
 	asmC <<"\t.text"<<endl;
 
 	asmC <<"main:"<<endl;
-	asmC <<"\tsubl $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
-
+	asmC <<"\tsub $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
+	asmC <<"\tmov %rsp,%rbp"<<endl;
 	return 	asmC.str();
 }
 
