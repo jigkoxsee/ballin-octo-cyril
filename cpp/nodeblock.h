@@ -173,5 +173,19 @@ class ModSyntax : public NodeBlock
 		}
 };
 
-
-class 
+class LoopStatement : public NodeBlock
+{
+      public:
+          LoopStatement(NodeBlock *condition,NodeBlock *statement) {
+          this->left = condition;
+          this->right = statement;
+          this->type = 'l';
+      }
+      ~LoopStatement() {}
+      virtual void print() {
+         cout << "condition is ";
+         this->left->print();
+         cout << " statement ";
+         this->right->print();
+      }
+};

@@ -3,15 +3,18 @@
 #include <iostream>
 #include <string>
 #include <stack>
+#include <queue>
 #include <stdio.h>
 #include <stdlib.h>
 #include "nodeblock.h"
 using namespace std;
 
 void stack_print();
+queue<NodeBlock*> queue_node;
 //TAC initial implementation.
 int count =0;
 stack<int> temp;
+
 int swap_temp;
 NodeBlock nodeblock; //create nodeblock << need to fixed !!
 
@@ -27,6 +30,7 @@ node *subtree;
 
 //stack for tree
 stack<NodeBlock*> stack_node;
+
 
 //Insert Tree Function
 //void insert(node **tree, int val)
@@ -55,6 +59,7 @@ stack<NodeBlock*> stack_node;
 //       (*tree)->right =val;
 //    }
 //}
+
 
 void print_inorder(node *tree)
 {
@@ -101,14 +106,14 @@ void yyerror(const char *s);
 %%
 
 Input:
-     | Line ENDLN Input;
+     | Line Input;
 ;
 
 Line:
   ENDLN 
   | Ifstm
   | Loopstm
-  | Stm 
+  | Stms 
   | Display
   | Condition
   | error { yyerror("oops\n"); } 
@@ -163,6 +168,7 @@ Ifstm:
 	stack_node.pop();
   	IfStatement *node_if = new IfStatement(node_equal,node_stm);
 	node_if->print();
+	stack_node.push(node_if);
 	stack_print();
   }
 ;
@@ -178,8 +184,8 @@ Stm:
 ;
 
 Stms:
-  Stm ENDLN{ cout << "statement " << endl; }
-  | Stm ENDLN Stms { }
+  Stm { cout << "statement " << endl; }
+  | Stm  Stms { }
 ;
 
 Exp: 
@@ -360,12 +366,38 @@ Exp:
 ;
 
 Loopstm:
-  LOOP CONST COLON CONST ENDLN Stms END ENDLN { printf("LOOP\n");}
+  LOOP Oprn ENDLN Stms END ENDLN {
+    printf("LOOP\n");
+
+    stack_node.top()->print();
+    NodeBlock *node_stm = stack_node.top();
+    stack_node.pop();
+    stack_node.top()->print();
+    NodeBlock *node_const = stack_node.top();
+    stack_node.pop();
+    Variable *node_var = new Variable(-1);
+    node_var->print();
+    Equal *node_eql = new Equal (node_var,node_const);
+    node_eql->print();
+    LoopStatement *node_loop = new LoopStatement(node_eql,node_stm);
+    node_loop->print();
+    stack_print();
+    stack_node.push(node_loop);
+    stack_print();
+  }
 ;
 
 Display:
-  SHOW VAR { printf("SHOW\n");}
-  | SHOWX VAR { printf("SHOWX\n");}
+  SHOW VAR {
+  
+    printf("SHOW\n");
+    
+  }
+  | SHOWX VAR {
+
+    printf("SHOWX\n");
+
+  }
 ;
 %%
 
