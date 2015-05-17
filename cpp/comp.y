@@ -11,9 +11,11 @@
 using namespace std;
 
 void stack_print();
+queue<NodeBlock*> queue_node;
 //TAC initial implementation.
 int lCount =0;
 stack<int> temp;
+
 int swap_temp;
 NodeBlock nodeblock; //create nodeblock << need to fixed !!
 
@@ -78,7 +80,7 @@ void yyerror(const char *s);
 %%
 
 Input:
-     | Input Line 
+     | Line Input;
 ;
 
 Line:
@@ -204,7 +206,7 @@ Exp:
 
       //TREE Syntax
       NodeBlock *node_left;
-      NodeBlock *node_right; 
+      NodeBlock *node_right;
       node_right = stack_node.top();
       stack_node.pop();
       node_left = stack_node.top();
@@ -429,9 +431,10 @@ void stack_print()
 
 int main() {
   while(yyparse());
+	cout<<"END"<<endl;
 	cout<<genHead()<<endl;
 // TODO (ziko) : Travers through queue and write it to file
-	while(asmQ.empty()){
+	while(!asmQ.empty()){
 		cout<<asmQ.front()<<endl;
 		asmQ.pop();
 	}

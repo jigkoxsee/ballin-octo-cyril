@@ -220,6 +220,7 @@ class LoopStatement : public NodeBlock
          //cout << " statement ";
          //this->right->print();
       }
+
 };
 
 class Show : public NodeBlock
@@ -249,4 +250,3 @@ class ShowX : public NodeBlock
             cout << "SHOWX : " << variable << endl;
        }
 };
-
