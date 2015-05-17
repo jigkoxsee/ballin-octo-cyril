@@ -429,9 +429,11 @@ void stack_print()
 
 int main() {
   while(yyparse());
+	cout<<"END"<<endl;
 	cout<<genHead()<<endl;
 // TODO (ziko) : Travers through queue and write it to file
 	while(asmQ.empty()){
+		cout<<"-=-=-"<<endl;
 		cout<<asmQ.front()<<endl;
 		asmQ.pop();
 	}
