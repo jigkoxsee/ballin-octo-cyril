@@ -164,25 +164,22 @@ string xloop(int *lCount){
 
 string xprint(string op,bool hex){
 	stringstream asmCode;
-	if(hex){
-		asmCode <<"\tmov $showx, %edi"<<endl;
-	}else{
-		asmCode <<"\tmov $show, %edi"<<endl;
-	}
-
-	if(op==""){
-		asmCode <<"\tpop %eax"<<endl;
-	}else{
-		asmCode <<"\tmov -"<<op<<"(%rbp), %eax"<<endl;
-	}
-	asmCode <<"\tmovl %eax,%esi"<<endl;
-
 	asmCode <<"\tpush %rax"<<endl;
 	asmCode <<"\tpush %rbx"<<endl;
 	asmCode <<"\tpush %rcx"<<endl;
+	if(hex){
+		asmCode <<"\tmov $showx, %rdi"<<endl;
+	}else{
+		asmCode <<"\tmov $show, %rdi"<<endl;
+	}
 
+	if(op==""){
+		asmCode <<"\tpop %rax"<<endl;
+	}else{
+		asmCode <<"\tmov -"<<op<<"(%rbp), %rax"<<endl;
+	}
+	asmCode <<"\tmovl %rax,%rsi"<<endl;
 	asmCode <<"\tcall printf"<<endl;
-
 	asmCode <<"\tpop %rcx"<<endl;
 	asmCode <<"\tpop %rbx"<<endl;
 	asmCode <<"\tpop %rax"<<endl;
@@ -205,8 +202,8 @@ string genTail(){
 	asmC <<"\tadd $104, %rsp"<<endl;
 	asmC <<"\tret"<<endl;
 	asmC <<"show:"<<endl;
-	asmC <<"\t.asciz \"%d\""<<endl;
+	asmC <<"\t.asciz \"%d\\n\""<<endl;
 	asmC <<"showx:"<<endl;
-	asmC <<"\t.asciz \"%x\""<<endl;
+	asmC <<"\t.asciz \"%x\\n\""<<endl;
 	return asmC.str();
 }
