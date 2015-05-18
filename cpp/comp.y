@@ -6,6 +6,7 @@
 #include <stack>
 #include <queue>
 #include <cstdlib>
+#include <fstream>
 #include "nodeblock.cpp"
 #include "asmgen.cpp"
 using namespace std;
@@ -66,6 +67,7 @@ void yyerror(const char *s);
 %}
 
 %token CONST
+%token OTHERS
 %token LEFT RIGHT
 %token ENDLN
 %token ASSIGN EQ IF ENDIF LOOP END SHOW SHOWX COLON
@@ -90,7 +92,7 @@ Line:
   | Stms 
   | Display
   | Condition
-  | error { yyerror("oops\n"); } 
+  | error { yyerror("oops\n"); }
 ;
 
 
@@ -431,13 +433,18 @@ void stack_print()
 
 int main() {
   while(yyparse());
-	cout<<genHead()<<endl;
-// TODO (ziko) : Travers through queue and write it to file
+	ofstream myfile;
+	myfile.open ("assembly.s");
+
+	myfile<<genHead()<<endl;
+
+
 	while(!asmQ.empty()){
-		cout<<asmQ.front()<<endl;
+		 myfile<<asmQ.front()<<endl;
 		asmQ.pop();
 	}
-	cout<<genTail()<<endl;
+	myfile<<genTail()<<endl;
+	myfile.close();
 
 /*
   // open a file handle to a particular file:

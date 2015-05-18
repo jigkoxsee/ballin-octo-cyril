@@ -50,3 +50,4 @@ $[a-z] {
 ":" return COLON;
 
 "\n" return ENDLN;
+. { return yytext[0]; }
