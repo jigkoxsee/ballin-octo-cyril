@@ -194,13 +194,13 @@ string genHead(){
 
 	asmC <<"main:"<<endl;
 	asmC <<"\tmov %rsp,%rbp"<<endl;
-	asmC <<"\tsub $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
+	asmC <<"\tsub $208,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
 	return 	asmC.str();
 }
 
 string genTail(){
 	stringstream asmC;
-	asmC <<"\tadd $104, %rsp"<<endl;
+	asmC <<"\tadd $208, %rsp"<<endl;
 	asmC <<"\tret"<<endl;
 	asmC <<"show:"<<endl;
 	asmC <<"\t.asciz \"%d\\n\""<<endl;
