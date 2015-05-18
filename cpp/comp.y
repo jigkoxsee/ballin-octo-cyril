@@ -67,6 +67,7 @@ void yyerror(const char *s);
 %}
 
 %token CONST
+%token OTHERS
 %token LEFT RIGHT
 %token ENDLN
 %token ASSIGN EQ IF ENDIF LOOP END SHOW SHOWX COLON
@@ -91,7 +92,7 @@ Line:
   | Stms 
   | Display
   | Condition
-  | error { yyerror("oops\n"); } 
+  | error { yyerror("oops\n"); }
 ;
 
 
