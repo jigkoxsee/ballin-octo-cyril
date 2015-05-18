@@ -10,6 +10,9 @@ main:
 	xor %rax,%rax
 	mov %rax,-72(%rbp)
 
+	xor %rax,%rax
+	mov %rax,-16(%rbp)
+
 	mov $10, %rax
 	push %rax
 
@@ -57,10 +60,16 @@ EL0:
 	cmp %rax,%rbx
 	jnz L1
 
+	mov $291, %rax
+	push %rax
+
+	pop %rax
+	mov %rax,-16(%rbp)
+
 	push %rax
 	push %rbx
 	push %rcx
-	mov $show, %rdi
+	mov $showx, %rdi
 	mov -16(%rbp), %rax
 	mov %rax,%rsi
 	xor %rax,%rax
@@ -76,5 +85,5 @@ L1:
 show:
 	.asciz "%d\n"
 showx:
-	.asciz "%x\n"
+	.asciz "0x%x\n"
 

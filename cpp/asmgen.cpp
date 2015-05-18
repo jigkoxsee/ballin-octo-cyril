@@ -205,7 +205,7 @@ string genTail(){
 	asmC <<"show:"<<endl;
 	asmC <<"\t.asciz \"%d\\n\""<<endl;
 	asmC <<"showx:"<<endl;
-	asmC <<"\t.asciz \"%x\\n\""<<endl;
+	asmC <<"\t.asciz \"0x%x\\n\""<<endl;
 	return asmC.str();
 }
 
