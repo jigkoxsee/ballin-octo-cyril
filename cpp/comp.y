@@ -29,6 +29,7 @@ struct node{
 };
 
 queue<string> asmQ;
+queue<string> asmV;
 typedef struct node node;
 node *subtree;
 
@@ -107,7 +108,7 @@ Oprn:
  	
  	if(reserveReg[char_index] == 0)
  	{
- 		asmQ.push(init_var(node_var->getAsm()));
+ 		asmV.push(init_var(node_var->getAsm()));
  		reserveReg[char_index] = 1;
  	}
  	stack_node.push(node_var);
@@ -167,7 +168,7 @@ VARF:
 	 	
 	 	if(reserveReg[char_index] == 0)
 	 	{	
-	 		asmQ.push(init_var(node_var->getAsm()));
+	 		asmV.push(init_var(node_var->getAsm()));
 	 		reserveReg[char_index] = 1;
 	 	}
 	 	stack_node.push(node_var);
@@ -183,6 +184,8 @@ Stm:
 
 	asmQ.push(xassign(node_exp->getAsm(),node_var->getValue()));
   	//stack_print();
+  }
+  | Display {
   }
 ;
 
@@ -203,12 +206,12 @@ Exp:
    //TREE Syntax --Keep in stack
    Constant *node_const = new Constant(); //create constant object 
    node_const->setValue($1);  //add value to constant node
+   stack_node.push(node_const);
+	asmQ.push(xconstant(node_const->getValue()));
    //test aassign
    //cout << "const assign : " << node_const->getValue() << endl;
 
    //insert(&constant_node, $1);
-   stack_node.push(node_const);
-	asmQ.push(xconstant(node_const->getValue()));
    //stack_print();
    } 
   | VAR {
@@ -219,7 +222,7 @@ Exp:
 
  	if(reserveReg[char_index] == 0)
  	{		
- 		asmQ.push(init_var(node_var->getAsm()));
+ 		asmV.push(init_var(node_var->getAsm()));
  		reserveReg[char_index] = 1;
  	}
 
@@ -387,7 +390,7 @@ LNO:
 
   	if(reserveReg[char_index] == 0)
  	{
- 		asmQ.push(init_var(node_var->getAsm()));
+ 		asmV.push(init_var(node_var->getAsm()));
  		reserveReg[char_index] = 1;
  	}
 
@@ -400,6 +403,7 @@ LNO:
   	Constant *node_const = new Constant();
 	node_const->setValue($1);  //add value to constant node
 	stack_node.push(node_const);
+	asmQ.push(xconstant(node_const->getValue()));
 	asmQ.push(xloopStart(node_const->getAsm(),lCount));
   }
 ;
@@ -426,13 +430,13 @@ Loopstm:
 ;
 
 Display:
-  SHOW VAR {  
+  SHOW VAR ENDLN{  
     Variable *node_var = new Variable($2);
     Show *node_show = new Show ($2*4);
 //    node_show->print();
     asmQ.push(xprint(node_var->getAsm(),false));
   }
-  | SHOWX VAR {
+  | SHOWX VAR ENDLN{
     Variable *node_var = new Variable($2);
     ShowX *node_show = new ShowX ($2*4);
 //    node_show->print();
@@ -480,6 +484,10 @@ int main() {
 
 	myfile<<genHead()<<endl;
 
+	while(!asmV.empty()){
+		 myfile<<asmV.front()<<endl;
+		asmV.pop();
+	}
 
 	while(!asmQ.empty()){
 		 myfile<<asmQ.front()<<endl;

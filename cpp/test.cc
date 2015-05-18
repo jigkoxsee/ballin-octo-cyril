@@ -1,7 +1,5 @@
-$b=5
-$b=$b+2
-show $b
-$b=4
-show $b
-$a=77
-show $a
+$i=3
+loop 10
+$i=$i+1
+show $i
+end

@@ -125,7 +125,7 @@ string xcondition(string op1,string op2,int lCount){
 		asmCode <<"\tmov -"<<op2<<"(%rbp),%rax"<<endl;
 	}
 	asmCode <<"\tcmp %rax,%rbx"<<endl;
-	asmCode <<"\tjnz $L"<<lCount<<":"<<endl;
+	asmCode <<"\tjnz L"<<lCount<<":"<<endl;
 	return asmCode.str();	
 }
 
@@ -146,7 +146,7 @@ string xloopStart(string op,int lCount){
 	}
 	asmCode <<"\txor %rax,%rax"<<endl;
 	asmCode <<"\tcmp %rax,%rcx"<<endl;
-	asmCode <<"\tje $EL"<<lCount<<endl;
+	asmCode <<"\tje EL"<<lCount<<endl;
 	asmCode <<"L"<<lCount<<":"<<endl;
 	return asmCode.str();
 }
@@ -155,7 +155,7 @@ string xloop(int *lCount){
 	stringstream asmCode;
 
 	asmCode <<"\tdec %rcx"<<endl;
-	asmCode <<"\tjnz $L"<<*lCount<<endl;
+	asmCode <<"\tjnz L"<<*lCount<<endl;
 	asmCode <<"EL"<<*lCount<<":"<<endl;
 	
 	*lCount=*lCount+1;
