@@ -70,7 +70,7 @@ string xmul(string op1,string op2,string dst){
 		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
-	asmCode <<"\tmull %ebx, %eax"<<endl;
+	asmCode <<"\tmull %ebx"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -87,7 +87,8 @@ string xdiv(string op1,string op2,string dst){
 		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
-	asmCode <<"\tdivl %ebx, %eax"<<endl;
+        asmCode <<"\txor %rdx,%rdx"<<endl;
+	asmCode <<"\tidivl %ebx"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -105,7 +106,8 @@ string xmod(string op1,string op2,string dst){
 		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
 	}
 
-	asmCode <<"\tdivl %ebx, %eax"<<endl;
+        asmCode <<"\txor %rdx,%rdx"<<endl;
+	asmCode <<"\tidivl %ebx"<<endl;
 	// rdx is reminder of div
 	asmCode <<"\tpush %rdx"<<endl;
 	return asmCode.str();
@@ -183,7 +185,7 @@ string xprint(string op,bool hex){
 
 	asmCode <<"\tpop %rcx"<<endl;
 	asmCode <<"\tpop %rbx"<<endl;
-	asmCode <<"pop %rax"<<endl;
+	asmCode <<"\tpop %rax"<<endl;
 	return asmCode.str();
 }
 
@@ -200,6 +202,8 @@ string genHead(){
 
 string genTail(){
 	stringstream asmC;
+	asmC <<"\tadd $104, %rsp"<<endl;
+	asmC <<"\tret"<<endl;
 	asmC <<"show:"<<endl;
 	asmC <<"\t.asciz \"%d\""<<endl;
 	asmC <<"showx:"<<endl;
