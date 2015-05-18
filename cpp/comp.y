@@ -433,14 +433,12 @@ void stack_print()
 
 int main() {
   while(yyparse());
-	cout<<"END"<<endl;
 	ofstream myfile;
 	myfile.open ("assembly.s");
 
 	myfile<<genHead()<<endl;
 
 
-// TODO (ziko) : Travers through queue and write it to file
 	while(!asmQ.empty()){
 		 myfile<<asmQ.front()<<endl;
 		asmQ.pop();
