@@ -5,13 +5,16 @@ main:
 	sub $208,%rsp
 
 	xor %rax,%rax
+	mov %rax,-8(%rbp)
+
+	xor %rax,%rax
 	mov %rax,-72(%rbp)
 
-	mov $3, %rax
+	mov $10, %rax
 	push %rax
 
 	pop %rax
-	mov %rax,-72(%rbp)
+	mov %rax,-8(%rbp)
 
 	mov $10, %rax
 	push %rax
@@ -48,6 +51,25 @@ L0:
 	dec %rcx
 	jnz L0
 EL0:
+
+	mov -8(%rbp),%rbx
+	mov -72(%rbp),%rax
+	cmp %rax,%rbx
+	jnz L1
+
+	push %rax
+	push %rbx
+	push %rcx
+	mov $show, %rdi
+	mov -16(%rbp), %rax
+	mov %rax,%rsi
+	xor %rax,%rax
+	call printf
+	pop %rcx
+	pop %rbx
+	pop %rax
+
+L1:
 
 	add $208, %rsp
 	ret

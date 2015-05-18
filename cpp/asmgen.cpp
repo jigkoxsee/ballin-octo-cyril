@@ -125,7 +125,7 @@ string xcondition(string op1,string op2,int lCount){
 		asmCode <<"\tmov -"<<op2<<"(%rbp),%rax"<<endl;
 	}
 	asmCode <<"\tcmp %rax,%rbx"<<endl;
-	asmCode <<"\tjnz L"<<lCount<<":"<<endl;
+	asmCode <<"\tjnz L"<<lCount<<endl;
 	return asmCode.str();	
 }
 
