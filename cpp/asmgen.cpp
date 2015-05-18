@@ -210,3 +210,10 @@ string genTail(){
 	asmC <<"\t.asciz \"%x\""<<endl;
 	return asmC.str();
 }
+
+string init_var(int var_name){
+			stringstream asmc;
+			cout << "TEST" << endl;
+			//return asmc.str();
+			return "test \n";
+}
