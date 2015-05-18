@@ -195,8 +195,8 @@ string genHead(){
 	asmC <<"\t.text"<<endl;
 
 	asmC <<"main:"<<endl;
-	asmC <<"\tsub $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
 	asmC <<"\tmov %rsp,%rbp"<<endl;
+	asmC <<"\tsub $104,%rsp"<<endl; // Allocate 26*4 slot for $a-$z
 	return 	asmC.str();
 }
 
