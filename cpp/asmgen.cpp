@@ -8,7 +8,7 @@ string xassign(string op1,int offset){
 	stringstream asmCode;
 	if(op1==""){
 		asmCode <<"\tpop %rax"<<endl;	
-		asmCode <<"\tmov %eax,-"<<offset<<"(%rbp)"<<endl;
+		asmCode <<"\tmov %rax,-"<<offset<<"(%rbp)"<<endl;
 	}else
 		asmCode <<"\tmov -"<<op1<<"(%rbp),-"<<offset<<"(%rbp)"<<endl;
 	return asmCode.str();
@@ -16,7 +16,7 @@ string xassign(string op1,int offset){
 
 string xconstant(int val){
 	stringstream asmCode;
-	asmCode << "\tmovl $"<<val<<", %eax"<<endl;
+	asmCode << "\tmov $"<<val<<", %rax"<<endl;
 	asmCode << "\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -26,15 +26,15 @@ string xadd(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %rax"<<endl;
 	}
 
-	asmCode <<"\taddl %ebx, %eax"<<endl;
+	asmCode <<"\tadd %rbx, %rax"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -44,15 +44,15 @@ string xsub(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %rax"<<endl;
 	}
 
-	asmCode <<"\tsubl %ebx, %eax"<<endl;
+	asmCode <<"\tsub %rbx, %rax"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -62,15 +62,15 @@ string xmul(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %rax"<<endl;
 	}
 
-	asmCode <<"\tmull %ebx"<<endl;
+	asmCode <<"\tmul %rbx"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -79,16 +79,16 @@ string xdiv(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %rax"<<endl;
 	}
 
         asmCode <<"\txor %rdx,%rdx"<<endl;
-	asmCode <<"\tidivl %ebx"<<endl;
+	asmCode <<"\tidiv %rbx"<<endl;
 	asmCode <<"\tpush %rax"<<endl;
 	return asmCode.str();
 }
@@ -98,16 +98,16 @@ string xmod(string op1,string op2,string dst){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp), %ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp), %rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp), %eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp), %rax"<<endl;
 	}
 
         asmCode <<"\txor %rdx,%rdx"<<endl;
-	asmCode <<"\tidivl %ebx"<<endl;
+	asmCode <<"\tidivl %rbx"<<endl;
 	// rdx is reminder of div
 	asmCode <<"\tpush %rdx"<<endl;
 	return asmCode.str();
@@ -117,14 +117,14 @@ string xcondition(string op1,string op2,int lCount){
 	if(op1==""){
 		asmCode <<"\tpop %rbx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op1<<"(%rbp),%ebx"<<endl;
+		asmCode <<"\tmov -"<<op1<<"(%rbp),%rbx"<<endl;
 	}
 	if(op2==""){
 		asmCode <<"\tpop %rax"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op2<<"(%rbp),%eax"<<endl;
+		asmCode <<"\tmov -"<<op2<<"(%rbp),%rax"<<endl;
 	}
-	asmCode <<"\tcmp %eax,%ebx"<<endl;
+	asmCode <<"\tcmp %rax,%rbx"<<endl;
 	asmCode <<"\tjnz L"<<lCount<<":"<<endl;
 	return asmCode.str();	
 }
@@ -140,12 +140,12 @@ string xloopStart(string op,int lCount){
 
 	stringstream asmCode;
 	if(op==""){
-		asmCode <<"\tpop %ecx"<<endl;
+		asmCode <<"\tpop %rcx"<<endl;
 	}else{
-		asmCode <<"\tmov -"<<op<<"(%rbp), %ecx"<<endl;
+		asmCode <<"\tmov -"<<op<<"(%rbp), %rcx"<<endl;
 	}
 	asmCode <<"\txor %rax,%rax"<<endl;
-	asmCode <<"\tcmp %eax,%ecx"<<endl;
+	asmCode <<"\tcmp %rax,%rcx"<<endl;
 	asmCode <<"\tje EL"<<lCount<<endl;
 	asmCode <<"L"<<lCount<<":"<<endl;
 	return asmCode.str();
@@ -154,7 +154,7 @@ string xloopStart(string op,int lCount){
 string xloop(int *lCount){
 	stringstream asmCode;
 
-	asmCode <<"\tdec %ecx"<<endl;
+	asmCode <<"\tdec %rcx"<<endl;
 	asmCode <<"\tjnz L"<<*lCount<<endl;
 	asmCode <<"EL"<<*lCount<<":"<<endl;
 	
@@ -178,7 +178,8 @@ string xprint(string op,bool hex){
 	}else{
 		asmCode <<"\tmov -"<<op<<"(%rbp), %rax"<<endl;
 	}
-	asmCode <<"\tmovl %rax,%rsi"<<endl;
+	asmCode <<"\tmov %rax,%rsi"<<endl;
+	asmCode <<"\txor %rax,%rax"<<endl;
 	asmCode <<"\tcall printf"<<endl;
 	asmCode <<"\tpop %rcx"<<endl;
 	asmCode <<"\tpop %rbx"<<endl;
@@ -205,5 +206,12 @@ string genTail(){
 	asmC <<"\t.asciz \"%d\\n\""<<endl;
 	asmC <<"showx:"<<endl;
 	asmC <<"\t.asciz \"%x\\n\""<<endl;
+	return asmC.str();
+}
+
+string init_var(string op){
+	stringstream asmC;
+	asmC <<"\txor %rax,%rax"<<endl;
+	asmC << "\tmov %rax,-"<<op<<"(%rbp)"<<endl;
 	return asmC.str();
 }

@@ -29,7 +29,7 @@ class Variable : public NodeBlock
 		int address;
 	public:
 		Variable(int var_name) {
-			address = (var_name+1) * 4; //each frame has 4 bytes
+			address = (var_name+1) * 8; //each frame has 8 bytes
 			this->type = 'v';
 		}
 		~Variable() {}

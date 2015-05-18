@@ -13,6 +13,8 @@ using namespace std;
 
 void stack_print();
 queue<NodeBlock*> queue_node;
+int reserveReg[27] = { }; 
+
 //TAC initial implementation.
 int lCount =0;
 stack<int> temp;
@@ -100,7 +102,14 @@ Oprn:
   VAR 
   {
   	Variable *node_var = new Variable($1);
+  	int char_index = $1;
  	//cout << " var = " << $1 << endl;
+ 	
+ 	if(reserveReg[char_index] == 0)
+ 	{
+ 		asmQ.push(init_var(node_var->getAsm()));
+ 		reserveReg[char_index] = 1;
+ 	}
  	stack_node.push(node_var);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
   	//stack_print();
@@ -150,8 +159,22 @@ Ifstm:
 
 ;
 
+VARF:
+	VAR { 
+		Variable *node_var = new Variable($1);
+	  	int char_index = $1;
+	 	//cout << " var = " << $1 << endl;
+	 	
+	 	if(reserveReg[char_index] == 0)
+	 	{	
+	 		asmQ.push(init_var(node_var->getAsm()));
+	 		reserveReg[char_index] = 1;
+	 	}
+	 	stack_node.push(node_var);
+	}
+
 Stm:
-  VAR ASSIGN Exp ENDLN{
+  VARF ASSIGN Exp ENDLN{
 	NodeBlock *node_exp = stack_node.top();
   	Variable *node_var = new Variable($1);
  	//cout << " var = " << $1 << endl;
@@ -191,10 +214,20 @@ Exp:
   | VAR {
   	// add var to tree it's looklike constant but keep on address form fp(frame pointer)
  	Variable *node_var = new Variable($1);
+
+ 	int char_index = $1;
+
+ 	if(reserveReg[char_index] == 0)
+ 	{		
+ 		asmQ.push(init_var(node_var->getAsm()));
+ 		reserveReg[char_index] = 1;
+ 	}
+
  	//cout << " var = " << $1 << endl;
  	stack_node.push(node_var);
 	//cout << "var assign @ = " << node_var->getValue() << endl;
 	//stack_print();
+
 
   }
   | Exp PLUS Exp {
@@ -349,6 +382,15 @@ LNO:
   VAR 
   {
   	Variable *node_var = new Variable($1);
+
+  	int char_index = $1;
+
+  	if(reserveReg[char_index] == 0)
+ 	{
+ 		asmQ.push(init_var(node_var->getAsm()));
+ 		reserveReg[char_index] = 1;
+ 	}
+
  	stack_node.push(node_var);
 	asmQ.push(xloopStart(node_var->getAsm(),lCount));
   }
