@@ -145,7 +145,7 @@ string xloopStart(string op,int lCount){
 		asmCode <<"\tmov -"<<op<<"(%rbp), %ecx"<<endl;
 	}
 	asmCode <<"\txor %rax,%rax"<<endl;
-	asmCode <<"\tcmp %rax,%ecx"<<endl;
+	asmCode <<"\tcmp %eax,%ecx"<<endl;
 	asmCode <<"\tje EL"<<lCount<<endl;
 	asmCode <<"L"<<lCount<<":"<<endl;
 	return asmCode.str();
