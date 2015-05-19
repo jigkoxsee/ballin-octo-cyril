@@ -375,7 +375,11 @@ Exp:
       node = stack_node.top();
       //cout << "OLD: " << node->getValue() << endl;
       stack_node.pop();
-      int temp_neg = 0-(node->getValue());
+      int temp_neg = -node->getValue();
+	asmQ.push("\tpop %rax");
+	asmQ.push("\txor %rbx,%rbx");
+	asmQ.push("\tsub $rax,%rbx");
+	asmQ.push("\tpush %rbx\n");
       node->setValue(temp_neg);
       //cout << "NEW: " << node->getValue() << endl;
       stack_node.push(node);
