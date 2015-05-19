@@ -107,7 +107,7 @@ string xmod(string op1,string op2,string dst){
 	}
 
         asmCode <<"\txor %rdx,%rdx"<<endl;
-	asmCode <<"\tidivl %rbx"<<endl;
+	asmCode <<"\tidiv %rbx"<<endl;
 	// rdx is reminder of div
 	asmCode <<"\tpush %rdx"<<endl;
 	return asmCode.str();
