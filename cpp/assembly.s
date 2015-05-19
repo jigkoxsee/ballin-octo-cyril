@@ -12,7 +12,7 @@ main:
 
 	pop %rax
 	xor %rbx,%rbx
-	sub $rax,%rbx
+	sub %rax,%rbx
 	push %rbx
 
 	mov $33, %rax
