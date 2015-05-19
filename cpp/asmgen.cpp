@@ -125,14 +125,14 @@ string xcondition(string op1,string op2,int lCount){
 		asmCode <<"\tmov -"<<op2<<"(%rbp),%rax"<<endl;
 	}
 	asmCode <<"\tcmp %rax,%rbx"<<endl;
-	asmCode <<"\tjnz L"<<lCount<<endl;
+	asmCode <<"\tjnz LI"<<lCount<<endl;
 	return asmCode.str();	
 }
 
 string xif(int *lCount){
 	//gen label
 	stringstream asmCode;
-	asmCode <<"L"<<*lCount<<":"<<endl;
+	asmCode <<"LI"<<*lCount<<":"<<endl;
 	*lCount=*lCount+1;
 	return asmCode.str();
 }

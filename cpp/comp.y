@@ -17,6 +17,7 @@ int reserveReg[27] = { };
 
 //TAC initial implementation.
 int lCount =0;
+int ifCount =0;
 stack<int> temp;
 
 int swap_temp;
@@ -140,7 +141,7 @@ Condition:
   	stack_node.push(node_equal);
   	//node_equal->print();
   	//stack_print();
-	asmQ.push(xcondition(node1->getAsm(),node2->getAsm(),lCount));
+	asmQ.push(xcondition(node1->getAsm(),node2->getAsm(),ifCount));
   }
 ;
 
@@ -155,7 +156,7 @@ Ifstm:
 
   	//IfStatement *node_if = new IfStatement(node_equal);
 	//stack_node.push(node_if);
-	asmQ.push(xif(&lCount));
+	asmQ.push(xif(&ifCount));
   }
 
 ;
@@ -189,10 +190,17 @@ Stm:
   }
 ;
 
+Block:
+  Stms {}
+  | Ifstm {}
+  | Ifstm Stms {}
+  | Stms Ifstm {}
+  | Stms Ifstm Stms {}
+;
+
 Stms:
   Stm {  }
-  | Stm  Stms { }
-
+  | Stm Stms {}
 ;
 
 Exp: 
@@ -412,7 +420,7 @@ LNO:
   }
 ;
 Loopstm:
-  LOOP LNO ENDLN Stms END ENDLN {
+  LOOP LNO ENDLN Block END ENDLN {
 
     //stack_node.top()->print();
     //NodeBlock *node_stm = stack_node.top();
