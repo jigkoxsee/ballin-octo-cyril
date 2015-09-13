@@ -24,8 +24,8 @@ hex [0-9a-fA-F]
   return CONST;
 }
 
-$[a-zA-Z] {
-  yylval=yytext[2]-'0';
+$[a-z] {
+  yylval=(int)yytext[1]-'a';
   return VAR;
 }
 
@@ -50,3 +50,4 @@ $[a-zA-Z] {
 ":" return COLON;
 
 "\n" return ENDLN;
+. { return yytext[0]; }
